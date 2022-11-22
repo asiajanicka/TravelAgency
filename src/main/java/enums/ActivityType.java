@@ -7,5 +7,4 @@ public enum ActivityType {
     BEACH_VOLLEYBALL,
     SURFING,
     BANANA_BOAT
-
 }

@@ -84,7 +84,7 @@ public abstract class Transport {
                 cityFrom, DateFormat.format(dateDeparture),
                 cityTo, DateFormat.format(dateArrival),
                 isForAdult(),
-                seat.toString(),
+                seat,
                 calculatePrice());
     }
 }

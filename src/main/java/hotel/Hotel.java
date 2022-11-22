@@ -1,7 +1,7 @@
 package hotel;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Hotel {
     private String name;
@@ -11,11 +11,22 @@ public class Hotel {
 
     public Hotel() {
     }
+
+    public Hotel(String name, int numberOfStars, String address) {
+        this.name = name;
+        this.numberOfStars = numberOfStars;
+        this.address = address;
+        this.rooms = new ArrayList<>();
+    }
     public Hotel(String name, int numberOfStars, String address, List<Room> rooms) {
         this.name = name;
         this.numberOfStars = numberOfStars;
         this.address = address;
         this.rooms = rooms;
+    }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
     }
 
     public String getName() {
@@ -50,7 +61,7 @@ public class Hotel {
         this.rooms = rooms;
     }
 
-    public String toString(){
-        return String.format("HOTEL: %s Number of stars: %d Address: %s", name, numberOfStars, address);
+    public String toString() {
+        return String.format("Hotel: %s Number of stars: %d Address: %s", name, numberOfStars, address);
     }
 }

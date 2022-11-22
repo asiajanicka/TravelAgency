@@ -1,31 +1,29 @@
 package destination;
 
-import enums.ActivityType;
+import utils.DateFormat;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Activity {
-    private LocalDate date;
+public abstract class Activity {
+    private LocalDateTime date;
     private String name;
-    private ActivityType type;
     private BigDecimal price;
 
-    Activity(){
+    Activity() {
     }
 
-    public Activity(LocalDate date, String name, ActivityType type, BigDecimal price) {
+    public Activity(LocalDateTime date, String name, BigDecimal price) {
         this.date = date;
         this.name = name;
-        this.type = type;
         this.price = price;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -37,14 +35,6 @@ public class Activity {
         this.name = name;
     }
 
-    public ActivityType getType() {
-        return type;
-    }
-
-    public void setType(ActivityType type) {
-        this.type = type;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -53,7 +43,7 @@ public class Activity {
         this.price = price;
     }
 
-    public String toString(){
-        return name;
+    public String toString() {
+        return String.format("%s on %s", name, DateFormat.format(date));
     }
 }

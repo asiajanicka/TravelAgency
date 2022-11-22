@@ -42,8 +42,7 @@ public class Room {
         this.price = price;
     }
 
-     public String toString(){
+    public String toString() {
         return String.format("Room number: %d Room type: %s", number, type);
-
-     }
+    }
 }

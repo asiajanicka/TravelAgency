@@ -1,18 +1,19 @@
 package transport;
 
 import enums.City;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class CoachRide extends Transport {
+public class CoachTravel extends Transport {
     private int numberOfSmallSuitcases;
     private int numberOfLargeSuitcases;
 
-    public CoachRide() {
+    public CoachTravel() {
     }
 
-    public CoachRide(LocalDateTime dateDeparture, LocalDateTime dateArrival, Seat seat, City cityFrom, City cityTo,
-                     boolean isForAdult, int numberOfSmallSuitcases, int numberOfLargeSuitcases) {
+    public CoachTravel(LocalDateTime dateDeparture, LocalDateTime dateArrival, Seat seat, City cityFrom, City cityTo,
+                       boolean isForAdult, int numberOfSmallSuitcases, int numberOfLargeSuitcases) {
         super(dateDeparture, dateArrival, seat, cityFrom, cityTo, isForAdult);
         this.numberOfSmallSuitcases = numberOfSmallSuitcases;
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
@@ -46,7 +47,7 @@ public class CoachRide extends Transport {
     }
 
     public String toString() {
-        return String.format("Coach ride: %s Small suitcases: %d, Large suitcases: %d",
+        return String.format("Coach travel: %s Small suitcases: %d, Large suitcases: %d",
                 super.toString(), numberOfSmallSuitcases, numberOfLargeSuitcases);
     }
 }

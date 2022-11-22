@@ -7,7 +7,6 @@ import hotel.Hotel;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
 
 public class Destination {
     private Country country;
@@ -15,7 +14,7 @@ public class Destination {
     private Hotel hotel;
     private List<Activity> activities;
 
-    public Destination(){
+    public Destination() {
     }
 
     public Destination(Country country, City city, Hotel hotel) {
@@ -25,17 +24,24 @@ public class Destination {
         this.activities = new ArrayList<>();
     }
 
-    public void addActivity(Activity activity){
+    public Destination(Country country, City city, Hotel hotel, ArrayList<Activity> activities) {
+        this.country = country;
+        this.city = city;
+        this.hotel = hotel;
+        this.activities = activities;
+    }
+
+    public void addActivity(Activity activity) {
         activities.add(activity);
     }
 
-    public BigDecimal calculateTotalPriceForActivities(){
-        return activities.stream().map(a->a.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal calculateTotalPriceForActivities() {
+        return activities.stream().map(a -> a.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void printDestinationSummary(){
+    public void printDestinationSummary() {
         System.out.format("DESTINATION: %s %s\n", country, city);
-        if(activities.size()>0){
+        if (activities.size() > 0) {
             System.out.format("Activities at %s\n", city);
         }
         activities.stream().forEach(System.out::println);
@@ -71,5 +77,9 @@ public class Destination {
 
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
+    }
+
+    public String toString() {
+        return String.format("%s %s %s", city, country, hotel);
     }
 }

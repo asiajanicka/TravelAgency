@@ -13,6 +13,9 @@ public class Person {
     private List<HotelBooking> hotelBookings;
     private List<Transport> transports;
 
+    public Person() {
+    }
+
     public Person(String id, String firstName, String lastName, int age, List<HotelBooking> hotelBookings, List<Transport> transports) {
         this.id = id;
         this.firstName = firstName;
@@ -35,7 +38,7 @@ public class Person {
         hotelBookings.add(booking);
     }
 
-    public void addFlight(Transport transport) {
+    public void addTransport(Transport transport) {
         transports.add(transport);
     }
 

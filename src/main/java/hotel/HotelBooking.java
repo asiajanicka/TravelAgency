@@ -1,6 +1,7 @@
 package hotel;
 
 import enums.BoardType;
+import utils.DateFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,23 +14,23 @@ public class HotelBooking {
     private Room room;
     private Board board;
 
-    public HotelBooking(){
-    };
+    public HotelBooking() {
+    }
 
-    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, boolean forAdult, Room room, BoardType boardType){
+    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, boolean forAdult, Room room, BoardType boardType) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.forAdult = forAdult;
         this.room = room;
         this.board = new Board(boardType);
     }
-    
-    public int lengthOfStaying(){
+
+    public int lengthOfStaying() {
         Period period = Period.between(dateFrom, dateTo);
         return period.getDays();
     }
-    
-    public BigDecimal calculatePrice(){
+
+    public BigDecimal calculatePrice() {
         BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(lengthOfStaying()));
         return isForAdult() ? totalPrice : totalPrice.divide(new BigDecimal(2));
     }
@@ -74,12 +75,12 @@ public class HotelBooking {
         this.board = board;
     }
 
-    public String toString(){
-        return String.format("Hotel: from %tB %te, %tY to %tB %te, %tY Is for adult? %b Board: %s Total price: %.2f",
-                dateFrom, dateFrom, dateFrom,
-                dateTo, dateTo, dateTo,
+    public String toString() {
+        return String.format("Hotel: from %s to %s Is for adult? %b Board: %s Total price: %.2f",
+                DateFormat.format(dateFrom),
+                DateFormat.format(dateTo),
                 isForAdult(),
-                board.getType(),
+                board.getType().getDisplayName(),
                 calculatePrice());
     }
 }

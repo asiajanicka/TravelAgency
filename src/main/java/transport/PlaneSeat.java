@@ -1,6 +1,7 @@
 package transport;
 
 import enums.PlaneSeatType;
+
 import java.math.BigDecimal;
 
 public class PlaneSeat extends Seat {

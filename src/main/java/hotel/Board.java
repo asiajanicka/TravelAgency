@@ -1,6 +1,7 @@
 package hotel;
 
 import enums.BoardType;
+
 import java.math.BigDecimal;
 
 public class Board {
@@ -15,25 +16,24 @@ public class Board {
 
     public BigDecimal getPrice() {
         BigDecimal result;
-
         switch (type) {
-            case BB : {
+            case BB: {
                 result = new BigDecimal(123);
                 break;
             }
-            case HB : {
+            case HB: {
                 result = new BigDecimal(234);
                 break;
             }
-            case FB : {
+            case FB: {
                 result = new BigDecimal(250);
                 break;
             }
-            case ALL_INCLUSIVE : {
+            case ALL_INCLUSIVE: {
                 result = new BigDecimal(500);
                 break;
             }
-            default : {
+            default: {
                 throw new IllegalArgumentException("Incorrect board type. Price can not be calculated");
             }
         }
@@ -48,7 +48,7 @@ public class Board {
         this.type = type;
     }
 
-    public String toString(){
+    public String toString() {
         return "Board Type: " + type;
     }
 }
