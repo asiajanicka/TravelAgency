@@ -1,22 +1,24 @@
-package flight;
+package transport;
 
 import enums.City;
+import utils.DateFormat;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Flight {
-    private LocalDate dateDeparture;
-    private LocalDate dateArrival;
+public abstract class Transport {
+    private LocalDateTime dateDeparture;
+    private LocalDateTime dateArrival;
     private Seat seat;
     private City cityFrom;
     private City cityTo;
     private boolean isForAdult;
 
-    Flight(){
+    public Transport() {
     }
 
-    public Flight(LocalDate dateDeparture, LocalDate dateArrival, Seat seat, City cityFrom, City cityTo, boolean isForAdult) {
+    public Transport(LocalDateTime dateDeparture, LocalDateTime dateArrival, Seat seat, City cityFrom, City cityTo,
+                     boolean isForAdult) {
         this.dateDeparture = dateDeparture;
         this.dateArrival = dateArrival;
         this.seat = seat;
@@ -25,23 +27,23 @@ public class Flight {
         this.isForAdult = isForAdult;
     }
 
-    public BigDecimal calculatePrice(){
+    public BigDecimal calculatePrice() {
         return isForAdult() ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
     }
 
-    public LocalDate getDateDeparture() {
+    public LocalDateTime getDateDeparture() {
         return dateDeparture;
     }
 
-    public void setDateDeparture(LocalDate dateDeparture) {
+    public void setDateDeparture(LocalDateTime dateDeparture) {
         this.dateDeparture = dateDeparture;
     }
 
-    public LocalDate getDateArrival() {
+    public LocalDateTime getDateArrival() {
         return dateArrival;
     }
 
-    public void setDateArrival(LocalDate dateArrival) {
+    public void setDateArrival(LocalDateTime dateArrival) {
         this.dateArrival = dateArrival;
     }
 
@@ -77,13 +79,12 @@ public class Flight {
         isForAdult = forAdult;
     }
 
-    public String toString(){
-        return String.format("Flight: from %s(%tB %te, %tY) to %s(%tB %te, %tY) Is for adult? %b seat number: %d %s Total price: %.2f",
-                cityFrom, dateDeparture, dateDeparture, dateDeparture,
-                cityTo, dateArrival, dateArrival, dateArrival,
+    public String toString() {
+        return String.format("From %s(%s) to %s(%s) Is for adult? %b %s Total price: %.2f",
+                cityFrom, DateFormat.format(dateDeparture),
+                cityTo, DateFormat.format(dateArrival),
                 isForAdult(),
-                seat.getNumber(),
-                seat.getType(),
+                seat.toString(),
                 calculatePrice());
     }
 }

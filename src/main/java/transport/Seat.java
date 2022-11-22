@@ -1,21 +1,17 @@
-package flight;
-
-import enums.PlaneSeatType;
+package transport;
 
 import java.math.BigDecimal;
 
 public class Seat {
-    private int number;
-    private PlaneSeatType type;
 
+    private int number;
     private BigDecimal price;
 
     public Seat() {
     }
 
-    public Seat(int number, PlaneSeatType type, BigDecimal price) {
+    public Seat(int number, BigDecimal price) {
         this.number = number;
-        this.type = type;
         this.price = price;
     }
 
@@ -27,14 +23,6 @@ public class Seat {
         this.number = number;
     }
 
-    public PlaneSeatType getType() {
-        return type;
-    }
-
-    public void setType(PlaneSeatType type) {
-        this.type = type;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -43,7 +31,7 @@ public class Seat {
         this.price = price;
     }
 
-    public String toString(){
-        return String.format("Seat: %d %s", number, type);
+    public String toString() {
+        return String.format("Seat: %d", number);
     }
 }

@@ -1,12 +1,15 @@
 import destination.Activity;
 import enums.*;
 import destination.Destination;
-import flight.Flight;
-import flight.Seat;
+import transport.CoachRide;
+import transport.Flight;
+import transport.PlaneSeat;
 import hotel.*;
+import transport.Seat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,43 +91,54 @@ public class TravelAgency {
         tom.addHotelBooking(holidayInBookingForTom);
 
         // FLIGHT FROM WARSAW TO MALAGA
-        LocalDate departureDateWM =  LocalDate.of(2022, 5, 5);
-        LocalDate arrivalDateWM =  LocalDate.of(2022, 5, 5);
+        LocalDateTime departureDateWM =  LocalDateTime.of(2022, 5, 5, 12,30);
+        LocalDateTime arrivalDateWM =  LocalDateTime.of(2022, 5, 5, 9, 45);
 
-        Seat seatFC1WM = new Seat(1, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
-        Flight flightWMForJohn = new Flight(departureDateWM, arrivalDateWM, seatFC1WM, City.WARSAW, City.MALAGA, true);
-        john.addFlight(flightWMForJohn);
+        PlaneSeat seatFC1WM = new PlaneSeat(1, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
+        Seat seat1 = new Seat(1, new BigDecimal(1000));
+        CoachRide coachRideForJohn = new CoachRide(departureDateWM, arrivalDateWM, seat1, City.WARSAW, City.MALAGA,
+                true,4, 3);
+        Flight flightWMForJohn = new Flight(departureDateWM, arrivalDateWM, seatFC1WM, City.WARSAW, City.MALAGA,
+                true, PlaneBaggage.CHECKED);
+        john.addFlight(coachRideForJohn);
 
-        Seat seatFC2WM = new Seat(2, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
-        Flight flightWMForSue = new Flight(departureDateWM, arrivalDateWM, seatFC2WM, City.WARSAW, City.MALAGA, true);
+        PlaneSeat seatFC2WM = new PlaneSeat(2, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
+        Flight flightWMForSue = new Flight(departureDateWM, arrivalDateWM, seatFC2WM, City.WARSAW, City.MALAGA,
+                true, PlaneBaggage.CHECKED);
         sue.addFlight(flightWMForSue);
 
-        Seat seatEC1WM = new Seat(3, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
-        Flight flightWMForKate = new Flight(departureDateWM, arrivalDateWM, seatEC1WM, City.WARSAW, City.MALAGA, false);
+        PlaneSeat seatEC1WM = new PlaneSeat(3, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
+        Flight flightWMForKate = new Flight(departureDateWM, arrivalDateWM, seatEC1WM, City.WARSAW, City.MALAGA,
+                false, PlaneBaggage.HAND);
         kate.addFlight(flightWMForKate);
 
-        Seat seatEC2WM = new Seat(4, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
-        Flight flightWMForTom = new Flight(departureDateWM, arrivalDateWM, seatEC2WM, City.WARSAW, City.MALAGA, false);
+        PlaneSeat seatEC2WM = new PlaneSeat(4, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
+        Flight flightWMForTom = new Flight(departureDateWM, arrivalDateWM, seatEC2WM, City.WARSAW, City.MALAGA,
+                false, PlaneBaggage.HAND);
         tom.addFlight(flightWMForTom);
 
         // FLIGHT BACK FROM MALAGA TO WARSAW
-        LocalDate departureDateMW =  LocalDate.of(2022, 5, 15);
-        LocalDate arrivalDateMW =  LocalDate.of(2022, 5, 15);
+        LocalDateTime departureDateMW =  LocalDateTime.of(2022, 5, 15, 7, 30);
+        LocalDateTime arrivalDateMW =  LocalDateTime.of(2022, 5, 15, 10, 45);
 
-        Seat seatFC1MW = new Seat(1, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
-        Flight flightMWForJohn = new Flight(departureDateMW, arrivalDateWM, seatFC1MW, City.MALAGA, City.WARSAW, true);
+        PlaneSeat seatFC1MW = new PlaneSeat(1, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
+        Flight flightMWForJohn = new Flight(departureDateMW, arrivalDateWM, seatFC1MW, City.MALAGA, City.WARSAW,
+                true, PlaneBaggage.CHECKED);
         john.addFlight(flightMWForJohn);
 
-        Seat seatFC2MW = new Seat(2, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
-        Flight flightMWForSue = new Flight(departureDateMW, arrivalDateWM, seatFC2MW, City.MALAGA, City.WARSAW, true);
+        PlaneSeat seatFC2MW = new PlaneSeat(2, PlaneSeatType.FIRST_CLASS, new BigDecimal(1000));
+        Flight flightMWForSue = new Flight(departureDateMW, arrivalDateWM, seatFC2MW, City.MALAGA, City.WARSAW,
+                true, PlaneBaggage.CHECKED);
         sue.addFlight(flightMWForSue);
 
-        Seat seatEC1MW = new Seat(3, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
-        Flight flightMWForKate = new Flight(departureDateMW, arrivalDateWM, seatEC1MW, City.MALAGA, City.WARSAW, false);
+        PlaneSeat seatEC1MW = new PlaneSeat(3, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
+        Flight flightMWForKate = new Flight(departureDateMW, arrivalDateWM, seatEC1MW, City.MALAGA, City.WARSAW,
+                false, PlaneBaggage.HAND);
         kate.addFlight(flightMWForKate);
 
-        Seat seatEC2MW = new Seat(4, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
-        Flight flightMWForTom = new Flight(departureDateMW, arrivalDateWM, seatEC2MW, City.MALAGA, City.WARSAW, false);
+        PlaneSeat seatEC2MW = new PlaneSeat(4, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(500));
+        Flight flightMWForTom = new Flight(departureDateMW, arrivalDateWM, seatEC2MW, City.MALAGA, City.WARSAW,
+                false, PlaneBaggage.HAND);
         tom.addFlight(flightMWForTom);
 
         // add activities at the destination for whole family

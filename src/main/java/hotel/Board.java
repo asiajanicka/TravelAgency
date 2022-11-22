@@ -1,7 +1,6 @@
 package hotel;
 
 import enums.BoardType;
-
 import java.math.BigDecimal;
 
 public class Board {

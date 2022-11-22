@@ -58,7 +58,7 @@ public class CustomizedTrip {
 
         BigDecimal totalPrice = priceForActivities.add(
                 participants.stream().map(
-                        p -> p.calculateTotalCostForHotelBookings().add(p.calculateTotalCostForFlights())
+                        p -> p.calculateTotalCostForHotelBookings().add(p.calculateTotalCostForTransport())
                 ).reduce(BigDecimal.ZERO, BigDecimal::add)
         );
 

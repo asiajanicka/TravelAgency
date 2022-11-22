@@ -1,5 +1,5 @@
-import flight.Flight;
 import hotel.HotelBooking;
+import transport.Transport;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,15 +11,15 @@ public class Person {
     private String lastName;
     private int age;
     private List<HotelBooking> hotelBookings;
-    private List<Flight> flights;
+    private List<Transport> transports;
 
-    public Person(String id, String firstName, String lastName, int age, List<HotelBooking> hotelBookings, List<Flight> flights) {
+    public Person(String id, String firstName, String lastName, int age, List<HotelBooking> hotelBookings, List<Transport> transports) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.hotelBookings = hotelBookings;
-        this.flights = flights;
+        this.transports = transports;
     }
 
     public Person(String id, String firstName, String lastName, int age) {
@@ -28,29 +28,29 @@ public class Person {
         this.lastName = lastName;
         this.age = age;
         this.hotelBookings = new ArrayList<>();
-        this.flights = new ArrayList<>();
+        this.transports = new ArrayList<>();
     }
 
-    public void addHotelBooking(HotelBooking booking){
+    public void addHotelBooking(HotelBooking booking) {
         hotelBookings.add(booking);
     }
 
-    public void addFlight(Flight flight){
-        flights.add(flight);
+    public void addFlight(Transport transport) {
+        transports.add(transport);
     }
 
-    public void printBookingsSummary(){
+    public void printBookingsSummary() {
         System.out.println("Bookings for: " + firstName.toUpperCase() + " " + lastName.toUpperCase());
         hotelBookings.stream().forEach(System.out::println);
-        flights.stream().forEach(System.out::println);
+        transports.stream().forEach(System.out::println);
     }
 
-    public BigDecimal calculateTotalCostForHotelBookings(){
-        return hotelBookings.stream().map(p-> p.calculatePrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal calculateTotalCostForHotelBookings() {
+        return hotelBookings.stream().map(p -> p.calculatePrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal calculateTotalCostForFlights(){
-        return flights.stream().map(p-> p.calculatePrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal calculateTotalCostForTransport() {
+        return transports.stream().map(p -> p.calculatePrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public String getId() {
@@ -93,15 +93,15 @@ public class Person {
         this.hotelBookings = hotelBookings;
     }
 
-    public List<Flight> getFlights() {
-        return flights;
+    public List<Transport> getTransports() {
+        return transports;
     }
 
-    public void setFlights(List<Flight> flights) {
-        this.flights = flights;
+    public void setTransports(List<Transport> transports) {
+        this.transports = transports;
     }
 
-    public String getPersonInfo(){
+    public String getPersonInfo() {
         return firstName + " " + lastName + " age: " + age;
     }
 }
