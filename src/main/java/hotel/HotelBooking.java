@@ -40,13 +40,13 @@ public class HotelBooking {
         this.board = new Board(boardType);
     }
 
-    public int lengthOfStaying() {
+    private int getLengthOfStaying() {
         Period period = Period.between(dateFrom, dateTo);
         return period.getDays();
     }
 
     public BigDecimal calculatePrice() {
-        BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(lengthOfStaying()));
+        BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
         return isForAdult() ? totalPrice : totalPrice.divide(new BigDecimal(2));
     }
 

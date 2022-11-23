@@ -6,18 +6,18 @@ Participants can travel to many destinations during one trip.
 - list of hotel bookings (that has info about room and board type)  
 Hotel bookings are individual for each participant. Each participant can have many hotel bookings as can travel to many 
 destinations.
-- list of flights  
-Flights are individual for each participant. Each participant can have many flights as can travel to many
+- list of transport bookings (transport by couch or by plane)  
+Transport bookings are individual for each participant. Each participant can have many flights/couch as can travel to many
   destinations.
 
 Travel Agency class simulates situation when the family of 4 would like to buy a trip to Malaga in Spain from 5th
-to 15th of May 2022. They have a list of requirements concerning flight, rooms and activities at destination place.
+to 15th of May 2022. They have a list of requirements concerning means of transport, rooms and activities at destination place.
 
 At the end program will print info about the trip containing:
 - date
 - total cost
 - participants
 - destinations with chosen activities
-- booking of hotels and flights per participant
+- booking of hotels and transport per participant
 
 ![](src/main/resources/TravelAgencyClassesDiagram.jpg)
