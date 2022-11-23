@@ -18,6 +18,21 @@ public class HotelBooking {
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, boolean forAdult, Room room, BoardType boardType) {
+        if (dateFrom == null) {
+            throw new IllegalArgumentException("Date 'from' can't be null");
+        }
+        if (dateTo == null) {
+            throw new IllegalArgumentException("Date 'to' can't be null");
+        }
+        if (dateTo.isBefore(dateFrom) || dateFrom.isEqual(dateTo)) {
+            throw new IllegalArgumentException("Date 'to' can't be before date 'from'");
+        }
+        if (room == null) {
+            throw new IllegalArgumentException("Room can't be null");
+        }
+        if (boardType == null) {
+            throw new IllegalArgumentException("Board type can't be null");
+        }
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.forAdult = forAdult;
@@ -40,6 +55,12 @@ public class HotelBooking {
     }
 
     public void setDateFrom(LocalDate dateFrom) {
+        if (dateFrom == null) {
+            throw new IllegalArgumentException("Date 'from' can't be null");
+        }
+        if (dateTo.isBefore(dateFrom) || dateFrom.isEqual(dateTo)) {
+            throw new IllegalArgumentException("Date 'from' can't be after date 'to'");
+        }
         this.dateFrom = dateFrom;
     }
 
@@ -48,6 +69,12 @@ public class HotelBooking {
     }
 
     public void setDateTo(LocalDate dateTo) {
+        if (dateTo == null) {
+            throw new IllegalArgumentException("Date 'to' can't be null");
+        }
+        if (dateTo.isBefore(dateFrom) || dateFrom.isEqual(dateTo)) {
+            throw new IllegalArgumentException("Date 'to' can't be before date 'from'");
+        }
         this.dateTo = dateTo;
     }
 
@@ -64,6 +91,9 @@ public class HotelBooking {
     }
 
     public void setRoom(Room room) {
+        if (room == null) {
+            throw new IllegalArgumentException("Room can't be null");
+        }
         this.room = room;
     }
 
@@ -71,8 +101,11 @@ public class HotelBooking {
         return board;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public void setBoard(BoardType boardType) {
+        if (boardType == null) {
+            throw new IllegalArgumentException("Board type can't be null");
+        }
+        this.board = new Board(boardType);
     }
 
     public String toString() {

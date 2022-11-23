@@ -11,6 +11,9 @@ public class Board {
     }
 
     public Board(BoardType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Board type can't be null");
+        }
         this.type = type;
     }
 
@@ -45,6 +48,9 @@ public class Board {
     }
 
     public void setType(BoardType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Board type can't be null");
+        }
         this.type = type;
     }
 

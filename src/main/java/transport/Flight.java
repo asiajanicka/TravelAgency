@@ -1,7 +1,7 @@
 package transport;
 
-import enums.PlaneBaggage;
 import enums.City;
+import enums.PlaneBaggage;
 import utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -16,6 +16,9 @@ public class Flight extends Transport {
     public Flight(LocalDateTime dateDeparture, LocalDateTime dateArrival, PlaneSeat seat, City cityFrom, City cityTo,
                   boolean isForAdult, PlaneBaggage baggageType) {
         super(dateDeparture, dateArrival, seat, cityFrom, cityTo, isForAdult);
+        if (baggageType == null) {
+            throw new IllegalArgumentException("Baggage type can't be null");
+        }
         this.baggageType = baggageType;
     }
 
@@ -45,6 +48,9 @@ public class Flight extends Transport {
     }
 
     public void setBaggageType(PlaneBaggage baggageType) {
+        if (baggageType == null) {
+            throw new IllegalArgumentException("Baggage type can't be null");
+        }
         this.baggageType = baggageType;
     }
 

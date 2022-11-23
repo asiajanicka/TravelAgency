@@ -15,6 +15,12 @@ public class CoachTravel extends Transport {
     public CoachTravel(LocalDateTime dateDeparture, LocalDateTime dateArrival, Seat seat, City cityFrom, City cityTo,
                        boolean isForAdult, int numberOfSmallSuitcases, int numberOfLargeSuitcases) {
         super(dateDeparture, dateArrival, seat, cityFrom, cityTo, isForAdult);
+        if (numberOfLargeSuitcases < 0 || numberOfLargeSuitcases > 4) {
+            throw new IllegalArgumentException("Number of large suitcases should be between 0 and 4 inclusive");
+        }
+        if (numberOfSmallSuitcases < 0 || numberOfSmallSuitcases > 6) {
+            throw new IllegalArgumentException("Number of small suitcases should be between 0 and 6 inclusive");
+        }
         this.numberOfSmallSuitcases = numberOfSmallSuitcases;
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
@@ -35,6 +41,9 @@ public class CoachTravel extends Transport {
     }
 
     public void setNumberOfSmallSuitcases(int numberOfSmallSuitcases) {
+        if (numberOfSmallSuitcases < 0 || numberOfSmallSuitcases > 6) {
+            throw new IllegalArgumentException("Number of small suitcases should be between 0 and 6 inclusive");
+        }
         this.numberOfSmallSuitcases = numberOfSmallSuitcases;
     }
 
@@ -43,6 +52,9 @@ public class CoachTravel extends Transport {
     }
 
     public void setNumberOfLargeSuitcases(int numberOfLargeSuitcases) {
+        if (numberOfLargeSuitcases < 0 || numberOfLargeSuitcases > 4) {
+            throw new IllegalArgumentException("Number of large suitcases should be between 0 and 4 inclusive");
+        }
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
 

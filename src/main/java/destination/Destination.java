@@ -7,6 +7,7 @@ import hotel.Hotel;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Destination {
     private Country country;
@@ -18,6 +19,12 @@ public class Destination {
     }
 
     public Destination(Country country, City city, Hotel hotel) {
+        if (country == null) {
+            throw new IllegalArgumentException("Country can't be null");
+        }
+        if (city == null) {
+            throw new IllegalArgumentException("City can't be null");
+        }
         this.country = country;
         this.city = city;
         this.hotel = hotel;
@@ -25,6 +32,13 @@ public class Destination {
     }
 
     public Destination(Country country, City city, Hotel hotel, ArrayList<Activity> activities) {
+        this(country, city, hotel);
+        if (activities == null) {
+            throw new IllegalArgumentException("List of activities can't be null");
+        }
+        if (activities.size() > 0) {
+            throw new IllegalArgumentException("List of activities should have at least one activity");
+        }
         this.country = country;
         this.city = city;
         this.hotel = hotel;
@@ -32,10 +46,14 @@ public class Destination {
     }
 
     public void addActivity(Activity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity can't be null");
+        }
         activities.add(activity);
     }
 
     public BigDecimal calculateTotalPriceForActivities() {
+        if (activities.size() == 0) return BigDecimal.ZERO;
         return activities.stream().map(a -> a.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -52,6 +70,9 @@ public class Destination {
     }
 
     public void setCountry(Country country) {
+        if (country == null) {
+            throw new IllegalArgumentException("Country can't be null");
+        }
         this.country = country;
     }
 
@@ -60,6 +81,9 @@ public class Destination {
     }
 
     public void setCity(City city) {
+        if (city == null) {
+            throw new IllegalArgumentException("City can't be null");
+        }
         this.city = city;
     }
 
@@ -76,10 +100,32 @@ public class Destination {
     }
 
     public void setActivities(List<Activity> activities) {
+        if (activities == null) {
+            throw new IllegalArgumentException("List of activities can't be null");
+        }
+        if (activities.size() > 0) {
+            throw new IllegalArgumentException("List of activities should have at least one activity");
+        }
         this.activities = activities;
     }
 
     public String toString() {
         return String.format("%s %s %s", city, country, hotel);
+    }
+
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        if (this.hashCode() != o.hashCode()) return false;
+        Destination d = (Destination) o;
+        boolean countryEquals = (this.country == d.country);
+        boolean cityEquals = (this.city == d.city);
+        boolean hotelEquals = true; // add equals to hotel class
+        boolean activitiesEquals = this.activities.equals(d.activities);
+        return countryEquals && cityEquals && hotelEquals && activitiesEquals;
+    }
+
+    public int hashCode() {
+        return Objects.hash(country, city, hotel, activities);
     }
 }

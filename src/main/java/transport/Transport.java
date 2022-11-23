@@ -19,6 +19,24 @@ public abstract class Transport {
 
     public Transport(LocalDateTime dateDeparture, LocalDateTime dateArrival, Seat seat, City cityFrom, City cityTo,
                      boolean isForAdult) {
+        if (dateDeparture == null) {
+            throw new IllegalArgumentException("Departure date can't be null");
+        }
+        if (dateArrival == null) {
+            throw new IllegalArgumentException("Arrival date can't be null");
+        }
+        if (dateArrival.isBefore(dateDeparture)) {
+            throw new IllegalArgumentException("Arrival date can't be before departure date");
+        }
+        if (seat == null) {
+            throw new IllegalArgumentException("Seat can't be null");
+        }
+        if (cityFrom == null) {
+            throw new IllegalArgumentException("Departure city can't be null");
+        }
+        if (cityTo == null) {
+            throw new IllegalArgumentException("Arrival city can't be null");
+        }
         this.dateDeparture = dateDeparture;
         this.dateArrival = dateArrival;
         this.seat = seat;
@@ -36,6 +54,12 @@ public abstract class Transport {
     }
 
     public void setDateDeparture(LocalDateTime dateDeparture) {
+        if (dateDeparture == null) {
+            throw new IllegalArgumentException("Departure date can't be null");
+        }
+        if (dateArrival.isBefore(dateDeparture)) {
+            throw new IllegalArgumentException("Departure date can't be after arrival date");
+        }
         this.dateDeparture = dateDeparture;
     }
 
@@ -44,6 +68,12 @@ public abstract class Transport {
     }
 
     public void setDateArrival(LocalDateTime dateArrival) {
+        if (dateArrival == null) {
+            throw new IllegalArgumentException("Arrival date can't be null");
+        }
+        if (dateArrival.isBefore(dateDeparture)) {
+            throw new IllegalArgumentException("Arrival date can't be before departure date");
+        }
         this.dateArrival = dateArrival;
     }
 
@@ -52,6 +82,9 @@ public abstract class Transport {
     }
 
     public void setSeat(Seat seat) {
+        if (seat == null) {
+            throw new IllegalArgumentException("Seat can't be null");
+        }
         this.seat = seat;
     }
 
@@ -60,6 +93,9 @@ public abstract class Transport {
     }
 
     public void setCityFrom(City cityFrom) {
+        if (cityFrom == null) {
+            throw new IllegalArgumentException("Departure city can't be null");
+        }
         this.cityFrom = cityFrom;
     }
 
@@ -68,6 +104,9 @@ public abstract class Transport {
     }
 
     public void setCityTo(City cityTo) {
+        if (cityTo == null) {
+            throw new IllegalArgumentException("Arrival city can't be null");
+        }
         this.cityTo = cityTo;
     }
 

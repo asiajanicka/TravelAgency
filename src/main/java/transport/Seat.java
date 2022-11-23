@@ -11,6 +11,15 @@ public class Seat {
     }
 
     public Seat(int number, BigDecimal price) {
+        if (number <= 0) {
+            throw new IllegalArgumentException("Seat number must be greater than 0");
+        }
+        if (price == null) {
+            throw new IllegalArgumentException("Price can't be null");
+        }
+        if (price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Price must be greater than 0");
+        }
         this.number = number;
         this.price = price;
     }
@@ -20,6 +29,9 @@ public class Seat {
     }
 
     public void setNumber(int number) {
+        if (number <= 0) {
+            throw new IllegalArgumentException("Seat number must be greater than 0");
+        }
         this.number = number;
     }
 
@@ -28,6 +40,12 @@ public class Seat {
     }
 
     public void setPrice(BigDecimal price) {
+        if (price == null) {
+            throw new IllegalArgumentException("Price can't be null");
+        }
+        if (price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Price must be greater than 0");
+        }
         this.price = price;
     }
 

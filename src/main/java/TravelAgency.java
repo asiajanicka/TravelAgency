@@ -101,8 +101,8 @@ public class TravelAgency {
         tom.addHotelBooking(holidayInBookingForTom);
 
 //        TRIP FROM WARSAW TO MALAGA
-        LocalDateTime flightDepartureDateWM = LocalDateTime.of(2022, 5, 5, 12, 30);
-        LocalDateTime flightArrivalDateWM = LocalDateTime.of(2022, 5, 5, 9, 45);
+        LocalDateTime flightDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
+        LocalDateTime flightArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
 
         LocalDateTime coachDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 37);
         LocalDateTime coachArrivalDateWM = LocalDateTime.of(2022, 5, 5, 19, 40);
@@ -132,8 +132,8 @@ public class TravelAgency {
         kate.addTransport(coachWMForKate);
 
 //        TRIP BACK FROM MALAGA TO WARSAW
-        LocalDateTime flightDepartureDateMW = LocalDateTime.of(2022, 5, 15, 11, 30);
-        LocalDateTime flightArrivalDateMW = LocalDateTime.of(2022, 5, 15, 9, 45);
+        LocalDateTime flightDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
+        LocalDateTime flightArrivalDateMW = LocalDateTime.of(2022, 5, 15, 11, 45);
 
         LocalDateTime coachDepartureDateMW = LocalDateTime.of(2022, 5, 15, 8, 37);
         LocalDateTime coachArrivalDateMW = LocalDateTime.of(2022, 5, 15, 18, 40);
