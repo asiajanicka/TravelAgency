@@ -120,7 +120,7 @@ public class Destination {
         Destination d = (Destination) o;
         boolean countryEquals = (this.country == d.country);
         boolean cityEquals = (this.city == d.city);
-        boolean hotelEquals = true; // add equals to hotel class
+        boolean hotelEquals = ((this.hotel == null && d.hotel == null) || this.hotel.equals(d.hotel));
         boolean activitiesEquals = this.activities.equals(d.activities);
         return countryEquals && cityEquals && hotelEquals && activitiesEquals;
     }
