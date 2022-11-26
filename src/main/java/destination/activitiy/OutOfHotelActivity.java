@@ -1,4 +1,4 @@
-package destination;
+package destination.activitiy;
 
 import enums.Language;
 
@@ -18,12 +18,6 @@ public class OutOfHotelActivity extends Activity {
     public OutOfHotelActivity(LocalDateTime date, String name, BigDecimal price, String address,
                               boolean isTransportProvided, double lengthInHours, Language language) {
         super(date, name, price);
-        if (address == null) {
-            throw new IllegalArgumentException("Address of activity can't be null");
-        }
-        if (lengthInHours <= 0) {
-            throw new IllegalArgumentException("Length of the trip must be greater than 0");
-        }
         this.address = address;
         this.isTransportProvided = isTransportProvided;
         this.lengthInHours = lengthInHours;
@@ -35,9 +29,6 @@ public class OutOfHotelActivity extends Activity {
     }
 
     public void setAddress(String address) {
-        if (address == null) {
-            throw new IllegalArgumentException("Address of activity can't be null");
-        }
         this.address = address;
     }
 
@@ -54,9 +45,6 @@ public class OutOfHotelActivity extends Activity {
     }
 
     public void setLengthInHours(double lengthInHours) {
-        if (lengthInHours <= 0) {
-            throw new IllegalArgumentException("Length of the trip must be greater than 0");
-        }
         this.lengthInHours = lengthInHours;
     }
 
@@ -65,27 +53,26 @@ public class OutOfHotelActivity extends Activity {
     }
 
     public void setLanguage(Language language) {
-        if (language == null) {
-            throw new IllegalArgumentException("Language of activity can't be null");
-        }
         this.language = language;
     }
 
     public String toString() {
-        return String.format("%s Address: %s Is transport provided? %b Length: %.1f h Lang: %s",
-                super.toString(), address, isTransportProvided, lengthInHours, language);
+        return String.format("%s Address: %s Is transport provided? %b Length: %.1f h Lang: %s Cost: %.2f",
+                super.toString(), address, isTransportProvided, lengthInHours, language, getPrice());
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!super.equals(o)) return false;
         OutOfHotelActivity a = (OutOfHotelActivity) o;
-        boolean addressEquals = this.address.equals(a.address);
-        boolean isTransportProvidedEquals = (this.isTransportProvided == a.isTransportProvided);
+        boolean addressEquals = (this.address == null && a.address == null) || this.address.equals(a.address);
+        boolean isTransportProvidedEquals = this.isTransportProvided == a.isTransportProvided;
         boolean lengthInHoursEquals = (Double.compare(this.lengthInHours, a.lengthInHours) == 0);
-        boolean languageEquals = (this.language == a.language);
+        boolean languageEquals = (this.language == null && a.language == null) || (this.language == a.language);
         return addressEquals && isTransportProvidedEquals && lengthInHoursEquals && languageEquals;
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), address, isTransportProvided, lengthInHours, language);
     }

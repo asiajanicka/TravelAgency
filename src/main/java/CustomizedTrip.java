@@ -5,63 +5,42 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomizedTrip {
-    private List<Destination> destinations;
-    private List<Person> participants;
     private LocalDate startDate;
     private LocalDate endDate;
+    private List<Participant> participants;
+    private List<Destination> destinations;
+
 
     public CustomizedTrip() {
+        participants = new ArrayList<>();
+        destinations = new ArrayList<>();
     }
 
-    public CustomizedTrip(LocalDate startDate, LocalDate endDate) {
-        if (startDate == null) {
-            throw new IllegalArgumentException("Start date can't be null");
-        }
-        if (endDate == null) {
-            throw new IllegalArgumentException("End date can't be null");
-        }
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("Start date can't be before end date");
-        }
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.destinations = new ArrayList<>();
-        this.participants = new ArrayList<>();
-    }
-
-    public CustomizedTrip(List<Destination> destinations, List<Person> participants,
+    public CustomizedTrip(List<Destination> destinations, List<Participant> participants,
                           LocalDate startDate, LocalDate endDate) {
-        this(startDate, endDate);
-        if (destinations == null) {
-            throw new IllegalArgumentException("List of destinations can't be null");
-        }
-        if (destinations.size() > 0) {
-            throw new IllegalArgumentException("List of destinations should have at least one destination");
-        }
-        if (participants == null) {
-            throw new IllegalArgumentException("List of participants can't be null");
-        }
-        if (participants.size() > 0) {
-            throw new IllegalArgumentException("List of participants should have at least one participant");
-        }
         this.startDate = startDate;
         this.endDate = endDate;
+        this.destinations = destinations;
+        this.participants = participants;
     }
 
     public void addDestination(Destination destination) {
-        if (destination == null) {
-            throw new IllegalArgumentException("Destination can't be null");
-        }
         destinations.add(destination);
     }
 
-    public void addParticipant(Person person) {
-        if (person == null) {
-            throw new IllegalArgumentException("Participant can't be null");
-        }
+    public void addParticipant(Participant person) {
         participants.add(person);
+    }
+
+    public Participant getParticipant(Person person){
+        return participants
+                .stream()
+                .filter(p->p.getPerson().equals(person))
+                .collect(Collectors.toList())
+                .get(0);
     }
 
     public void printSummary() {
@@ -70,23 +49,17 @@ public class CustomizedTrip {
                 DateFormat.format(startDate), DateFormat.format(endDate));
         System.out.format("TOTAL COST: € %,.2f\n", calculateTotalPrice());
         System.out.println("\nPARTICIPANTS\n---------------------------");
-        participants.stream().forEach(person -> System.out.println(person.getPersonInfo()));
+        participants.stream().map(p->p.getPerson()).forEach(System.out::println);
         System.out.println("\nDESTINATIONS\n---------------------------");
-        destinations.stream().forEach(Destination::printDestinationSummary);
+        destinations.stream().forEach(System.out::println);
         System.out.println("\nBOOKINGS\n---------------------------");
-        participants.stream().forEach(Person::printBookingsSummary);
+        participants.stream().forEach(Participant::printBookings);
     }
 
     public BigDecimal calculateTotalPrice() {
-        BigDecimal priceForActivities = destinations.stream()
-                .map(d -> d.calculateTotalPriceForActivities())
+        return participants.stream()
+                .map(d -> d.calculateTotalBookingCost())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalPrice = priceForActivities.add(
-                participants.stream()
-                        .map(p -> p.calculateTotalCostForHotelBookings().add(p.calculateTotalCostForTransport()))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add));
-        return totalPrice;
     }
 
     public List<Destination> getDestinations() {
@@ -94,26 +67,14 @@ public class CustomizedTrip {
     }
 
     public void setDestinations(List<Destination> destinations) {
-        if (destinations == null) {
-            throw new IllegalArgumentException("List of destinations can't be null");
-        }
-        if (destinations.size() > 0) {
-            throw new IllegalArgumentException("List of destinations should have at least one destination");
-        }
         this.destinations = destinations;
     }
 
-    public List<Person> getParticipants() {
+    public List<Participant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<Person> participants) {
-        if (participants == null) {
-            throw new IllegalArgumentException("List of participants can't be null");
-        }
-        if (participants.size() > 0) {
-            throw new IllegalArgumentException("List of participants should have at least one participant");
-        }
+    public void setParticipants(List<Participant> participants) {
         this.participants = participants;
     }
 
@@ -122,12 +83,6 @@ public class CustomizedTrip {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate == null) {
-            throw new IllegalArgumentException("Start date can't be null");
-        }
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("Start date can't be before end date");
-        }
         this.startDate = startDate;
     }
 
@@ -136,12 +91,6 @@ public class CustomizedTrip {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if (endDate == null) {
-            throw new IllegalArgumentException("End date can't be null");
-        }
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("Start date can't be before end date");
-        }
         this.endDate = endDate;
     }
 }

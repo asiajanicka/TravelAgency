@@ -11,9 +11,6 @@ public class Board {
     }
 
     public Board(BoardType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Board type can't be null");
-        }
         this.type = type;
     }
 
@@ -21,11 +18,11 @@ public class Board {
         BigDecimal result;
         switch (type) {
             case BB: {
-                result = new BigDecimal(123);
+                result = new BigDecimal(100);
                 break;
             }
             case HB: {
-                result = new BigDecimal(234);
+                result = new BigDecimal(125);
                 break;
             }
             case FB: {
@@ -37,7 +34,7 @@ public class Board {
                 break;
             }
             default: {
-                throw new IllegalArgumentException("Incorrect board type. Price can not be calculated");
+                result = BigDecimal.ZERO;
             }
         }
         return result;
@@ -48,13 +45,10 @@ public class Board {
     }
 
     public void setType(BoardType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Board type can't be null");
-        }
         this.type = type;
     }
 
     public String toString() {
-        return "Board Type: " + type;
+        return "Board type: " + type;
     }
 }

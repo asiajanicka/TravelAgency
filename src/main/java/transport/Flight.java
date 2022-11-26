@@ -1,61 +1,45 @@
 package transport;
 
 import enums.City;
-import enums.PlaneBaggage;
+import enums.TransportType;
 import utils.DateFormat;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Flight extends Transport {
-    private PlaneBaggage baggageType;
 
-    public Flight() {
-    }
+    private List<PlaneSeat> seats;
 
-    public Flight(LocalDateTime dateDeparture, LocalDateTime dateArrival, PlaneSeat seat, City cityFrom, City cityTo,
-                  boolean isForAdult, PlaneBaggage baggageType) {
-        super(dateDeparture, dateArrival, seat, cityFrom, cityTo, isForAdult);
-        if (baggageType == null) {
-            throw new IllegalArgumentException("Baggage type can't be null");
-        }
-        this.baggageType = baggageType;
-    }
+   public Flight(){
+   }
 
-    public BigDecimal calculatePrice() {
-        return super.calculatePrice().add(calculatePriceForLuggage());
-    }
-
-    private BigDecimal calculatePriceForLuggage() {
-        switch (baggageType) {
-            case HAND: {
-                return new BigDecimal(10);
-            }
-            case CHECKED: {
-                return new BigDecimal(20);
-            }
-            default:
-                throw new IllegalArgumentException("Incorrect baggage type.");
-        }
+    public Flight(LocalDateTime dateDeparture, LocalDateTime dateArrival, City cityFrom, City cityTo, List<PlaneSeat> seats) {
+        super(dateDeparture, dateArrival, cityFrom, cityTo, TransportType.PLANE);
+        this.seats = seats;
     }
 
     public LocalDateTime getBoardingTime() {
         return getDateDeparture().minusHours(2);
     }
 
-    public PlaneBaggage getBaggageType() {
-        return baggageType;
+    @Override
+    public Seat findSeat(int num) {
+       return seats.stream().filter(p->p.getNumber() == num).collect(Collectors.toList()).get(0);
     }
 
-    public void setBaggageType(PlaneBaggage baggageType) {
-        if (baggageType == null) {
-            throw new IllegalArgumentException("Baggage type can't be null");
-        }
-        this.baggageType = baggageType;
+    public List<PlaneSeat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<PlaneSeat> seats) {
+        this.seats = seats;
     }
 
     public String toString() {
-        return String.format("Flight: %s Boarding time: %s Baggage: %s",
-                super.toString(), DateFormat.format(getBoardingTime()), baggageType);
+        return String.format("Flight: %s Boarding time: %s",
+                super.toString(), DateFormat.format(getBoardingTime()));
     }
 }
+

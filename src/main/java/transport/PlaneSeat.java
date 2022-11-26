@@ -12,9 +12,6 @@ public class PlaneSeat extends Seat {
 
     public PlaneSeat(int number, PlaneSeatType type, BigDecimal price) {
         super(number, price);
-        if (type == null) {
-            throw new IllegalArgumentException("Plane seat type can't be null");
-        }
         this.type = type;
     }
 
@@ -23,9 +20,6 @@ public class PlaneSeat extends Seat {
     }
 
     public void setType(PlaneSeatType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Plane seat type can't be null");
-        }
         this.type = type;
     }
 

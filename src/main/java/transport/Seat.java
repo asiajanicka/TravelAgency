@@ -1,25 +1,18 @@
 package transport;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Seat {
 
     private int number;
     private BigDecimal price;
+    private boolean isBooked;
 
     public Seat() {
     }
 
     public Seat(int number, BigDecimal price) {
-        if (number <= 0) {
-            throw new IllegalArgumentException("Seat number must be greater than 0");
-        }
-        if (price == null) {
-            throw new IllegalArgumentException("Price can't be null");
-        }
-        if (price.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0");
-        }
         this.number = number;
         this.price = price;
     }
@@ -29,9 +22,6 @@ public class Seat {
     }
 
     public void setNumber(int number) {
-        if (number <= 0) {
-            throw new IllegalArgumentException("Seat number must be greater than 0");
-        }
         this.number = number;
     }
 
@@ -40,16 +30,32 @@ public class Seat {
     }
 
     public void setPrice(BigDecimal price) {
-        if (price == null) {
-            throw new IllegalArgumentException("Price can't be null");
-        }
-        if (price.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0");
-        }
         this.price = price;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
 
     public String toString() {
         return String.format("Seat: %d", number);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        if (this.hashCode() != o.hashCode()) return false;
+        Seat s = (Seat) o;
+        return number == s.number;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
     }
 }

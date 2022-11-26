@@ -6,6 +6,7 @@ import utils.DateFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 public class HotelBooking {
     private LocalDate dateFrom;
@@ -17,27 +18,17 @@ public class HotelBooking {
     public HotelBooking() {
     }
 
-    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, boolean forAdult, Room room, BoardType boardType) {
-        if (dateFrom == null) {
-            throw new IllegalArgumentException("Date 'from' can't be null");
-        }
-        if (dateTo == null) {
-            throw new IllegalArgumentException("Date 'to' can't be null");
-        }
-        if (dateTo.isBefore(dateFrom) || dateFrom.isEqual(dateTo)) {
-            throw new IllegalArgumentException("Date 'to' can't be before date 'from'");
-        }
-        if (room == null) {
-            throw new IllegalArgumentException("Room can't be null");
-        }
-        if (boardType == null) {
-            throw new IllegalArgumentException("Board type can't be null");
-        }
+    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Room room, BoardType boardType) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-        this.forAdult = forAdult;
+        this.forAdult = false;
         this.room = room;
         this.board = new Board(boardType);
+    }
+
+    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, boolean forAdult, Room room, BoardType boardType) {
+        this(dateFrom, dateTo, room, boardType);
+        this.forAdult = forAdult;
     }
 
     private int getLengthOfStaying() {
@@ -55,12 +46,6 @@ public class HotelBooking {
     }
 
     public void setDateFrom(LocalDate dateFrom) {
-        if (dateFrom == null) {
-            throw new IllegalArgumentException("Date 'from' can't be null");
-        }
-        if (dateTo.isBefore(dateFrom) || dateFrom.isEqual(dateTo)) {
-            throw new IllegalArgumentException("Date 'from' can't be after date 'to'");
-        }
         this.dateFrom = dateFrom;
     }
 
@@ -69,12 +54,6 @@ public class HotelBooking {
     }
 
     public void setDateTo(LocalDate dateTo) {
-        if (dateTo == null) {
-            throw new IllegalArgumentException("Date 'to' can't be null");
-        }
-        if (dateTo.isBefore(dateFrom) || dateFrom.isEqual(dateTo)) {
-            throw new IllegalArgumentException("Date 'to' can't be before date 'from'");
-        }
         this.dateTo = dateTo;
     }
 
@@ -91,9 +70,6 @@ public class HotelBooking {
     }
 
     public void setRoom(Room room) {
-        if (room == null) {
-            throw new IllegalArgumentException("Room can't be null");
-        }
         this.room = room;
     }
 
@@ -102,18 +78,35 @@ public class HotelBooking {
     }
 
     public void setBoard(BoardType boardType) {
-        if (boardType == null) {
-            throw new IllegalArgumentException("Board type can't be null");
-        }
         this.board = new Board(boardType);
     }
 
     public String toString() {
-        return String.format("Hotel: from %s to %s Is for adult? %b Board: %s Total price: %.2f",
+        return String.format("Hotel: from %s to %s Is for adult? %b %s Board: %s Total price: %.2f",
                 DateFormat.format(dateFrom),
                 DateFormat.format(dateTo),
                 isForAdult(),
+                room,
                 board.getType().getDisplayName(),
                 calculatePrice());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        if (this.hashCode() != o.hashCode()) return false;
+        HotelBooking h = (HotelBooking) o;
+        boolean dateFromEquals = (this.dateFrom == null && h.dateFrom == null) || this.dateFrom.equals(h.dateFrom);
+        boolean dateToEquals = (this.dateTo == null && h.dateTo == null) || this.dateTo.equals(h.dateTo);
+        boolean forAdultEquals = this.forAdult == h.forAdult;
+        boolean roomEquals = (this.room == null && h.room == null) || this.room.equals(h.room);
+        boolean boardEquals = this.board == h.board;
+        return dateFromEquals && dateToEquals && forAdultEquals && roomEquals && boardEquals;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateFrom, dateTo, room);
     }
 }

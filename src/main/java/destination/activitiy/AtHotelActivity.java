@@ -1,4 +1,4 @@
-package destination;
+package destination.activitiy;
 
 import enums.ActivityType;
 
@@ -15,9 +15,6 @@ public class AtHotelActivity extends Activity {
 
     public AtHotelActivity(LocalDateTime date, String name, BigDecimal price, ActivityType type) {
         super(date, name, price);
-        if (type == null) {
-            throw new IllegalArgumentException("Activity type can't be null");
-        }
         this.type = type;
         this.isOwnEquipmentRequired = false;
     }
@@ -33,9 +30,6 @@ public class AtHotelActivity extends Activity {
     }
 
     public void setType(ActivityType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Activity type can't be null");
-        }
         this.type = type;
     }
 
@@ -48,17 +42,19 @@ public class AtHotelActivity extends Activity {
     }
 
     public String toString() {
-        return String.format("%s Location: at the hotel", super.toString());
+        return String.format("%s Location: at the hotel Cost: %.2f", super.toString(), getPrice());
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!super.equals(o)) return false;
         AtHotelActivity a = (AtHotelActivity) o;
-        boolean typeEquals = (this.type == a.type);
-        boolean isOwnEquipmentRequiredEquals = (this.isOwnEquipmentRequired == a.isOwnEquipmentRequired);
+        boolean typeEquals = this.type == a.type;
+        boolean isOwnEquipmentRequiredEquals = this.isOwnEquipmentRequired == a.isOwnEquipmentRequired;
         return typeEquals && isOwnEquipmentRequiredEquals;
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), type, isOwnEquipmentRequired);
     }
