@@ -1,4 +1,5 @@
 import destination.Destination;
+import destination.activitiy.AtHotelActivity;
 import enums.BoardType;
 import enums.City;
 import enums.PlaneBaggage;
@@ -8,6 +9,7 @@ import transport.CoachTravelBooking;
 import transport.FlightBooking;
 import transport.Transport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TripBooking {
@@ -136,5 +138,22 @@ public class TripBooking {
         myTrip.getParticipant(tom).addActivity(malagaEs.findActivity("Football Match"));
 
         myTrip.printSummary();
+
+//        * checking equal method implementation
+//        AtHotelActivity a1 = new AtHotelActivity();
+//        AtHotelActivity a2 = (AtHotelActivity) malagaEs.findActivity("Football Match");
+//        AtHotelActivity a3 = (AtHotelActivity) malagaEs.findActivity("Football Match");
+//        AtHotelActivity a4 = (AtHotelActivity) malagaEs.findActivity("Beach Volleyball");
+//        AtHotelActivity a5 = null;
+//        AtHotelActivity a6 = null;
+//        AtHotelActivity a7 = new AtHotelActivity();
+//
+//        System.out.println("Checking equal function for Activity objects");
+//        System.out.println("1: " + a1.equals(a7));  // two empty objects -> true
+//        System.out.println("2: " + a1.equals(a6));  // empty obj & null -> false
+//        System.out.println("3: " + a2.equals(a2));  // the same obj -> true
+//        System.out.println("4: " + a2.equals(a3));  // two different but equal obj -> true
+//        System.out.println("5: " + a3.equals(a2));  // two different but equal obj ->true
+//        System.out.println("6: " + a2.equals(a4));  // two different & unequal obj -> false
     }
 }

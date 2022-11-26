@@ -59,9 +59,12 @@ public class Person {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Person p = (Person) o;
-        boolean idEquals = (this.id == null && p.id == null) || this.id.equals(p.id);
-        boolean firstNameEquals = (this.firstName == null && p.firstName == null) || this.firstName.equals(p.firstName);
-        boolean lastNameEquals = (this.lastName == null && p.lastName == null) || this.lastName.equals(p.lastName);
+        boolean idEquals = (this.id == null && p.id == null)
+                || (this.id != null && this.id.equals(p.id));
+        boolean firstNameEquals = (this.firstName == null && p.firstName == null)
+                || (this.firstName != null && this.firstName.equals(p.firstName));
+        boolean lastNameEquals = (this.lastName == null && p.lastName == null)
+                || (this.lastName != null && this.lastName.equals(p.lastName));
         boolean ageEquals = this.age == p.age;
         return idEquals && firstNameEquals && lastNameEquals && ageEquals;
     }

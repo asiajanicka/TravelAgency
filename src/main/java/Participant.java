@@ -121,13 +121,14 @@ public class Participant {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Participant p = (Participant) o;
-        boolean personEquals = (this.person == null && p.person == null) || this.person.equals(p.person);
+        boolean personEquals = (this.person == null && p.person == null)
+                || (this.person != null && this.person.equals(p.person));
         boolean hotelBookingsEquals = (this.hotelBookings == null && p.hotelBookings == null)
-                || this.hotelBookings.equals(p.hotelBookings);
+                || (this.hotelBookings != null && this.hotelBookings.equals(p.hotelBookings));
         boolean transportBookingsEquals = (this.transportBookings == null && p.transportBookings == null)
-                || this.transportBookings.equals(p.transportBookings);
+                || (this.transportBookings != null && this.transportBookings.equals(p.transportBookings));
         boolean activitiesEquals = (this.activities == null && p.activities == null)
-                || this.activities.equals(p.activities);
+                || (this.activities != null && this.activities.equals(p.activities));
         return personEquals && hotelBookingsEquals && transportBookingsEquals && activitiesEquals;
     }
 

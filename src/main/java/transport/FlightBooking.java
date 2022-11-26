@@ -32,6 +32,7 @@ public class FlightBooking extends TransportBooking {
         }
     }
 
+    @Override
     public String toString() {
         return String.format("%s Baggage: %s Total price: %.2f",
                 super.toString(),

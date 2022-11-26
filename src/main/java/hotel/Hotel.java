@@ -65,10 +65,13 @@ public class Hotel {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Hotel h = (Hotel) o;
-        boolean nameEquals = (this.name == null && h.name == null) || this.name.equals(h.name);
+        boolean nameEquals = (this.name == null && h.name == null) ||
+              (this.name != null && this.name.equals(h.name));
         boolean numberOfStarsEquals = this.numberOfStars == h.numberOfStars;
-        boolean addressEquals = (this.address == null && h.address == null) || this.address.equals(h.address);
-        boolean roomsEquals = (this.rooms == null && h.rooms == null) || this.rooms.equals(h.rooms);
+        boolean addressEquals = (this.address == null && h.address == null)
+                || (this.address != null && this.address.equals(h.address));
+        boolean roomsEquals = (this.rooms == null && h.rooms == null)
+                || (this.rooms != null && this.rooms.equals(h.rooms));
         return nameEquals && numberOfStarsEquals && addressEquals && roomsEquals;
     }
 

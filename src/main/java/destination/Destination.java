@@ -111,11 +111,14 @@ public class Destination {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Destination d = (Destination) o;
-        boolean placeEquals = (this.place == null && d.place == null) || (this.place == d.place);
+        boolean placeEquals = (this.place == null && d.place == null)
+                || ((this.place != null && this.place == d.place));
         boolean transportsEquals = (this.transports == null && d.transports == null)
-                || (this.transports.equals(d.transports));
-        boolean hotelEquals = (this.hotel == null && d.hotel == null) || this.hotel.equals(d.hotel);
-        boolean activitiesEquals = this.activities.equals(d.activities);
+                || ((this.transports != null && this.transports.equals(d.transports)));
+        boolean hotelEquals = (this.hotel == null && d.hotel == null)
+                || (this.hotel != null && this.hotel.equals(d.hotel));
+        boolean activitiesEquals = (this.activities == null && d.activities == null)
+                || (this.activities != null && this.activities.equals(d.activities));
         return placeEquals && transportsEquals && hotelEquals && activitiesEquals;
     }
 

@@ -54,7 +54,8 @@ public class Room {
         Room r = (Room) o;
         boolean numberEquals = this.number == r.number;
         boolean typeEquals = this.type == r.type;
-        boolean priceEquals = this.price.equals(r.price);
+        boolean priceEquals = (this.price == null && r.price == null)
+                || (this.price != null && this.price.equals(r.price));
         return numberEquals && typeEquals && priceEquals;
     }
 

@@ -97,10 +97,13 @@ public class HotelBooking {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         HotelBooking h = (HotelBooking) o;
-        boolean dateFromEquals = (this.dateFrom == null && h.dateFrom == null) || this.dateFrom.equals(h.dateFrom);
-        boolean dateToEquals = (this.dateTo == null && h.dateTo == null) || this.dateTo.equals(h.dateTo);
+        boolean dateFromEquals = (this.dateFrom == null && h.dateFrom == null)
+                || (this.dateFrom != null && this.dateFrom.equals(h.dateFrom));
+        boolean dateToEquals = (this.dateTo == null && h.dateTo == null)
+                || (this.dateTo != null && this.dateTo.equals(h.dateTo));
         boolean forAdultEquals = this.forAdult == h.forAdult;
-        boolean roomEquals = (this.room == null && h.room == null) || this.room.equals(h.room);
+        boolean roomEquals = (this.room == null && h.room == null) ||
+                (this.room != null && this.room.equals(h.room));
         boolean boardEquals = this.board == h.board;
         return dateFromEquals && dateToEquals && forAdultEquals && roomEquals && boardEquals;
     }

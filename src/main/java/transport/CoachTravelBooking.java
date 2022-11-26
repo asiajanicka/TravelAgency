@@ -45,6 +45,7 @@ public class CoachTravelBooking extends TransportBooking {
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
 
+    @Override
     public String toString() {
         return String.format("%s Small suitcases: %d, Large suitcases: %d Total price: %.2f",
                 super.toString(), numberOfLargeSuitcases, numberOfSmallSuitcases, calculatePrice());

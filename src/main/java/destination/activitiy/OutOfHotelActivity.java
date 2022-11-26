@@ -4,7 +4,6 @@ import enums.Language;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class OutOfHotelActivity extends Activity {
     private String address;
@@ -75,15 +74,27 @@ public class OutOfHotelActivity extends Activity {
     public boolean equals(Object o) {
         if (!super.equals(o)) return false;
         OutOfHotelActivity a = (OutOfHotelActivity) o;
-        boolean addressEquals = (this.address == null && a.address == null) || this.address.equals(a.address);
+        boolean addressEquals = (this.address == null && a.address == null)
+                || (this.address != null && this.address.equals(a.address));
         boolean isTransportProvidedEquals = this.isTransportProvided == a.isTransportProvided;
         boolean lengthInHoursEquals = Double.compare(this.lengthInHours, a.lengthInHours) == 0;
-        boolean languageEquals = (this.language == null && a.language == null) || (this.language == a.language);
+        boolean languageEquals = this.language == a.language;
         return addressEquals && isTransportProvidedEquals && lengthInHoursEquals && languageEquals;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), address, isTransportProvided, lengthInHours, language);
+        int addressHash = 0;
+        int isTransportProvidedHash = isTransportProvided ? 19 : 4;
+        int lengthInHoursHash = (int) lengthInHours ;
+        int languageHash = 0;
+        if (!(this.address == null)) {
+            addressHash = address.hashCode();
+        }
+        if (!(this.address == null)) {
+            languageHash = language.hashCode();
+        }
+        return 3 * super.hashCode() + 7 * addressHash + 13 * isTransportProvidedHash
+                + 19 * lengthInHoursHash + 17 * languageHash;
     }
 }

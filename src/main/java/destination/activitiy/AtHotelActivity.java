@@ -4,7 +4,6 @@ import enums.ActivityType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class AtHotelActivity extends Activity {
     private ActivityType type;
@@ -57,6 +56,11 @@ public class AtHotelActivity extends Activity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), type, isOwnEquipmentRequired);
+        int typeHash = 0;
+        int isOwnEquipmentRequiredHash = isOwnEquipmentRequired ? 43 : 7;
+        if (!(this.type == null)) {
+            typeHash = type.hashCode();
+        }
+        return 13 * super.hashCode() + 3 * isOwnEquipmentRequiredHash + 19 * typeHash;
     }
 }

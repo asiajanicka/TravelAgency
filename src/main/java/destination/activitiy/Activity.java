@@ -4,7 +4,6 @@ import utils.DateFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public abstract class Activity {
     private LocalDateTime date;
@@ -55,14 +54,27 @@ public abstract class Activity {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Activity a = (Activity) o;
-        boolean dateEquals = (this.date == null && a.date == null) || this.date.equals(a.date);
-        boolean nameEquals = (this.name == null && a.name == null) || this.name.equals(a.name);
-        boolean priceEquals = (this.price == null && a.price == null) || this.price.equals(a.price);
+        boolean dateEquals = (this.date == null && a.date == null) || (this.date != null && this.date.equals(a.date));
+        boolean nameEquals = (this.name == null && a.name == null) || (this.name != null && this.name.equals(a.name));
+        boolean priceEquals = (this.price == null && a.price == null)
+                || (this.price != null && this.price.equals(a.price));
         return dateEquals && nameEquals && priceEquals;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, name, price);
+        int nameHash = 0;
+        int dateHash = 0;
+        int priceHash = 0;
+        if (!(this.name == null)) {
+            nameHash = name.hashCode();
+        }
+        if (!(this.date == null)) {
+            dateHash = date.hashCode();
+        }
+        if (!(this.price == null)) {
+            priceHash = price.hashCode();
+        }
+        return 5 * nameHash + 7 * dateHash + 11 * priceHash;
     }
 }
