@@ -2,39 +2,31 @@ package transport;
 
 import java.math.BigDecimal;
 
-public class CoachTravelBooking extends TransportBooking{
-    private Seat seat;
+public class CoachTravelBooking extends TransportBooking {
+    private static final String PRICE_FOR_SMALL_SUITCASE = "5";
+    private static final String PRICE_FOR_LARGE_SUITCASE = "8";
     private int numberOfSmallSuitcases;
     private int numberOfLargeSuitcases;
 
-    public CoachTravelBooking(){
+    public CoachTravelBooking() {
     }
 
-    public CoachTravelBooking(Seat seat, boolean isForAdult) {
-        super(seat, isForAdult);
-        this.seat = seat;
+    public CoachTravelBooking(Transport coachTravel, int seatNumber, boolean isForAdult) {
+        super(coachTravel, seatNumber, isForAdult);
     }
 
-    public CoachTravelBooking(Seat seat, boolean isForAdult, int numberOfSmallSuitcases,
+    public CoachTravelBooking(Transport coachTravel, int seatNumber, boolean isForAdult, int numberOfSmallSuitcases,
                               int numberOfLargeSuitcases) {
-        this(seat, isForAdult);
+        this(coachTravel, seatNumber, isForAdult);
         this.numberOfSmallSuitcases = numberOfSmallSuitcases;
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
 
-     protected BigDecimal getPriceForLuggage() {
-        BigDecimal priceForLargeSuitcase = new BigDecimal(10);
-        BigDecimal priceForSmallSuitcase = new BigDecimal(5);
+    protected BigDecimal getPriceForLuggage() {
+        BigDecimal priceForLargeSuitcase = new BigDecimal(PRICE_FOR_LARGE_SUITCASE);
+        BigDecimal priceForSmallSuitcase = new BigDecimal(PRICE_FOR_SMALL_SUITCASE);
         return priceForLargeSuitcase.multiply(new BigDecimal(numberOfLargeSuitcases))
                 .add(priceForSmallSuitcase.multiply(new BigDecimal(numberOfSmallSuitcases)));
-    }
-
-    public Seat getSeat() {
-        return seat;
-    }
-
-    public void setSeat(Seat seat) {
-        this.seat = seat;
     }
 
     public int getNumberOfSmallSuitcases() {
@@ -53,11 +45,8 @@ public class CoachTravelBooking extends TransportBooking{
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
 
-    public String toString(){
+    public String toString() {
         return String.format("%s Small suitcases: %d, Large suitcases: %d Total price: %.2f",
-                super.toString(),
-                numberOfLargeSuitcases,
-                numberOfSmallSuitcases,
-                calculatePrice());
+                super.toString(), numberOfLargeSuitcases, numberOfSmallSuitcases, calculatePrice());
     }
 }

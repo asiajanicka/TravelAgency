@@ -23,15 +23,24 @@ public class Participant {
         this.activities = new ArrayList<>();
     }
 
-    public void addTransportBooking(TransportBooking transport){
+    public void addTransportBooking(TransportBooking transport) {
+        if (transportBookings == null) {
+            transportBookings = new ArrayList<>();
+        }
         transportBookings.add(transport);
     }
 
-    public void addHotelBooking(HotelBooking hotel){
+    public void addHotelBooking(HotelBooking hotel) {
+        if (hotelBookings == null) {
+            hotelBookings = new ArrayList<>();
+        }
         hotelBookings.add(hotel);
     }
 
-    public void addActivity(Activity activity){
+    public void addActivity(Activity activity) {
+        if (activities == null) {
+            activities = new ArrayList<>();
+        }
         activities.add(activity);
     }
 
@@ -39,7 +48,7 @@ public class Participant {
         return person;
     }
 
-    public void printBookings(){
+    public void printBookings() {
         System.out.format("%s %s\n", person.getFirstName().toUpperCase(), person.getLastName().toUpperCase());
         printTransportBookings();
         printHotelBookings();
@@ -47,25 +56,34 @@ public class Participant {
         System.out.println();
     }
 
-    public void printTransportBookings(){
-        System.out.println("Transport bookings:");
+    public void printTransportBookings() {
+        System.out.println(" * Transport bookings:");
         transportBookings.stream().forEach(System.out::println);
     }
 
-    public void printHotelBookings(){
-        System.out.println("Hotel bookings:");
+    public void printHotelBookings() {
+        System.out.println(" * Hotel bookings:");
         hotelBookings.stream().forEach(System.out::println);
     }
 
-    public void printActivityBookings(){
-        System.out.println("Activity bookings:");
+    public void printActivityBookings() {
+        System.out.println(" * Activity bookings:");
         activities.stream().forEach(System.out::println);
     }
 
-    public BigDecimal calculateTotalBookingCost(){
-        BigDecimal hotelBookingsCost = hotelBookings.stream().map(p->p.calculatePrice()).reduce(BigDecimal.ZERO,BigDecimal::add);
-        BigDecimal transportBookingsCost = transportBookings.stream().map(p->p.calculatePrice()).reduce(BigDecimal.ZERO,BigDecimal::add);
-        BigDecimal activitiesBookingsCost = activities.stream().map(p->p.getPrice()).reduce(BigDecimal.ZERO,BigDecimal::add);
+    public BigDecimal calculateTotalBookingCost() {
+        BigDecimal hotelBookingsCost = hotelBookings
+                .stream()
+                .map(p -> p.calculatePrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal transportBookingsCost = transportBookings
+                .stream()
+                .map(p -> p.calculatePrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal activitiesBookingsCost = activities
+                .stream()
+                .map(p -> p.getPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         return hotelBookingsCost.add(transportBookingsCost).add(activitiesBookingsCost);
     }
 
@@ -99,10 +117,18 @@ public class Participant {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Participant)) return false;
-        Participant that = (Participant) o;
-        return Objects.equals(person, that.person) && Objects.equals(hotelBookings, that.hotelBookings) && Objects.equals(transportBookings, that.transportBookings) && Objects.equals(activities, that.activities);
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        if (this.hashCode() != o.hashCode()) return false;
+        Participant p = (Participant) o;
+        boolean personEquals = (this.person == null && p.person == null) || this.person.equals(p.person);
+        boolean hotelBookingsEquals = (this.hotelBookings == null && p.hotelBookings == null)
+                || this.hotelBookings.equals(p.hotelBookings);
+        boolean transportBookingsEquals = (this.transportBookings == null && p.transportBookings == null)
+                || this.transportBookings.equals(p.transportBookings);
+        boolean activitiesEquals = (this.activities == null && p.activities == null)
+                || this.activities.equals(p.activities);
+        return personEquals && hotelBookingsEquals && transportBookingsEquals && activitiesEquals;
     }
 
     @Override

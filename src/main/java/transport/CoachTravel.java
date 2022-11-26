@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoachTravel extends Transport {
-
     private List<Seat> seats;
 
-    public CoachTravel(){
+    public CoachTravel() {
     }
 
     public CoachTravel(LocalDateTime dateDeparture, LocalDateTime dateArrival, City cityFrom, City cityTo,
@@ -22,7 +21,7 @@ public class CoachTravel extends Transport {
 
     @Override
     public Seat findSeat(int num) {
-        return seats.stream().filter(p->p.getNumber()== num).collect(Collectors.toList()).get(0);
+        return seats.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
     }
 
     public List<Seat> getSeats() {
@@ -33,7 +32,8 @@ public class CoachTravel extends Transport {
         this.seats = seats;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         return String.format("Coach trip: %s", super.toString());
     }
 }

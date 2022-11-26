@@ -48,16 +48,22 @@ public class Person {
         this.age = age;
     }
 
+    @Override
     public String toString() {
         return firstName + " " + lastName + " age: " + age;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Person)) return false;
-        Person person = (Person) o;
-        return age == person.age && Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName);
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        if (this.hashCode() != o.hashCode()) return false;
+        Person p = (Person) o;
+        boolean idEquals = (this.id == null && p.id == null) || this.id.equals(p.id);
+        boolean firstNameEquals = (this.firstName == null && p.firstName == null) || this.firstName.equals(p.firstName);
+        boolean lastNameEquals = (this.lastName == null && p.lastName == null) || this.lastName.equals(p.lastName);
+        boolean ageEquals = this.age == p.age;
+        return idEquals && firstNameEquals && lastNameEquals && ageEquals;
     }
 
     @Override

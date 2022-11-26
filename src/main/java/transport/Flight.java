@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Flight extends Transport {
-
     private List<PlaneSeat> seats;
 
    public Flight(){
@@ -37,6 +36,7 @@ public class Flight extends Transport {
         this.seats = seats;
     }
 
+    @Override
     public String toString() {
         return String.format("Flight: %s Boarding time: %s",
                 super.toString(), DateFormat.format(getBoardingTime()));

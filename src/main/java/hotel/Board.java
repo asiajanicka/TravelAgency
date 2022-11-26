@@ -5,6 +5,10 @@ import enums.BoardType;
 import java.math.BigDecimal;
 
 public class Board {
+    private static final String PRICE_FOR_BB = "100";
+    private static final String PRICE_FOR_HB = "125";
+    private static final String PRICE_FOR_FB = "250";
+    private static final String PRICE_FOR_ALL_INCLUSIVE = "500";
     private BoardType type;
 
     public Board() {
@@ -15,22 +19,25 @@ public class Board {
     }
 
     public BigDecimal getPrice() {
+        if(type == null) {
+            return  BigDecimal.ZERO;
+        }
         BigDecimal result;
         switch (type) {
             case BB: {
-                result = new BigDecimal(100);
+                result = new BigDecimal(PRICE_FOR_BB);
                 break;
             }
             case HB: {
-                result = new BigDecimal(125);
+                result = new BigDecimal(PRICE_FOR_HB);
                 break;
             }
             case FB: {
-                result = new BigDecimal(250);
+                result = new BigDecimal(PRICE_FOR_FB);
                 break;
             }
             case ALL_INCLUSIVE: {
-                result = new BigDecimal(500);
+                result = new BigDecimal(PRICE_FOR_ALL_INCLUSIVE);
                 break;
             }
             default: {

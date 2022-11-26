@@ -44,6 +44,7 @@ public abstract class Activity {
         this.price = price;
     }
 
+    @Override
     public String toString() {
         return String.format("%s on %s", name, DateFormat.format(date));
     }

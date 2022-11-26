@@ -41,6 +41,7 @@ public class AtHotelActivity extends Activity {
         isOwnEquipmentRequired = ownEquipmentRequired;
     }
 
+    @Override
     public String toString() {
         return String.format("%s Location: at the hotel Cost: %.2f", super.toString(), getPrice());
     }

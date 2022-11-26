@@ -52,8 +52,8 @@ public class Room {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Room r = (Room) o;
-        boolean numberEquals = (this.number == r.number);
-        boolean typeEquals = (this.type == r.type);
+        boolean numberEquals = this.number == r.number;
+        boolean typeEquals = this.type == r.type;
         boolean priceEquals = this.price.equals(r.price);
         return numberEquals && typeEquals && priceEquals;
     }

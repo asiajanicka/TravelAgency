@@ -16,6 +16,15 @@ public class OutOfHotelActivity extends Activity {
     }
 
     public OutOfHotelActivity(LocalDateTime date, String name, BigDecimal price, String address,
+                              double lengthInHours) {
+        super(date, name, price);
+        this.address = address;
+        this.isTransportProvided = false;
+        this.lengthInHours = lengthInHours;
+        this.language = Language.ENGLISH;
+    }
+
+    public OutOfHotelActivity(LocalDateTime date, String name, BigDecimal price, String address,
                               boolean isTransportProvided, double lengthInHours, Language language) {
         super(date, name, price);
         this.address = address;
@@ -56,6 +65,7 @@ public class OutOfHotelActivity extends Activity {
         this.language = language;
     }
 
+    @Override
     public String toString() {
         return String.format("%s Address: %s Is transport provided? %b Length: %.1f h Lang: %s Cost: %.2f",
                 super.toString(), address, isTransportProvided, lengthInHours, language, getPrice());
@@ -67,7 +77,7 @@ public class OutOfHotelActivity extends Activity {
         OutOfHotelActivity a = (OutOfHotelActivity) o;
         boolean addressEquals = (this.address == null && a.address == null) || this.address.equals(a.address);
         boolean isTransportProvidedEquals = this.isTransportProvided == a.isTransportProvided;
-        boolean lengthInHoursEquals = (Double.compare(this.lengthInHours, a.lengthInHours) == 0);
+        boolean lengthInHoursEquals = Double.compare(this.lengthInHours, a.lengthInHours) == 0;
         boolean languageEquals = (this.language == null && a.language == null) || (this.language == a.language);
         return addressEquals && isTransportProvidedEquals && lengthInHoursEquals && languageEquals;
     }

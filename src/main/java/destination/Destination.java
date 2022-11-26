@@ -20,14 +20,14 @@ public class Destination {
     public Destination() {
     }
 
-    public Destination(Place place, Hotel hotel, ArrayList<Transport> transports) {
+    public Destination(Place place, Hotel hotel, List<Transport> transports) {
         this.place = place;
         this.transports = transports;
         this.hotel = hotel;
         this.activities = new ArrayList<>();
     }
 
-    public Destination(Place place, Hotel hotel, ArrayList<Transport> transports, ArrayList<Activity> activities) {
+    public Destination(Place place, Hotel hotel, List<Transport> transports, List<Activity> activities) {
         this(place, hotel, transports);
         this.activities = activities;
     }
@@ -37,21 +37,27 @@ public class Destination {
     }
 
     public void addActivity(Activity activity) {
+        if (activities == null) {
+            activities = new ArrayList<>();
+        }
         activities.add(activity);
     }
 
     public void addTransport(Transport transport) {
+        if (transports == null) {
+            transports = new ArrayList<>();
+        }
         transports.add(transport);
     }
 
     public void printDestinationSummary() {
-        System.out.format("DESTINATION: %s\n", this);
+        System.out.format("--> %s\n", this);
         if (transports.size() > 0) {
-            System.out.format("Available TRANSPORTS on way to %s and back\n", place.getCity());
+            System.out.format(" * Available TRANSPORTS to %s and BACK:\n", place.getCity());
             transports.stream().forEach(System.out::println);
         }
         if (activities.size() > 0) {
-            System.out.format("Available ACTIVITIES at %s\n", place.getCity());
+            System.out.format(" * Available ACTIVITIES at %s:\n", place.getCity());
             activities.stream().forEach(System.out::println);
         }
     }
@@ -94,10 +100,12 @@ public class Destination {
         this.activities = activities;
     }
 
+    @Override
     public String toString() {
         return String.format("%s %s %s", place.getCity(), place.getCountry(), hotel);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         if (this.getClass() != o.getClass()) return false;
@@ -111,6 +119,7 @@ public class Destination {
         return placeEquals && transportsEquals && hotelEquals && activitiesEquals;
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(place, transports, hotel, activities);
     }

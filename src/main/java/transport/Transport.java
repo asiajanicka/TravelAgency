@@ -13,7 +13,7 @@ public abstract class Transport {
     private City cityTo;
     private TransportType type;
 
-    public Transport(){
+    public Transport() {
     }
 
     public Transport(LocalDateTime dateDeparture, LocalDateTime dateArrival, City cityFrom, City cityTo,
@@ -67,6 +67,7 @@ public abstract class Transport {
         this.type = type;
     }
 
+    @Override
     public String toString() {
         return String.format("from %s(%s) to %s(%s)",
                 cityFrom, DateFormat.format(dateDeparture),

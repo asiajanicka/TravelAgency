@@ -15,8 +15,6 @@ public class CustomizedTrip {
 
 
     public CustomizedTrip() {
-        participants = new ArrayList<>();
-        destinations = new ArrayList<>();
     }
 
     public CustomizedTrip(List<Destination> destinations, List<Participant> participants,
@@ -28,10 +26,16 @@ public class CustomizedTrip {
     }
 
     public void addDestination(Destination destination) {
+        if(destinations == null){
+            destinations = new ArrayList<>();
+        }
         destinations.add(destination);
     }
 
     public void addParticipant(Participant person) {
+        if(participants == null){
+            participants = new ArrayList<>();
+        }
         participants.add(person);
     }
 

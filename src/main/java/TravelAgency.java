@@ -17,8 +17,10 @@ public class TravelAgency {
     private List<Destination> destinations;
 
     public TravelAgency() {
-        destinations = new ArrayList<>();
-        destinations.add(initMalaga());
+    }
+
+    public void addMalagaDestination(){
+        addDestination(initMalaga());
     }
 
     private Destination initMalaga() {
@@ -37,7 +39,7 @@ public class TravelAgency {
 
 //        * create a list of possible ways of transport from Warsaw to Malaga
 //        by plane
-        ArrayList<Transport> transports = new ArrayList<>();
+        List<Transport> transports = new ArrayList<>();
         PlaneSeat planeSeat1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
         PlaneSeat planeSeat2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
         PlaneSeat planeSeat3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
@@ -113,6 +115,9 @@ public class TravelAgency {
     }
 
     public void addDestination(Destination destination) {
+        if (destinations == null){
+            destinations = new ArrayList<>();
+        }
         destinations.add(destination);
     }
 
@@ -130,6 +135,7 @@ public class TravelAgency {
         this.destinations = destinations;
     }
 
+    @Override
     public String toString() {
         return String.format("Travel Agency Destinations: %s", destinations);
     }

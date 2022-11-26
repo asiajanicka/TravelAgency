@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Seat {
-
     private int number;
     private BigDecimal price;
     private boolean isBooked;
@@ -15,6 +14,14 @@ public class Seat {
     public Seat(int number, BigDecimal price) {
         this.number = number;
         this.price = price;
+    }
+
+    public boolean bookSeat() {
+        if (isBooked == false) {
+            isBooked = true;
+            return true;
+        }
+        return false;
     }
 
     public int getNumber() {
@@ -41,6 +48,7 @@ public class Seat {
         isBooked = booked;
     }
 
+    @Override
     public String toString() {
         return String.format("Seat: %d", number);
     }

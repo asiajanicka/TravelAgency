@@ -3,18 +3,22 @@ package transport;
 import java.math.BigDecimal;
 
 public abstract class TransportBooking {
-    private Seat seat;
+    private Transport transport;
+    private int seatNumber;
     private boolean isForAdult;
 
-    TransportBooking(){};
+    TransportBooking() {
+    }
 
-    public TransportBooking(Seat seat, boolean isForAdult) {
-        this.seat = seat;
+    public TransportBooking(Transport transport, int seatNumber, boolean isForAdult) {
+        this.seatNumber = seatNumber;
+        this.transport = transport;
         this.isForAdult = isForAdult;
     }
 
     public BigDecimal getPriceForSeat() {
-       return isForAdult() ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
+        Seat seat = transport.findSeat(seatNumber);
+        return isForAdult() ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
     }
 
     protected abstract BigDecimal getPriceForLuggage();
@@ -23,12 +27,20 @@ public abstract class TransportBooking {
         return getPriceForSeat().add(getPriceForLuggage());
     }
 
-    public Seat getSeat() {
-        return seat;
+    public Transport getTransport() {
+        return transport;
     }
 
-    public void setSeat(Seat seat) {
-        this.seat = seat;
+    public void setTransport(Transport transport) {
+        this.transport = transport;
+    }
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public boolean isForAdult() {
@@ -39,7 +51,8 @@ public abstract class TransportBooking {
         isForAdult = forAdult;
     }
 
-    public String toString(){
-        return String.format("Seat %d Is for adult? %b", seat.getNumber(), isForAdult);
+    @Override
+    public String toString() {
+        return String.format("%s Seat %d Is for adult? %b", transport.toString(), seatNumber, isForAdult);
     }
 }
