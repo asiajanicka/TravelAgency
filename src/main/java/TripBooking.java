@@ -1,5 +1,4 @@
 import destination.Destination;
-import destination.activitiy.AtHotelActivity;
 import enums.BoardType;
 import enums.City;
 import enums.PlaneBaggage;
@@ -9,7 +8,6 @@ import transport.CoachTravelBooking;
 import transport.FlightBooking;
 import transport.Transport;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TripBooking {
@@ -31,12 +29,11 @@ public class TripBooking {
         John: Football Match
         Sue: Banana Boat Ride & Caminito Del Rey Tour
         Kate: Beach Volleyball
-        Tom: "Football Match
+        Tom: Football Match
 */
 
 //        initialize travel agency with possible destinations
         TravelAgency travelAgency = new TravelAgency();
-        travelAgency.addMalagaDestination();
         travelAgency.printDestinations();
 
 //        start to create a customized trip
@@ -64,16 +61,16 @@ public class TripBooking {
         myTrip.addParticipant(new Participant(tom));
 
 //        create hotel bookings for each participant
-        HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, true,
+        HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
                 malagaEs.getHotel().findRoom(101), BoardType.ALL_INCLUSIVE);
         myTrip.getParticipant(john).addHotelBooking(hotelBookingJohn);
-        HotelBooking hotelBookingSue = new HotelBooking(startDate, endDate, true,
+        HotelBooking hotelBookingSue = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
                 malagaEs.getHotel().findRoom(101), BoardType.BB);
         myTrip.getParticipant(sue).addHotelBooking(hotelBookingSue);
-        HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, false,
+        HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
                 malagaEs.getHotel().findRoom(102), BoardType.FB);
         myTrip.getParticipant(kate).addHotelBooking(hotelBookingKate);
-        HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, false,
+        HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
                 malagaEs.getHotel().findRoom(103), BoardType.FB);
         myTrip.getParticipant(tom).addHotelBooking(hotelBookingTom);
 

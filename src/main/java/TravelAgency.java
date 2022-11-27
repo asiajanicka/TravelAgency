@@ -17,9 +17,6 @@ public class TravelAgency {
     private List<Destination> destinations;
 
     public TravelAgency() {
-    }
-
-    public void addMalagaDestination(){
         addDestination(initMalaga());
     }
 
@@ -44,7 +41,7 @@ public class TravelAgency {
         PlaneSeat planeSeat2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
         PlaneSeat planeSeat3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
         PlaneSeat planeSeat4 = new PlaneSeat(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
-        ArrayList<PlaneSeat> planeSeats = new ArrayList<>();
+        ArrayList<Seat> planeSeats = new ArrayList<>();
         planeSeats.add(planeSeat1);
         planeSeats.add(planeSeat2);
         planeSeats.add(planeSeat3);
