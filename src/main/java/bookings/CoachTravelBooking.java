@@ -1,4 +1,6 @@
-package transport;
+package bookings;
+
+import transport.Transport;
 
 import java.math.BigDecimal;
 

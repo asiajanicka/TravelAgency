@@ -29,6 +29,10 @@ class Participant {
 + void printActivityBookings()
 + BigDecimal calculateTotalBookingCost()
 }
+abstract class Booking {
+- boolean isForAdult
+# {abstract}BigDecimal calculatePrice()
+}
 class FlightBooking {
 - PlaneBaggage baggage
 # BigDecimal getPriceForLuggage()
@@ -48,10 +52,8 @@ class HotelBooking {
 - LocalDate dateFrom
 - LocalDate dateTo
 - Hotel hotel
-- boolean forAdult
 - Room room
 - Board board
-+ BigDecimal calculatePrice()
 }
 class Board {
 - BoardType type
@@ -117,9 +119,7 @@ class Destination {
 abstract class TransportBooking {
 - Transport transport
 - int seatNumber
-- boolean isForAdult
 + BigDecimal getPriceForSeat()
-+ BigDecimal calculatePrice()
 # {abstract}BigDecimal getPriceForLuggage();
 }
 class Person {
@@ -151,6 +151,8 @@ TransportBooking o-- Transport
 CoachTravelBooking o-- Seat
 FlightBooking o-- PlaneSeat
 Flight *-- PlaneSeat
+Booking <|-- HotelBooking
+Booking <|-- TransportBooking
 Seat <|-- PlaneSeat
 TransportBooking <|-- FlightBooking
 Transport <|-- Flight

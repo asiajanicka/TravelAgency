@@ -120,7 +120,7 @@ public class TravelAgency {
 
     public void printDestinations() {
         System.out.println("TRAVEL AGENCY - Available Destinations:");
-        destinations.stream().forEach(Destination::printDestinationSummary);
+        destinations.forEach(Destination::printDestinationSummary);
         System.out.println();
     }
 

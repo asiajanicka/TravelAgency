@@ -1,6 +1,6 @@
 import destination.activitiy.Activity;
-import hotel.HotelBooking;
-import transport.TransportBooking;
+import bookings.HotelBooking;
+import bookings.TransportBooking;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class Participant {
     private List<TransportBooking> transportBookings;
     private List<Activity> activities;
 
-    private Participant() {
+    public Participant() {
     }
 
     public Participant(Person person) {
@@ -58,31 +58,31 @@ public class Participant {
 
     public void printTransportBookings() {
         System.out.println(" * Transport bookings:");
-        transportBookings.stream().forEach(System.out::println);
+        transportBookings.forEach(System.out::println);
     }
 
     public void printHotelBookings() {
         System.out.println(" * Hotel bookings:");
-        hotelBookings.stream().forEach(System.out::println);
+        hotelBookings.forEach(System.out::println);
     }
 
     public void printActivityBookings() {
         System.out.println(" * Activity bookings:");
-        activities.stream().forEach(System.out::println);
+        activities.forEach(System.out::println);
     }
 
     public BigDecimal calculateTotalBookingCost() {
         BigDecimal hotelBookingsCost = hotelBookings
                 .stream()
-                .map(p -> p.calculatePrice())
+                .map(HotelBooking::calculatePrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal transportBookingsCost = transportBookings
                 .stream()
-                .map(p -> p.calculatePrice())
+                .map(TransportBooking::calculatePrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal activitiesBookingsCost = activities
                 .stream()
-                .map(p -> p.getPrice())
+                .map(Activity::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         return hotelBookingsCost.add(transportBookingsCost).add(activitiesBookingsCost);
     }

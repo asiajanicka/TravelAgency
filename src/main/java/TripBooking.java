@@ -3,9 +3,9 @@ import enums.BoardType;
 import enums.City;
 import enums.PlaneBaggage;
 import enums.TransportType;
-import hotel.HotelBooking;
-import transport.CoachTravelBooking;
-import transport.FlightBooking;
+import bookings.HotelBooking;
+import bookings.CoachTravelBooking;
+import bookings.FlightBooking;
 import transport.Transport;
 
 import java.time.LocalDate;
