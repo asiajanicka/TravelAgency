@@ -11,7 +11,7 @@ import java.util.Objects;
 public class HotelBooking {
     private LocalDate dateFrom;
     private LocalDate dateTo;
-    public boolean forAdult;
+    private boolean forAdult;
     private Room room;
     private Board board;
 

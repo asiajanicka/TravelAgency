@@ -32,6 +32,14 @@ public class FlightBooking extends TransportBooking {
         }
     }
 
+    public PlaneBaggage getBaggage() {
+        return baggage;
+    }
+
+    public void setBaggage(PlaneBaggage baggage) {
+        this.baggage = baggage;
+    }
+
     @Override
     public String toString() {
         return String.format("%s Baggage: %s Total price: %.2f",
