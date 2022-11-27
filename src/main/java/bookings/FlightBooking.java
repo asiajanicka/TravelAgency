@@ -1,6 +1,7 @@
-package transport;
+package bookings;
 
 import enums.PlaneBaggage;
+import transport.Transport;
 
 import java.math.BigDecimal;
 

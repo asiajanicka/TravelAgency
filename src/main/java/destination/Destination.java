@@ -54,11 +54,13 @@ public class Destination {
         System.out.format("--> %s\n", this);
         if (transports.size() > 0) {
             System.out.format(" * Available TRANSPORTS to %s and BACK:\n", place.getCity());
-            transports.stream().forEach(System.out::println);
+            transports.forEach(System.out::println);
         }
         if (activities.size() > 0) {
             System.out.format(" * Available ACTIVITIES at %s:\n", place.getCity());
-            activities.stream().forEach(System.out::println);
+            for (Activity activity : activities) {
+                System.out.println(activity);
+            }
         }
     }
 

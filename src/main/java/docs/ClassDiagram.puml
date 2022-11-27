@@ -1,0 +1,163 @@
+@startuml
+class Hotel {
+- String name
+- int numberOfStars
+- String address
+- List<Room> rooms
++ Room findRoom(int)
+}
+class PlaneSeat {
+- PlaneSeatType type
+}
+class Seat {
+- int number
+- BigDecimal price
+- boolean isBooked
++ boolean bookSeat()
+}
+class Participant {
+- Person person
+- List<HotelBooking> hotelBookings
+- List<TransportBooking> transportBookings
+- List<Activity> activities
++ void addTransportBooking(TransportBooking)
++ void addHotelBooking(HotelBooking)
++ void addActivity(Activity)
++ void printBookings()
++ void printTransportBookings()
++ void printHotelBookings()
++ void printActivityBookings()
++ BigDecimal calculateTotalBookingCost()
+}
+abstract class Booking {
+- boolean isForAdult
+# {abstract}BigDecimal calculatePrice()
+}
+class FlightBooking {
+- PlaneBaggage baggage
+# BigDecimal getPriceForLuggage()
+}
+class CustomizedTrip {
+- LocalDate startDate
+- LocalDate endDate
+- List<Participant> participants
+- List<Destination> destinations
++ void addDestination(Destination)
++ void addParticipant(Participant)
++ Participant getParticipant(Person)
++ void printSummary()
++ BigDecimal calculateTotalPrice()
+}
+class HotelBooking {
+- LocalDate dateFrom
+- LocalDate dateTo
+- Hotel hotel
+- Room room
+- Board board
+}
+class Board {
+- BoardType type
++ BigDecimal getPrice()
+}
+class Flight {
++ LocalDateTime getBoardingTime()
+}
+class TravelAgency {
+- List<Destination> destinations
++ void addDestination(Destination)
++ void printDestinations()
+}
+class CoachTravelBooking {
+- int numberOfSmallSuitcases
+- int numberOfLargeSuitcases
+# BigDecimal getPriceForLuggage()
+}
+abstract class Transport {
+- LocalDateTime dateDeparture
+- LocalDateTime dateArrival
+- City cityFrom
+- City cityTo
+- TransportType type
+- List<Seat> seats
++ Seat findSeat(int)
+}
+class Place {
+- Country country
+- City city
+}
+class Room {
+- int number
+- RoomType type
+- BigDecimal price
+}
+class OutOfHotelActivity {
+- String address
+- boolean isTransportProvided
+- double lengthInHours
+- Language language
+}
+abstract class Activity {
+- LocalDateTime date
+- String name
+- BigDecimal price
+}
+class AtHotelActivity {
+- ActivityType type
+- boolean isOwnEquipmentRequired
+}
+class Destination {
+- Place place
+- Hotel hotel
+- List<Transport> transports
+- List<Activity> activities
++ Activity findActivity(String)
++ void addActivity(Activity)
++ void addTransport(Transport)
++ void printDestinationSummary()
++ Transport findTransport(City,City,TransportType)
+}
+abstract class TransportBooking {
+- Transport transport
+- int seatNumber
++ BigDecimal getPriceForSeat()
+# {abstract}BigDecimal getPriceForLuggage();
+}
+class Person {
+- String id
+- String firstName
+- String lastName
+- int age
+}
+class CoachTravel {
+}
+
+TravelAgency *-- Destination
+CustomizedTrip o-- Destination
+CustomizedTrip *-- Participant
+Destination *-- Transport
+Destination *-- Hotel
+Destination *-- Activity
+Destination o-- Place
+Participant o-- Person
+Participant o-- Activity
+Participant *-- HotelBooking
+Participant *-- TransportBooking
+CoachTravel *-- Seat
+Hotel *-- Room
+HotelBooking o-- Room
+HotelBooking o-- Board
+HotelBooking o-- Hotel
+TransportBooking o-- Transport
+CoachTravelBooking o-- Seat
+FlightBooking o-- PlaneSeat
+Flight *-- PlaneSeat
+Booking <|-- HotelBooking
+Booking <|-- TransportBooking
+Seat <|-- PlaneSeat
+TransportBooking <|-- FlightBooking
+Transport <|-- Flight
+TransportBooking <|-- CoachTravelBooking
+Activity <|-- OutOfHotelActivity
+Activity <|-- AtHotelActivity
+Transport <|-- CoachTravel
+@enduml
