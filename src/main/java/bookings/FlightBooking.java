@@ -20,7 +20,7 @@ public class FlightBooking extends TransportBooking {
         this.baggage = PlaneBaggage.CHECKED;
     }
 
-    protected BigDecimal getPriceForLuggage() {
+    protected final BigDecimal getPriceForLuggage() {
         switch (baggage) {
             case HAND: {
                 return new BigDecimal(PRICE_FOR_HAND_BAG);

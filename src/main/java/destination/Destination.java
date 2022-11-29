@@ -4,6 +4,7 @@ import destination.activitiy.Activity;
 import enums.City;
 import enums.TransportType;
 import hotel.Hotel;
+import interfaces.IDescribe;
 import transport.Transport;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Destination {
+public class Destination implements IDescribe {
     private Place place;
     private Hotel hotel;
     private List<Transport> transports;
@@ -50,7 +51,8 @@ public class Destination {
         transports.add(transport);
     }
 
-    public void printDestinationSummary() {
+    @Override
+    public void printSummary() {
         System.out.format("--> %s\n", this);
         if (transports.size() > 0) {
             System.out.format(" * Available TRANSPORTS to %s and BACK:\n", place.getCity());

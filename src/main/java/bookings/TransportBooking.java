@@ -1,5 +1,6 @@
 package bookings;
 
+import interfaces.ICost;
 import transport.Seat;
 import transport.Transport;
 
@@ -27,7 +28,7 @@ public abstract class TransportBooking implements ICost {
     protected abstract BigDecimal getPriceForLuggage();
 
     @Override
-    public BigDecimal calculatePrice() {
+    public final BigDecimal calculatePrice() {
         return getPriceForSeat().add(getPriceForLuggage());
     }
 

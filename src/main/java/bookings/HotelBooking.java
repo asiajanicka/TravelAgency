@@ -4,6 +4,7 @@ import enums.BoardType;
 import hotel.Board;
 import hotel.Hotel;
 import hotel.Room;
+import interfaces.ICost;
 import utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -41,7 +42,7 @@ public class HotelBooking implements ICost {
     }
 
     @Override
-    public BigDecimal calculatePrice() {
+    public final BigDecimal calculatePrice() {
         BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
         return isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
     }
@@ -94,6 +95,7 @@ public class HotelBooking implements ICost {
         isForAdult = forAdult;
     }
 
+    @Override
     public String toString() {
         return String.format("Hotel: %s from %s to %s Is for adult? %b %s Board: %s Total price: %.2f",
                 hotel.getName(),

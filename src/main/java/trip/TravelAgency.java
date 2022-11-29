@@ -1,3 +1,5 @@
+package trip;
+
 import destination.Destination;
 import destination.Place;
 import destination.activitiy.Activity;
@@ -112,7 +114,7 @@ public class TravelAgency {
     }
 
     public void addDestination(Destination destination) {
-        if (destinations == null){
+        if (destinations == null) {
             destinations = new ArrayList<>();
         }
         destinations.add(destination);
@@ -120,7 +122,7 @@ public class TravelAgency {
 
     public void printDestinations() {
         System.out.println("TRAVEL AGENCY - Available Destinations:");
-        destinations.forEach(Destination::printDestinationSummary);
+        destinations.forEach(Destination::printSummary);
         System.out.println();
     }
 

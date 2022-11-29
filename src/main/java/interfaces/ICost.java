@@ -1,4 +1,4 @@
-package bookings;
+package interfaces;
 
 import java.math.BigDecimal;
 

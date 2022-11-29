@@ -7,6 +7,10 @@ import bookings.HotelBooking;
 import bookings.CoachTravelBooking;
 import bookings.FlightBooking;
 import transport.Transport;
+import trip.CustomizedTrip;
+import trip.Participant;
+import trip.Person;
+import trip.TravelAgency;
 
 import java.time.LocalDate;
 
