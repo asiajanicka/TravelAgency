@@ -5,26 +5,28 @@ import transport.Transport;
 
 import java.math.BigDecimal;
 
-public abstract class TransportBooking extends Booking {
+public abstract class TransportBooking implements ICost {
     private Transport transport;
     private int seatNumber;
+    private boolean isForAdult;
 
     TransportBooking() {
     }
 
     public TransportBooking(Transport transport, int seatNumber, boolean isForAdult) {
-        super(isForAdult);
         this.seatNumber = seatNumber;
         this.transport = transport;
+        this.isForAdult = isForAdult;
     }
 
     public BigDecimal getPriceForSeat() {
         Seat seat = transport.findSeat(seatNumber);
-        return isForAdult() ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
+        return isForAdult ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
     }
 
     protected abstract BigDecimal getPriceForLuggage();
 
+    @Override
     public BigDecimal calculatePrice() {
         return getPriceForSeat().add(getPriceForLuggage());
     }
@@ -45,8 +47,16 @@ public abstract class TransportBooking extends Booking {
         this.seatNumber = seatNumber;
     }
 
+    public boolean isForAdult() {
+        return isForAdult;
+    }
+
+    public void setForAdult(boolean forAdult) {
+        isForAdult = forAdult;
+    }
+
     @Override
     public String toString() {
-        return String.format("%s Seat %d Is for adult? %b", transport.toString(), seatNumber, isForAdult());
+        return String.format("%s Seat %d Is for adult? %b", transport.toString(), seatNumber, isForAdult);
     }
 }
