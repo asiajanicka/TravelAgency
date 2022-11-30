@@ -1,9 +1,11 @@
 package transport;
 
+import interfaces.IBook;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Seat {
+public class Seat implements IBook {
     private int number;
     private BigDecimal price;
     private boolean isBooked;
@@ -16,7 +18,7 @@ public class Seat {
         this.price = price;
     }
 
-    public boolean bookSeat() {
+    public boolean book() {
         if (isBooked == false) {
             isBooked = true;
             return true;

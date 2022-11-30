@@ -1,10 +1,13 @@
 package hotel;
 
+import interfaces.IBook;
+import interfaces.IFindPlacement;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Hotel {
+public class Hotel implements IFindPlacement {
     private String name;
     private int numberOfStars;
     private String address;
@@ -20,7 +23,7 @@ public class Hotel {
         this.rooms = rooms;
     }
 
-    public Room findRoom(int num) {
+    public IBook find(int num) {
         return rooms.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
     }
 
@@ -66,7 +69,7 @@ public class Hotel {
         if (this.hashCode() != o.hashCode()) return false;
         Hotel h = (Hotel) o;
         boolean nameEquals = (this.name == null && h.name == null) ||
-              (this.name != null && this.name.equals(h.name));
+                (this.name != null && this.name.equals(h.name));
         boolean numberOfStarsEquals = this.numberOfStars == h.numberOfStars;
         boolean addressEquals = (this.address == null && h.address == null)
                 || (this.address != null && this.address.equals(h.address));

@@ -1,14 +1,16 @@
 package hotel;
 
 import enums.RoomType;
+import interfaces.IBook;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Room {
+public class Room implements IBook {
     private int number;
     private RoomType type;
     private BigDecimal price;
+    private boolean isBooked;
 
     public Room() {
     }
@@ -17,6 +19,24 @@ public class Room {
         this.number = number;
         this.type = type;
         this.price = price;
+        this.isBooked = false;
+    }
+
+    @Override
+    public boolean book() {
+        if(isBooked == false){
+            isBooked = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
 
     public int getNumber() {
