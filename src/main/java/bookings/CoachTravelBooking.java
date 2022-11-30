@@ -1,5 +1,6 @@
 package bookings;
 
+import transport.Seat;
 import transport.Transport;
 
 import java.math.BigDecimal;
@@ -13,18 +14,18 @@ public class CoachTravelBooking extends TransportBooking {
     public CoachTravelBooking() {
     }
 
-    public CoachTravelBooking(Transport coachTravel, int seatNumber, boolean isForAdult) {
-        super(coachTravel, seatNumber, isForAdult);
+    public CoachTravelBooking(Transport coachTravel, Seat seat, boolean isForAdult) {
+        super(coachTravel, seat, isForAdult);
     }
 
-    public CoachTravelBooking(Transport coachTravel, int seatNumber, boolean isForAdult, int numberOfSmallSuitcases,
+    public CoachTravelBooking(Transport coachTravel, Seat seat, boolean isForAdult, int numberOfSmallSuitcases,
                               int numberOfLargeSuitcases) {
-        this(coachTravel, seatNumber, isForAdult);
+        this(coachTravel, seat, isForAdult);
         this.numberOfSmallSuitcases = numberOfSmallSuitcases;
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
 
-    protected BigDecimal getPriceForLuggage() {
+    protected final BigDecimal getPriceForLuggage() {
         BigDecimal priceForLargeSuitcase = new BigDecimal(PRICE_FOR_LARGE_SUITCASE);
         BigDecimal priceForSmallSuitcase = new BigDecimal(PRICE_FOR_SMALL_SUITCASE);
         return priceForLargeSuitcase.multiply(new BigDecimal(numberOfLargeSuitcases))

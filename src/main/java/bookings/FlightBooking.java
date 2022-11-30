@@ -1,6 +1,7 @@
 package bookings;
 
 import enums.PlaneBaggage;
+import transport.Seat;
 import transport.Transport;
 
 import java.math.BigDecimal;
@@ -10,17 +11,17 @@ public class FlightBooking extends TransportBooking {
     private static final String PRICE_FOR_CHECKED_BAG = "20.5";
     private PlaneBaggage baggage;
 
-    public FlightBooking(Transport flight, int seatNumber, PlaneBaggage baggage, boolean isForAdult) {
-        super(flight, seatNumber, isForAdult);
+    public FlightBooking(Transport flight, Seat seat, PlaneBaggage baggage, boolean isForAdult) {
+        super(flight, seat, isForAdult);
         this.baggage = baggage;
     }
 
-    public FlightBooking(Transport flight, int seatNumber) {
-        super(flight, seatNumber, true);
+    public FlightBooking(Transport flight, Seat seat) {
+        super(flight, seat, true);
         this.baggage = PlaneBaggage.CHECKED;
     }
 
-    protected BigDecimal getPriceForLuggage() {
+    protected final BigDecimal getPriceForLuggage() {
         switch (baggage) {
             case HAND: {
                 return new BigDecimal(PRICE_FOR_HAND_BAG);

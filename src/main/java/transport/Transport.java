@@ -2,13 +2,15 @@ package transport;
 
 import enums.City;
 import enums.TransportType;
+import interfaces.IBook;
+import interfaces.IFindPlacement;
 import utils.DateFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class Transport {
+public abstract class Transport implements IFindPlacement {
     private LocalDateTime dateDeparture;
     private LocalDateTime dateArrival;
     private City cityFrom;
@@ -29,9 +31,19 @@ public abstract class Transport {
         this.seats = seats;
     }
 
-    public Seat findSeat(int num) {
-        return seats.stream().filter(p->p.getNumber() == num).collect(Collectors.toList()).get(0);
-    };
+    public IBook find(int num) {
+        return seats.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
+    }
+
+    @Override
+    public List<IBook> findAllAvailable() {
+        return seats.stream().filter(p -> p.isBooked() == false).collect(Collectors.toList());
+    }
+
+    @Override
+    public IBook findFirstAvailable() {
+        return findAllAvailable().get(0);
+    }
 
     public LocalDateTime getDateDeparture() {
         return dateDeparture;

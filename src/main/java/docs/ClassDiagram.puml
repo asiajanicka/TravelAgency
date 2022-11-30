@@ -1,4 +1,18 @@
 @startuml
+interface ICost {
+{abstract} BigDecimal calculatePrice()
+}
+interface IDescribe {
+{abstract} void printSummary()
+}
+interface IBook {
+{abstract} boolean book()
+}
+interface IFindPlacement {
+{abstract} IBook find(int num)
+{abstract} List<IBook> findAllAvailable()
+{abstract} IBook findFirstAvailable()
+}
 class Hotel {
 - String name
 - int numberOfStars
@@ -23,15 +37,10 @@ class Participant {
 + void addTransportBooking(TransportBooking)
 + void addHotelBooking(HotelBooking)
 + void addActivity(Activity)
-+ void printBookings()
-+ void printTransportBookings()
-+ void printHotelBookings()
-+ void printActivityBookings()
-+ BigDecimal calculateTotalBookingCost()
-}
-abstract class Booking {
-- boolean isForAdult
-# {abstract}BigDecimal calculatePrice()
+- void printTransportBookings()
+- void printHotelBookings()
+- void printActivityBookings()
++ final BigDecimal calculateTotalBookingCost()
 }
 class FlightBooking {
 - PlaneBaggage baggage
@@ -45,7 +54,7 @@ class CustomizedTrip {
 + void addDestination(Destination)
 + void addParticipant(Participant)
 + Participant getParticipant(Person)
-+ void printSummary()
+'+ void printSummary()
 + BigDecimal calculateTotalPrice()
 }
 class HotelBooking {
@@ -54,6 +63,7 @@ class HotelBooking {
 - Hotel hotel
 - Room room
 - Board board
+- int getLengthOfStaying()
 }
 class Board {
 - BoardType type
@@ -66,6 +76,7 @@ class TravelAgency {
 - List<Destination> destinations
 + void addDestination(Destination)
 + void printDestinations()
+- Destination initMalaga()
 }
 class CoachTravelBooking {
 - int numberOfSmallSuitcases
@@ -113,7 +124,7 @@ class Destination {
 + Activity findActivity(String)
 + void addActivity(Activity)
 + void addTransport(Transport)
-+ void printDestinationSummary()
+'+ void printDestinationSummary()
 + Transport findTransport(City,City,TransportType)
 }
 abstract class TransportBooking {
@@ -151,8 +162,15 @@ TransportBooking o-- Transport
 CoachTravelBooking o-- Seat
 FlightBooking o-- PlaneSeat
 Flight *-- PlaneSeat
-Booking <|-- HotelBooking
-Booking <|-- TransportBooking
+ICost <|-- HotelBooking
+ICost <|-- TransportBooking
+IDescribe <|--  CustomizedTrip
+IDescribe <|-- Participant
+IDescribe <|-- Destination
+Room <|-- IBook
+Seat <|-- IBook
+Transport <|-- IFindPlacement
+Hotel <|-- IFindPlacement
 Seat <|-- PlaneSeat
 TransportBooking <|-- FlightBooking
 Transport <|-- Flight

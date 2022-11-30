@@ -1,12 +1,20 @@
+import bookings.CoachTravelBooking;
+import bookings.FlightBooking;
+import bookings.HotelBooking;
 import destination.Destination;
 import enums.BoardType;
 import enums.City;
 import enums.PlaneBaggage;
 import enums.TransportType;
-import bookings.HotelBooking;
-import bookings.CoachTravelBooking;
-import bookings.FlightBooking;
+import hotel.Room;
+import interfaces.IBook;
+import transport.PlaneSeat;
+import transport.Seat;
 import transport.Transport;
+import trip.CustomizedTrip;
+import trip.Participant;
+import trip.Person;
+import trip.TravelAgency;
 
 import java.time.LocalDate;
 
@@ -32,7 +40,7 @@ public class TripBooking {
         Tom: Football Match
 */
 
-//        initialize travel agency with possible destinations
+//        initialize travel agency with possible destinations (currently only one destination - Malaga)
         TravelAgency travelAgency = new TravelAgency();
         travelAgency.printDestinations();
 
@@ -60,71 +68,85 @@ public class TripBooking {
         myTrip.addParticipant(new Participant(kate));
         myTrip.addParticipant(new Participant(tom));
 
-//        create hotel bookings for each participant
+//        create hotel bookings for each participant using find by number method
+        malagaEs.getHotel().find(101).book(); // book double room for John and Sue
         HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
-                malagaEs.getHotel().findRoom(101), BoardType.ALL_INCLUSIVE);
+                (Room) malagaEs.getHotel().find(101), BoardType.ALL_INCLUSIVE);
         myTrip.getParticipant(john).addHotelBooking(hotelBookingJohn);
+
         HotelBooking hotelBookingSue = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
-                malagaEs.getHotel().findRoom(101), BoardType.BB);
+                (Room) malagaEs.getHotel().find(101), BoardType.BB);
         myTrip.getParticipant(sue).addHotelBooking(hotelBookingSue);
+
+        malagaEs.getHotel().find(102).book(); // book single room for Kate
         HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
-                malagaEs.getHotel().findRoom(102), BoardType.FB);
+                (Room) malagaEs.getHotel().find(102), BoardType.FB);
         myTrip.getParticipant(kate).addHotelBooking(hotelBookingKate);
+
+        malagaEs.getHotel().find(103).book(); // book single room for Tom
         HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
-                malagaEs.getHotel().findRoom(103), BoardType.FB);
+                (Room) malagaEs.getHotel().find(103), BoardType.FB);
         myTrip.getParticipant(tom).addHotelBooking(hotelBookingTom);
 
-//        create transport bookings for each participant
+//        create transport bookings for each participant using findFirstAvailable method
 //        * flight to Malaga booking
         Transport flightToMalaga = malagaEs.findTransport(City.WARSAW, City.MALAGA, TransportType.PLANE);
 
-        flightToMalaga.findSeat(1).bookSeat(); // book seat 1 for John on given flight to Malaga
-        FlightBooking flightBookingWMJohn = new FlightBooking(flightToMalaga, 1,
+        IBook seatToMalagaForJohn = flightToMalaga.findFirstAvailable();
+        seatToMalagaForJohn.book();
+        FlightBooking flightBookingWMJohn = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForJohn,
                 PlaneBaggage.HAND, true);
         myTrip.getParticipant(john).addTransportBooking(flightBookingWMJohn);
 
-        flightToMalaga.findSeat(2).bookSeat(); // book seat 2 for Sue on given flight to Malaga
-        FlightBooking flightBookingWMSue = new FlightBooking(flightToMalaga, 2,
+        IBook seatToMalagaForSue = flightToMalaga.findFirstAvailable();
+        seatToMalagaForSue.book();
+        FlightBooking flightBookingWMSue = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForSue,
                 PlaneBaggage.CHECKED, true);
         myTrip.getParticipant(sue).addTransportBooking(flightBookingWMSue);
 
 //        * flight back to Warsaw booking
         Transport flightToWarsaw = malagaEs.findTransport(City.MALAGA, City.WARSAW, TransportType.PLANE);
 
-        flightToWarsaw.findSeat(1).bookSeat();
-        FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, 1,
+        IBook seatToWarsawForJohn = flightToWarsaw.findFirstAvailable();
+        seatToWarsawForJohn.book();
+        FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForJohn,
                 PlaneBaggage.HAND, true);
         myTrip.getParticipant(john).addTransportBooking(flightBookingMWJohn);
 
-        flightToWarsaw.findSeat(2).bookSeat();
-        FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, 2,
+        IBook seatToWarsawForSue = flightToWarsaw.findFirstAvailable();
+        seatToWarsawForSue.book();
+        FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForSue,
                 PlaneBaggage.CHECKED, true);
         myTrip.getParticipant(sue).addTransportBooking(flightBookingMWSue);
 
 //        * coach travel to Malaga booking
         Transport coachTravelToMalaga = malagaEs.findTransport(City.WARSAW, City.MALAGA, TransportType.BUS);
 
-        coachTravelToMalaga.findSeat(1).bookSeat();
-        CoachTravelBooking coachBookingWMKate = new CoachTravelBooking(coachTravelToMalaga, 1,
-                false, 3, 2);
+        IBook seatToMalagaKate = coachTravelToMalaga.findFirstAvailable();
+        seatToMalagaKate.book();
+        CoachTravelBooking coachBookingWMKate = new CoachTravelBooking(coachTravelToMalaga,
+                (Seat) seatToMalagaKate, false, 3, 2);
         myTrip.getParticipant(kate).addTransportBooking(coachBookingWMKate);
 
-        coachTravelToMalaga.findSeat(2).bookSeat();
-        CoachTravelBooking coachBookingWMTom = new CoachTravelBooking(coachTravelToMalaga, 2,
-                false, 1, 3);
+        IBook seatToMalagaTom = coachTravelToMalaga.findFirstAvailable();
+        seatToMalagaTom.book();
+        CoachTravelBooking coachBookingWMTom = new CoachTravelBooking(coachTravelToMalaga,
+                (Seat) seatToMalagaTom, false, 1, 3);
         myTrip.getParticipant(tom).addTransportBooking(coachBookingWMTom);
 
 //        * coach travel back to Warsaw booking
         Transport coachTravelToWarsaw = malagaEs.findTransport(City.MALAGA, City.WARSAW, TransportType.BUS);
 
-        coachTravelToWarsaw.findSeat(1).bookSeat();
-        CoachTravelBooking coachBookingMWKate = new CoachTravelBooking(coachTravelToWarsaw, 1,
-                false, 3, 2);
+        IBook seatToWarsawKate = coachTravelToWarsaw.findFirstAvailable();
+        seatToWarsawKate.book();
+        CoachTravelBooking coachBookingMWKate = new CoachTravelBooking(coachTravelToWarsaw,
+                (Seat) seatToWarsawKate, false, 3, 2);
         myTrip.getParticipant(kate).addTransportBooking(coachBookingMWKate);
 
-        coachTravelToWarsaw.findSeat(2).bookSeat();
-        CoachTravelBooking coachBookingMWTom = new CoachTravelBooking(coachTravelToWarsaw, 2,
-                false, 1, 3);
+        IBook seatToWarsawTom = coachTravelToWarsaw.findFirstAvailable();
+        seatToWarsawTom.book();
+        CoachTravelBooking coachBookingMWTom = new CoachTravelBooking(coachTravelToWarsaw,
+                (Seat) seatToWarsawTom, false, 1, 3);
         myTrip.getParticipant(tom).addTransportBooking(coachBookingMWTom);
 
 //        add activities for participants

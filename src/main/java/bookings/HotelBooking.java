@@ -4,30 +4,34 @@ import enums.BoardType;
 import hotel.Board;
 import hotel.Hotel;
 import hotel.Room;
+import interfaces.IBook;
+import interfaces.ICost;
 import utils.DateFormat;
 
+import java.awt.print.Book;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
 
-public class HotelBooking extends Booking {
+public class HotelBooking implements ICost {
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private Hotel hotel;
     private Room room;
     private Board board;
+    private boolean isForAdult;
 
     public HotelBooking() {
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, boolean isForAdult, Room room, BoardType boardType) {
-        super(isForAdult);
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.hotel = hotel;
         this.room = room;
         this.board = new Board(boardType);
+        this.isForAdult = isForAdult;
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, Room room, BoardType boardType) {
@@ -39,9 +43,10 @@ public class HotelBooking extends Booking {
         return period.getDays();
     }
 
-    public BigDecimal calculatePrice() {
+    @Override
+    public final BigDecimal calculatePrice() {
         BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
-        return isForAdult() ? totalPrice : totalPrice.divide(new BigDecimal(2));
+        return isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
     }
 
     public LocalDate getDateFrom() {
@@ -84,12 +89,21 @@ public class HotelBooking extends Booking {
         this.board = new Board(boardType);
     }
 
+    public boolean isForAdult() {
+        return isForAdult;
+    }
+
+    public void setForAdult(boolean forAdult) {
+        isForAdult = forAdult;
+    }
+
+    @Override
     public String toString() {
         return String.format("Hotel: %s from %s to %s Is for adult? %b %s Board: %s Total price: %.2f",
                 hotel.getName(),
                 DateFormat.format(dateFrom),
                 DateFormat.format(dateTo),
-                isForAdult(),
+                isForAdult,
                 room,
                 board.getType().getDisplayName(),
                 calculatePrice());
@@ -97,8 +111,11 @@ public class HotelBooking extends Booking {
 
     @Override
     public boolean equals(Object o) {
-        if (!super.equals(o)) return false;
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        if (this.hashCode() != o.hashCode()) return false;
         HotelBooking h = (HotelBooking) o;
+        boolean isForAdultEquals = this.isForAdult == h.isForAdult;
         boolean dateFromEquals = (this.dateFrom == null && h.dateFrom == null)
                 || (this.dateFrom != null && this.dateFrom.equals(h.dateFrom));
         boolean dateToEquals = (this.dateTo == null && h.dateTo == null)
@@ -108,7 +125,7 @@ public class HotelBooking extends Booking {
         boolean roomEquals = (this.room == null && h.room == null) ||
                 (this.room != null && this.room.equals(h.room));
         boolean boardEquals = this.board == h.board;
-        return dateFromEquals && dateToEquals && hotelEquals && roomEquals && boardEquals;
+        return isForAdultEquals && dateFromEquals && dateToEquals && hotelEquals && roomEquals && boardEquals;
     }
 
     @Override

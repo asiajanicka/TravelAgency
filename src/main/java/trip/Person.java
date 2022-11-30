@@ -1,3 +1,5 @@
+package trip;
+
 import java.util.Objects;
 
 public class Person {

@@ -1,13 +1,16 @@
-import destination.activitiy.Activity;
+package trip;
+
 import bookings.HotelBooking;
 import bookings.TransportBooking;
+import destination.activitiy.Activity;
+import interfaces.IDescribe;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Participant {
+public class Participant implements IDescribe {
     private Person person;
     private List<HotelBooking> hotelBookings;
     private List<TransportBooking> transportBookings;
@@ -48,7 +51,8 @@ public class Participant {
         return person;
     }
 
-    public void printBookings() {
+    @Override
+    public void printSummary() {
         System.out.format("%s %s\n", person.getFirstName().toUpperCase(), person.getLastName().toUpperCase());
         printTransportBookings();
         printHotelBookings();
@@ -56,22 +60,22 @@ public class Participant {
         System.out.println();
     }
 
-    public void printTransportBookings() {
+    private void printTransportBookings() {
         System.out.println(" * Transport bookings:");
         transportBookings.forEach(System.out::println);
     }
 
-    public void printHotelBookings() {
+    private void printHotelBookings() {
         System.out.println(" * Hotel bookings:");
         hotelBookings.forEach(System.out::println);
     }
 
-    public void printActivityBookings() {
+    private void printActivityBookings() {
         System.out.println(" * Activity bookings:");
         activities.forEach(System.out::println);
     }
 
-    public BigDecimal calculateTotalBookingCost() {
+    public final BigDecimal calculateTotalBookingCost() {
         BigDecimal hotelBookingsCost = hotelBookings
                 .stream()
                 .map(HotelBooking::calculatePrice)
@@ -136,4 +140,5 @@ public class Participant {
     public int hashCode() {
         return Objects.hash(person, hotelBookings, transportBookings, activities);
     }
+
 }

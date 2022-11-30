@@ -1,4 +1,7 @@
+package trip;
+
 import destination.Destination;
+import interfaces.IDescribe;
 import utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -7,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CustomizedTrip {
+public class CustomizedTrip implements IDescribe {
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Participant> participants;
     private List<Destination> destinations;
-
 
     public CustomizedTrip() {
     }
@@ -26,23 +28,23 @@ public class CustomizedTrip {
     }
 
     public void addDestination(Destination destination) {
-        if(destinations == null){
+        if (destinations == null) {
             destinations = new ArrayList<>();
         }
         destinations.add(destination);
     }
 
     public void addParticipant(Participant person) {
-        if(participants == null){
+        if (participants == null) {
             participants = new ArrayList<>();
         }
         participants.add(person);
     }
 
-    public Participant getParticipant(Person person){
+    public Participant getParticipant(Person person) {
         return participants
                 .stream()
-                .filter(p->p.getPerson().equals(person))
+                .filter(p -> p.getPerson().equals(person))
                 .collect(Collectors.toList())
                 .get(0);
     }
@@ -53,11 +55,11 @@ public class CustomizedTrip {
                 DateFormat.format(startDate), DateFormat.format(endDate));
         System.out.format("TOTAL COST: € %,.2f\n", calculateTotalPrice());
         System.out.println("\nPARTICIPANTS\n---------------------------");
-        participants.stream().map(p->p.getPerson()).forEach(System.out::println);
+        participants.stream().map(p -> p.getPerson()).forEach(System.out::println);
         System.out.println("\nDESTINATIONS\n---------------------------");
         destinations.stream().forEach(System.out::println);
         System.out.println("\nBOOKINGS\n---------------------------");
-        participants.stream().forEach(Participant::printBookings);
+        participants.stream().forEach(Participant::printSummary);
     }
 
     public BigDecimal calculateTotalPrice() {
