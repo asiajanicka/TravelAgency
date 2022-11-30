@@ -22,4 +22,4 @@ At the end program prints info about the trip containing:
 Additionally, in some classes own implementation of equal, hashcode and toString methods is added.
 
 Diagram below shows **class dependencies** applied in the program (without setters, getters, equals, hashcode and toString methods) 
-![](src/main/java/docs/TravelAgencyClassesDiagram.jpg)
+![](src/main/java/docs/TravelAgencyClassesDiagram1.jpg)
