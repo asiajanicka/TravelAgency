@@ -39,25 +39,31 @@ public class TravelAgency {
 //        * create a list of possible ways of transport from Warsaw to Malaga
 //        by plane
         List<Transport> transports = new ArrayList<>();
-        PlaneSeat planeSeat1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
-        PlaneSeat planeSeat2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
-        PlaneSeat planeSeat3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
-        PlaneSeat planeSeat4 = new PlaneSeat(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        PlaneSeat planeSeatWM1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        PlaneSeat planeSeatWM2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        PlaneSeat planeSeatWM3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        PlaneSeat planeSeatWM4 = new PlaneSeat(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
         ArrayList<Seat> planeSeats = new ArrayList<>();
-        planeSeats.add(planeSeat1);
-        planeSeats.add(planeSeat2);
-        planeSeats.add(planeSeat3);
-        planeSeats.add(planeSeat4);
+        planeSeats.add(planeSeatWM1);
+        planeSeats.add(planeSeatWM2);
+        planeSeats.add(planeSeatWM3);
+        planeSeats.add(planeSeatWM4);
         LocalDateTime flightDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
         LocalDateTime flightArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
-        Flight flightWM = new Flight(flightDepartureDateWM, flightArrivalDateWM, City.WARSAW, City.MALAGA, planeSeats);
+        Flight flightWM = new Flight(flightDepartureDateWM, flightArrivalDateWM, City.WARSAW, City.MALAGA,
+                planeSeats);
         transports.add(flightWM);
+
 //        by bus
-        Seat seat1 = new Seat(1, new BigDecimal(3));
-        Seat seat2 = new Seat(2, new BigDecimal(3));
-        ArrayList<Seat> busSeats = new ArrayList<>();
-        busSeats.add(seat1);
-        busSeats.add(seat2);
+        Seat seatWM1 = new Seat(1, new BigDecimal(3));
+        Seat seatWM2 = new Seat(2, new BigDecimal(3));
+        Seat seatWM3 = new Seat(3, new BigDecimal(3));
+        Seat seatWM4 = new Seat(4, new BigDecimal(3));
+        List<Seat> busSeats = new ArrayList<>();
+        busSeats.add(seatWM1);
+        busSeats.add(seatWM2);
+        busSeats.add(seatWM3);
+        busSeats.add(seatWM4);
         LocalDateTime busDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
         LocalDateTime busArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
         CoachTravel coachTravelWM = new CoachTravel(busDepartureDateWM, busArrivalDateWM,
@@ -66,15 +72,34 @@ public class TravelAgency {
 
 //        * create a list of possible ways of transport BACK from Warsaw to Malaga
 //        by plane
+        PlaneSeat planeSeatMW1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        PlaneSeat planeSeatMW2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        PlaneSeat planeSeatMW3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        PlaneSeat planeSeatMW4 = new PlaneSeat(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        List<Seat> planeSeatsBack = new ArrayList<>();
+        planeSeatsBack.add(planeSeatMW1);
+        planeSeatsBack.add(planeSeatMW2);
+        planeSeatsBack.add(planeSeatMW3);
+        planeSeatsBack.add(planeSeatMW4);
         LocalDateTime flightDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime flightArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
-        Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, City.MALAGA, City.WARSAW, planeSeats);
+        Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, City.MALAGA, City.WARSAW, planeSeatsBack);
         transports.add(flightMW);
+
 //        by bus
+        Seat seatMW1 = new Seat(1, new BigDecimal(3));
+        Seat seatMW2 = new Seat(2, new BigDecimal(3));
+        Seat seatMW3 = new Seat(3, new BigDecimal(3));
+        Seat seatMW4 = new Seat(4, new BigDecimal(3));
+        List<Seat> busSeatsBack = new ArrayList<>();
+        busSeatsBack.add(seatMW1);
+        busSeatsBack.add(seatMW2);
+        busSeatsBack.add(seatMW3);
+        busSeatsBack.add(seatMW4);
         LocalDateTime busDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime busArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
         CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW,
-                City.MALAGA, City.WARSAW, busSeats);
+                City.MALAGA, City.WARSAW, busSeatsBack);
         transports.add(coachTravelMW);
 
 //       * create a list of available activities

@@ -63,6 +63,8 @@ public class Room implements IBook {
         this.price = price;
     }
 
+
+
     public String toString() {
         return String.format("Room number: %d Room type: %s", number, type);
     }

@@ -32,8 +32,18 @@ public abstract class Transport implements IFindPlacement {
     }
 
     public IBook find(int num) {
-        return seats.stream().filter(p->p.getNumber() == num).collect(Collectors.toList()).get(0);
-    };
+        return seats.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
+    }
+
+    @Override
+    public List<IBook> findAllAvailable() {
+        return seats.stream().filter(p -> p.isBooked() == false).collect(Collectors.toList());
+    }
+
+    @Override
+    public IBook findFirstAvailable() {
+        return findAllAvailable().get(0);
+    }
 
     public LocalDateTime getDateDeparture() {
         return dateDeparture;

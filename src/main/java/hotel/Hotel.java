@@ -23,8 +23,19 @@ public class Hotel implements IFindPlacement {
         this.rooms = rooms;
     }
 
+    @Override
     public IBook find(int num) {
         return rooms.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
+    }
+
+    @Override
+    public List<IBook> findAllAvailable() {
+        return rooms.stream().filter(p->p.isBooked()==true).collect(Collectors.toList());
+    }
+
+    @Override
+    public IBook findFirstAvailable() {
+        return findAllAvailable().get(0);
     }
 
     public String getName() {

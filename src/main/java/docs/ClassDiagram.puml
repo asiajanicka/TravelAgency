@@ -5,6 +5,14 @@ interface ICost {
 interface IDescribe {
 {abstract} void printSummary()
 }
+interface IBook {
+{abstract} boolean book()
+}
+interface IFindPlacement {
+{abstract} IBook find(int num)
+{abstract} List<IBook> findAllAvailable()
+{abstract} IBook findFirstAvailable()
+}
 class Hotel {
 - String name
 - int numberOfStars
@@ -159,6 +167,10 @@ ICost <|-- TransportBooking
 IDescribe <|--  CustomizedTrip
 IDescribe <|-- Participant
 IDescribe <|-- Destination
+Room <|-- IBook
+Seat <|-- IBook
+Transport <|-- IFindPlacement
+Hotel <|-- IFindPlacement
 Seat <|-- PlaneSeat
 TransportBooking <|-- FlightBooking
 Transport <|-- Flight
