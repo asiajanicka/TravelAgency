@@ -3,6 +3,8 @@ package destination;
 import destination.activitiy.Activity;
 import enums.City;
 import enums.TransportType;
+import exceptions.NoActivityException;
+import exceptions.NoTransportException;
 import hotel.Hotel;
 import interfaces.IDescribe;
 import transport.Transport;
@@ -33,8 +35,11 @@ public class Destination implements IDescribe {
         this.activities = activities;
     }
 
-    public Activity findActivity(String name) {
-        return activities.stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
+    public Activity findActivity(String name) throws NoActivityException {
+        return activities.stream()
+                .filter(p -> p.getName().equals(name))
+                .findFirst()
+                .orElseThrow(()-> new NoActivityException("There is no such activity available at hotel/city"));
     }
 
     public void addActivity(Activity activity) {
@@ -66,10 +71,13 @@ public class Destination implements IDescribe {
         }
     }
 
-    public Transport findTransport(City cityFrom, City cityTo, TransportType type) {
+    public Transport findTransport(City cityFrom, City cityTo, TransportType type) throws NoTransportException {
         return transports.stream().filter(p -> p.getType().equals(type)
                 && p.getCityFrom().equals(cityFrom)
-                && p.getCityTo().equals(cityTo)).collect(Collectors.toList()).get(0);
+                && p.getCityTo().equals(cityTo)).
+                findFirst()
+                .orElseThrow(()-> new NoTransportException(String.format("There is no %s transport available",
+                        type.toString().toLowerCase())));
     }
 
     public Place getPlace() {

@@ -19,8 +19,8 @@ public class Board {
     }
 
     public BigDecimal getPrice() {
-        if(type == null) {
-            return  BigDecimal.ZERO;
+        if (type == null) {
+            return BigDecimal.ZERO;
         }
         BigDecimal result;
         switch (type) {

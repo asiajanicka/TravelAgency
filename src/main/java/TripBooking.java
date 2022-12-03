@@ -6,6 +6,10 @@ import enums.BoardType;
 import enums.City;
 import enums.PlaneBaggage;
 import enums.TransportType;
+import exceptions.NoActivityException;
+import exceptions.NoPlacementAvailableException;
+import exceptions.NoPlacementException;
+import exceptions.NoTransportException;
 import hotel.Room;
 import interfaces.IBook;
 import transport.PlaneSeat;
@@ -68,111 +72,158 @@ public class TripBooking {
         myTrip.addParticipant(new Participant(kate));
         myTrip.addParticipant(new Participant(tom));
 
-//        create hotel bookings for each participant using find by number method
-        malagaEs.getHotel().find(101).book(); // book double room for John and Sue
-        HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
-                (Room) malagaEs.getHotel().find(101), BoardType.ALL_INCLUSIVE);
-        myTrip.getParticipant(john).addHotelBooking(hotelBookingJohn);
+        try {
+            malagaEs.getHotel().find(101).book();
+            HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
+                    (Room) malagaEs.getHotel().find(101), BoardType.ALL_INCLUSIVE);
+            myTrip.getParticipant(john).addHotelBooking(hotelBookingJohn);
+            HotelBooking hotelBookingSue = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
+                    (Room) malagaEs.getHotel().find(101), BoardType.BB);
+            myTrip.getParticipant(sue).addHotelBooking(hotelBookingSue);
+        } catch (NoPlacementException e) {
+            throw new RuntimeException(e);
+        }
 
-        HotelBooking hotelBookingSue = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
-                (Room) malagaEs.getHotel().find(101), BoardType.BB);
-        myTrip.getParticipant(sue).addHotelBooking(hotelBookingSue);
+        try {
+            malagaEs.getHotel().find(102).book(); // book single room for Kate
+            HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
+                    (Room) malagaEs.getHotel().find(102), BoardType.FB);
+            myTrip.getParticipant(kate).addHotelBooking(hotelBookingKate);
+        } catch (NoPlacementException e) {
+            throw new RuntimeException(e);
+        }
 
-        malagaEs.getHotel().find(102).book(); // book single room for Kate
-        HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
-                (Room) malagaEs.getHotel().find(102), BoardType.FB);
-        myTrip.getParticipant(kate).addHotelBooking(hotelBookingKate);
-
-        malagaEs.getHotel().find(103).book(); // book single room for Tom
-        HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
-                (Room) malagaEs.getHotel().find(103), BoardType.FB);
-        myTrip.getParticipant(tom).addHotelBooking(hotelBookingTom);
+        try {
+            malagaEs.getHotel().find(103).book(); // book single room for Tom
+            HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
+                    (Room) malagaEs.getHotel().find(103), BoardType.FB);
+            myTrip.getParticipant(tom).addHotelBooking(hotelBookingTom);
+        } catch (NoPlacementException e) {
+            throw new RuntimeException(e);
+        }
 
 //        create transport bookings for each participant using findFirstAvailable method
 //        * flight to Malaga booking
-        Transport flightToMalaga = malagaEs.findTransport(City.WARSAW, City.MALAGA, TransportType.PLANE);
+        try {
+            Transport flightToMalaga = malagaEs.findTransport(City.WARSAW, City.MALAGA, TransportType.PLANE);
+            try {
+                IBook seatToMalagaForJohn = flightToMalaga.findFirstAvailable();
+                seatToMalagaForJohn.book();
+                FlightBooking flightBookingWMJohn = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForJohn,
+                        PlaneBaggage.HAND, true);
+                myTrip.getParticipant(john).addTransportBooking(flightBookingWMJohn);
+            } catch (NoPlacementAvailableException e) {
+            }
 
-        IBook seatToMalagaForJohn = flightToMalaga.findFirstAvailable();
-        seatToMalagaForJohn.book();
-        FlightBooking flightBookingWMJohn = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForJohn,
-                PlaneBaggage.HAND, true);
-        myTrip.getParticipant(john).addTransportBooking(flightBookingWMJohn);
+            try {
+                IBook seatToMalagaForSue = flightToMalaga.findFirstAvailable();
+                seatToMalagaForSue.book();
+                FlightBooking flightBookingWMSue = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForSue,
+                        PlaneBaggage.CHECKED, true);
+                myTrip.getParticipant(sue).addTransportBooking(flightBookingWMSue);
 
-        IBook seatToMalagaForSue = flightToMalaga.findFirstAvailable();
-        seatToMalagaForSue.book();
-        FlightBooking flightBookingWMSue = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForSue,
-                PlaneBaggage.CHECKED, true);
-        myTrip.getParticipant(sue).addTransportBooking(flightBookingWMSue);
+            } catch (NoPlacementAvailableException e) {
+            }
 
 //        * flight back to Warsaw booking
-        Transport flightToWarsaw = malagaEs.findTransport(City.MALAGA, City.WARSAW, TransportType.PLANE);
+            Transport flightToWarsaw = malagaEs.findTransport(City.MALAGA, City.WARSAW, TransportType.PLANE);
 
-        IBook seatToWarsawForJohn = flightToWarsaw.findFirstAvailable();
-        seatToWarsawForJohn.book();
-        FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForJohn,
-                PlaneBaggage.HAND, true);
-        myTrip.getParticipant(john).addTransportBooking(flightBookingMWJohn);
+            try {
+                IBook seatToWarsawForJohn = flightToWarsaw.findFirstAvailable();
+                seatToWarsawForJohn.book();
+                FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForJohn,
+                        PlaneBaggage.HAND, true);
+                myTrip.getParticipant(john).addTransportBooking(flightBookingMWJohn);
+            } catch (NoPlacementAvailableException e) {
+            }
+            try {
+                IBook seatToWarsawForSue = flightToWarsaw.findFirstAvailable();
+                seatToWarsawForSue.book();
+                FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForSue,
+                        PlaneBaggage.CHECKED, true);
+                myTrip.getParticipant(sue).addTransportBooking(flightBookingMWSue);
 
-        IBook seatToWarsawForSue = flightToWarsaw.findFirstAvailable();
-        seatToWarsawForSue.book();
-        FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForSue,
-                PlaneBaggage.CHECKED, true);
-        myTrip.getParticipant(sue).addTransportBooking(flightBookingMWSue);
+            } catch (NoPlacementAvailableException e) {
+            }
+        } catch (NoTransportException e) {
+            throw new RuntimeException(e);
+        }
 
 //        * coach travel to Malaga booking
-        Transport coachTravelToMalaga = malagaEs.findTransport(City.WARSAW, City.MALAGA, TransportType.BUS);
+        try {
+            Transport coachTravelToMalaga = malagaEs.findTransport(City.WARSAW, City.MALAGA, TransportType.BUS);
+            try {
+                IBook seatToMalagaKate = coachTravelToMalaga.findFirstAvailable();
+                seatToMalagaKate.book();
+                CoachTravelBooking coachBookingWMKate = new CoachTravelBooking(coachTravelToMalaga,
+                        (Seat) seatToMalagaKate, false, 3, 2);
+                myTrip.getParticipant(kate).addTransportBooking(coachBookingWMKate);
+            } catch (NoPlacementAvailableException e) {
+            }
+            try {
+                IBook seatToMalagaTom = coachTravelToMalaga.findFirstAvailable();
+                seatToMalagaTom.book();
+                CoachTravelBooking coachBookingWMTom = new CoachTravelBooking(coachTravelToMalaga,
+                        (Seat) seatToMalagaTom, false, 1, 3);
+                myTrip.getParticipant(tom).addTransportBooking(coachBookingWMTom);
 
-        IBook seatToMalagaKate = coachTravelToMalaga.findFirstAvailable();
-        seatToMalagaKate.book();
-        CoachTravelBooking coachBookingWMKate = new CoachTravelBooking(coachTravelToMalaga,
-                (Seat) seatToMalagaKate, false, 3, 2);
-        myTrip.getParticipant(kate).addTransportBooking(coachBookingWMKate);
+            } catch (NoPlacementAvailableException e) {
+            }
+        } catch (NoTransportException e) {
 
-        IBook seatToMalagaTom = coachTravelToMalaga.findFirstAvailable();
-        seatToMalagaTom.book();
-        CoachTravelBooking coachBookingWMTom = new CoachTravelBooking(coachTravelToMalaga,
-                (Seat) seatToMalagaTom, false, 1, 3);
-        myTrip.getParticipant(tom).addTransportBooking(coachBookingWMTom);
+        }
 
 //        * coach travel back to Warsaw booking
-        Transport coachTravelToWarsaw = malagaEs.findTransport(City.MALAGA, City.WARSAW, TransportType.BUS);
+        try {
+            Transport coachTravelToWarsaw = malagaEs.findTransport(City.MALAGA, City.WARSAW, TransportType.BUS);
+            try {
+                IBook seatToWarsawKate = coachTravelToWarsaw.findFirstAvailable();
+                seatToWarsawKate.book();
+                CoachTravelBooking coachBookingMWKate = new CoachTravelBooking(coachTravelToWarsaw,
+                        (Seat) seatToWarsawKate, false, 3, 2);
+                myTrip.getParticipant(kate).addTransportBooking(coachBookingMWKate);
+            } catch (NoPlacementAvailableException e) {
+            }
+            try {
+                IBook seatToWarsawTom = coachTravelToWarsaw.findFirstAvailable();
+                seatToWarsawTom.book();
+                CoachTravelBooking coachBookingMWTom = new CoachTravelBooking(coachTravelToWarsaw,
+                        (Seat) seatToWarsawTom, false, 1, 3);
+                myTrip.getParticipant(tom).addTransportBooking(coachBookingMWTom);
+            } catch (NoPlacementAvailableException e) {
+            }
+        } catch (NoTransportException e) {
+            throw new RuntimeException(e);
+        }
 
-        IBook seatToWarsawKate = coachTravelToWarsaw.findFirstAvailable();
-        seatToWarsawKate.book();
-        CoachTravelBooking coachBookingMWKate = new CoachTravelBooking(coachTravelToWarsaw,
-                (Seat) seatToWarsawKate, false, 3, 2);
-        myTrip.getParticipant(kate).addTransportBooking(coachBookingMWKate);
-
-        IBook seatToWarsawTom = coachTravelToWarsaw.findFirstAvailable();
-        seatToWarsawTom.book();
-        CoachTravelBooking coachBookingMWTom = new CoachTravelBooking(coachTravelToWarsaw,
-                (Seat) seatToWarsawTom, false, 1, 3);
-        myTrip.getParticipant(tom).addTransportBooking(coachBookingMWTom);
 
 //        add activities for participants
-        myTrip.getParticipant(john).addActivity(malagaEs.findActivity("Football Match"));
-        myTrip.getParticipant(sue).addActivity(malagaEs.findActivity("Banana Boat Ride"));
-        myTrip.getParticipant(sue).addActivity(malagaEs.findActivity("Caminito Del Rey Tour"));
-        myTrip.getParticipant(kate).addActivity(malagaEs.findActivity("Beach Volleyball"));
-        myTrip.getParticipant(tom).addActivity(malagaEs.findActivity("Football Match"));
+        try {
+            myTrip.getParticipant(john).addActivity(malagaEs.findActivity("Football Match"));
+        } catch (NoActivityException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            myTrip.getParticipant(sue).addActivity(malagaEs.findActivity("Banana Boat Ride"));
+        } catch (NoActivityException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            myTrip.getParticipant(sue).addActivity(malagaEs.findActivity("Caminito Del Rey Tour"));
+        } catch (NoActivityException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            myTrip.getParticipant(kate).addActivity(malagaEs.findActivity("Beach Volleyball"));
+        } catch (NoActivityException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            myTrip.getParticipant(tom).addActivity(malagaEs.findActivity("Football Match"));
+        } catch (NoActivityException e) {
+            throw new RuntimeException(e);
+        }
 
         myTrip.printSummary();
-
-//        * checking equal method implementation
-//        AtHotelActivity a1 = new AtHotelActivity();
-//        AtHotelActivity a2 = (AtHotelActivity) malagaEs.findActivity("Football Match");
-//        AtHotelActivity a3 = (AtHotelActivity) malagaEs.findActivity("Football Match");
-//        AtHotelActivity a4 = (AtHotelActivity) malagaEs.findActivity("Beach Volleyball");
-//        AtHotelActivity a5 = null;
-//        AtHotelActivity a6 = null;
-//        AtHotelActivity a7 = new AtHotelActivity();
-//
-//        System.out.println("Checking equal function for Activity objects");
-//        System.out.println("1: " + a1.equals(a7));  // two empty objects -> true
-//        System.out.println("2: " + a1.equals(a6));  // empty obj & null -> false
-//        System.out.println("3: " + a2.equals(a2));  // the same obj -> true
-//        System.out.println("4: " + a2.equals(a3));  // two different but equal obj -> true
-//        System.out.println("5: " + a3.equals(a2));  // two different but equal obj ->true
-//        System.out.println("6: " + a2.equals(a4));  // two different & unequal obj -> false
     }
 }

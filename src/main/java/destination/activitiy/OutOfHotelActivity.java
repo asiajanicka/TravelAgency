@@ -86,12 +86,12 @@ public class OutOfHotelActivity extends Activity {
     public int hashCode() {
         int addressHash = 0;
         int isTransportProvidedHash = isTransportProvided ? 19 : 4;
-        int lengthInHoursHash = (int) lengthInHours ;
+        int lengthInHoursHash = (int) lengthInHours;
         int languageHash = 0;
-        if (!(this.address == null)) {
+        if (this.address != null) {
             addressHash = address.hashCode();
         }
-        if (!(this.address == null)) {
+        if (this.address != null) {
             languageHash = language.hashCode();
         }
         return 3 * super.hashCode() + 7 * addressHash + 13 * isTransportProvidedHash

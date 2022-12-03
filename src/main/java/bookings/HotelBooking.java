@@ -1,14 +1,13 @@
 package bookings;
 
 import enums.BoardType;
+import exceptions.InvalidTimePeriodException;
 import hotel.Board;
 import hotel.Hotel;
 import hotel.Room;
-import interfaces.IBook;
 import interfaces.ICost;
 import utils.DateFormat;
 
-import java.awt.print.Book;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
@@ -25,7 +24,8 @@ public class HotelBooking implements ICost {
     public HotelBooking() {
     }
 
-    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, boolean isForAdult, Room room, BoardType boardType) {
+    public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, boolean isForAdult, Room room,
+                        BoardType boardType) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.hotel = hotel;
@@ -38,14 +38,24 @@ public class HotelBooking implements ICost {
         this(dateFrom, dateTo, hotel, false, room, boardType);
     }
 
-    private int getLengthOfStaying() {
+    private int getLengthOfStaying() throws InvalidTimePeriodException {
         Period period = Period.between(dateFrom, dateTo);
+        if (period.isNegative()) {
+            throw new InvalidTimePeriodException("End date for hotel booking is before start date");
+        }
         return period.getDays();
     }
 
     @Override
     public final BigDecimal calculatePrice() {
-        BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
+        BigDecimal totalPrice;
+        try {
+            totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
+        } catch (InvalidTimePeriodException e) {
+            totalPrice = BigDecimal.ZERO;
+            this.dateFrom = null;
+            this.dateTo = null;
+        }
         return isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
     }
 

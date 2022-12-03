@@ -33,11 +33,15 @@ public class Participant implements IDescribe {
         transportBookings.add(transport);
     }
 
-    public void addHotelBooking(HotelBooking hotel) {
+    public void addHotelBooking(HotelBooking hotelBooking) {
         if (hotelBookings == null) {
             hotelBookings = new ArrayList<>();
         }
-        hotelBookings.add(hotel);
+        if(hotelBooking.getDateFrom().isBefore(hotelBooking.getDateTo())){
+            hotelBookings.add(hotelBooking);
+        } else {
+            // log info
+        }
     }
 
     public void addActivity(Activity activity) {

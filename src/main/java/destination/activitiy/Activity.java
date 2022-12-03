@@ -66,13 +66,13 @@ public abstract class Activity {
         int nameHash = 0;
         int dateHash = 0;
         int priceHash = 0;
-        if (!(this.name == null)) {
+        if (this.name != null) {
             nameHash = name.hashCode();
         }
-        if (!(this.date == null)) {
+        if (this.date != null) {
             dateHash = date.hashCode();
         }
-        if (!(this.price == null)) {
+        if (this.price != null) {
             priceHash = price.hashCode();
         }
         return 5 * nameHash + 7 * dateHash + 11 * priceHash;

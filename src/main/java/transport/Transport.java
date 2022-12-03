@@ -2,6 +2,8 @@ package transport;
 
 import enums.City;
 import enums.TransportType;
+import exceptions.NoPlacementAvailableException;
+import exceptions.NoPlacementException;
 import interfaces.IBook;
 import interfaces.IFindPlacement;
 import utils.DateFormat;
@@ -31,8 +33,13 @@ public abstract class Transport implements IFindPlacement {
         this.seats = seats;
     }
 
-    public IBook find(int num) {
-        return seats.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
+    @Override
+    public IBook find(int num) throws NoPlacementException {
+        return seats.stream()
+                .filter(p -> p.getNumber() == num)
+                .findFirst()
+                .orElseThrow(() -> new NoPlacementException(String.format("There is no seat with number %d in the %s.",
+                        num, type.toString().toLowerCase())));
     }
 
     @Override
@@ -41,8 +48,12 @@ public abstract class Transport implements IFindPlacement {
     }
 
     @Override
-    public IBook findFirstAvailable() {
-        return findAllAvailable().get(0);
+    public IBook findFirstAvailable() throws NoPlacementAvailableException {
+        if (findAllAvailable().size() == 0) {
+            throw new NoPlacementAvailableException(
+                    String.format("There is no free seat in %s. All seats are booked.", type.toString().toLowerCase()));
+        } else
+            return findAllAvailable().get(0);
     }
 
     public LocalDateTime getDateDeparture() {

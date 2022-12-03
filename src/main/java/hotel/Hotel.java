@@ -1,7 +1,9 @@
 package hotel;
 
+import exceptions.NoPlacementAvailableException;
 import interfaces.IBook;
 import interfaces.IFindPlacement;
+import exceptions.NoPlacementException;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,8 +26,12 @@ public class Hotel implements IFindPlacement {
     }
 
     @Override
-    public IBook find(int num) {
-        return rooms.stream().filter(p -> p.getNumber() == num).collect(Collectors.toList()).get(0);
+    public IBook find(int num) throws NoPlacementException {
+        return rooms.stream()
+                .filter(p -> p.getNumber() == num)
+                .findFirst()
+                .orElseThrow(() -> new NoPlacementException(String.format("There is no room with number %d in the " +
+                        "hotel %s.", num, name)));
     }
 
     @Override
@@ -34,8 +40,12 @@ public class Hotel implements IFindPlacement {
     }
 
     @Override
-    public IBook findFirstAvailable() {
-        return findAllAvailable().get(0);
+    public IBook findFirstAvailable() throws NoPlacementAvailableException {
+        if (findAllAvailable().size() == 0) {
+            throw new NoPlacementAvailableException(
+                    String.format("There is no free room in the hotel %s. All rooms are booked.", name));
+        } else
+            return findAllAvailable().get(0);
     }
 
     public String getName() {
