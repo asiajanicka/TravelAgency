@@ -66,6 +66,7 @@ public class CustomizedTrip implements IDescribe {
         return participants.stream()
                 .map(d -> d.calculateTotalBookingCost())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+ //       logger.debug(price calculeted value)
     }
 
     public List<Destination> getDestinations() {

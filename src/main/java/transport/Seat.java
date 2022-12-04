@@ -1,6 +1,8 @@
 package transport;
 
 import interfaces.IBook;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -9,6 +11,7 @@ public class Seat implements IBook {
     private int number;
     private BigDecimal price;
     private boolean isBooked;
+    private static final Logger logger = LogManager.getLogger(Seat.class);
 
     public Seat() {
     }
@@ -18,11 +21,14 @@ public class Seat implements IBook {
         this.price = price;
     }
 
+    @Override
     public boolean book() {
-        if (isBooked == false) {
+        if (!isBooked) {
             isBooked = true;
+            logger.debug(String.format("Seat %d has been booked successfully", number));
             return true;
         }
+        logger.debug(String.format("Seat %d can't be booked as its status is already booked", number));
         return false;
     }
 

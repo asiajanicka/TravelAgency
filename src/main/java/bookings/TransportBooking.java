@@ -1,6 +1,8 @@
 package bookings;
 
 import interfaces.ICost;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import transport.Seat;
 import transport.Transport;
 
@@ -10,6 +12,7 @@ public abstract class TransportBooking implements ICost {
     private Transport transport;
     private Seat seat;
     private boolean isForAdult;
+    private static final Logger logger = LogManager.getLogger(TransportBooking.class);
 
     TransportBooking() {
     }
@@ -21,14 +24,18 @@ public abstract class TransportBooking implements ICost {
     }
 
     public BigDecimal getPriceForSeat() {
-        return isForAdult ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
+        BigDecimal priceForSeat = isForAdult ? seat.getPrice() : seat.getPrice().divide(new BigDecimal(2));
+        logger.debug(String.format("Transport booking - calculated price for seat: %,.2f", priceForSeat));
+        return priceForSeat;
     }
 
     protected abstract BigDecimal getPriceForLuggage();
 
     @Override
     public final BigDecimal calculatePrice() {
-        return getPriceForSeat().add(getPriceForLuggage());
+        BigDecimal price = getPriceForSeat().add(getPriceForLuggage());
+        logger.debug(String.format("Transport booking - calculated price: %,.2f", price));
+        return price;
     }
 
     public Transport getTransport() {

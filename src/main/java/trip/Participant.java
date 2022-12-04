@@ -93,6 +93,7 @@ public class Participant implements IDescribe {
                 .map(Activity::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         return hotelBookingsCost.add(transportBookingsCost).add(activitiesBookingsCost);
+  //      logger.debug(total calculated cost + partial costs)
     }
 
     public void setPerson(Person person) {

@@ -12,7 +12,6 @@ import transport.Transport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Destination implements IDescribe {
     private Place place;
@@ -39,7 +38,7 @@ public class Destination implements IDescribe {
         return activities.stream()
                 .filter(p -> p.getName().equals(name))
                 .findFirst()
-                .orElseThrow(()-> new NoActivityException("There is no such activity available at hotel/city"));
+                .orElseThrow(() -> new NoActivityException("There is no such activity available at hotel/city"));
     }
 
     public void addActivity(Activity activity) {
@@ -72,12 +71,11 @@ public class Destination implements IDescribe {
     }
 
     public Transport findTransport(City cityFrom, City cityTo, TransportType type) throws NoTransportException {
-        return transports.stream().filter(p -> p.getType().equals(type)
-                && p.getCityFrom().equals(cityFrom)
-                && p.getCityTo().equals(cityTo)).
-                findFirst()
-                .orElseThrow(()-> new NoTransportException(String.format("There is no %s transport available",
-                        type.toString().toLowerCase())));
+        return transports.stream()
+                .filter(p -> p.getType().equals(type) && p.getCityFrom().equals(cityFrom) && p.getCityTo().equals(cityTo))
+                .findFirst()
+                .orElseThrow(() -> new NoTransportException(String.format("There is no %s available from %s to %s",
+                        type, cityFrom, cityTo)));
     }
 
     public Place getPlace() {

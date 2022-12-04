@@ -6,6 +6,8 @@ import hotel.Board;
 import hotel.Hotel;
 import hotel.Room;
 import interfaces.ICost;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ public class HotelBooking implements ICost {
     private Room room;
     private Board board;
     private boolean isForAdult;
+    private static final Logger logger = LogManager.getLogger(HotelBooking.class);
 
     public HotelBooking() {
     }
@@ -41,8 +44,11 @@ public class HotelBooking implements ICost {
     private int getLengthOfStaying() throws InvalidTimePeriodException {
         Period period = Period.between(dateFrom, dateTo);
         if (period.isNegative()) {
+            logger.error(String.format("Hotel Booking - length of staying has negative value: from % to %,",
+                    DateFormat.format(dateFrom), DateFormat.format(dateTo)));
             throw new InvalidTimePeriodException("End date for hotel booking is before start date");
         }
+        logger.debug(String.format("Hotel Booking - calculated length of staying: %d", period.getDays()));
         return period.getDays();
     }
 
@@ -52,11 +58,14 @@ public class HotelBooking implements ICost {
         try {
             totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
         } catch (InvalidTimePeriodException e) {
-            totalPrice = BigDecimal.ZERO;
-            this.dateFrom = null;
-            this.dateTo = null;
+            totalPrice = null;
+            logger.error("Hotel Booking - total price set to null", e);
         }
-        return isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
+        BigDecimal priceForHotel = isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
+        logger.debug(String.format("Hotel booking - calculated price [%,.2f] as sum of room price [%,.2f] and board" +
+                        "[%,.2f] multiplied by length of staying [if not for adult -> divided by 2]",
+                priceForHotel, room.getPrice(), board.getPrice()));
+        return priceForHotel;
     }
 
     public LocalDate getDateFrom() {

@@ -20,6 +20,7 @@ public class TravelAgency {
 
     public TravelAgency() {
         addDestination(initMalaga());
+
     }
 
     private Destination initMalaga() {

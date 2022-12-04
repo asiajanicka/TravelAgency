@@ -2,6 +2,8 @@ package hotel;
 
 import enums.RoomType;
 import interfaces.IBook;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -11,6 +13,7 @@ public class Room implements IBook {
     private RoomType type;
     private BigDecimal price;
     private boolean isBooked;
+    private static final Logger logger = LogManager.getLogger(Room.class);
 
     public Room() {
     }
@@ -24,11 +27,14 @@ public class Room implements IBook {
 
     @Override
     public boolean book() {
-        if(isBooked == false){
+        if (!isBooked) {
             isBooked = true;
+            logger.debug(String.format("Room %d has been booked successfully", number));
             return true;
+        } else {
+            logger.debug(String.format("Room %d can't be booked as its status is already booked", number));
+            return false;
         }
-        return false;
     }
 
     public boolean isBooked() {
@@ -62,8 +68,6 @@ public class Room implements IBook {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
-
 
     public String toString() {
         return String.format("Room number: %d Room type: %s", number, type);

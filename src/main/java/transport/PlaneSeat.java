@@ -23,7 +23,7 @@ public class PlaneSeat extends Seat {
         this.type = type;
     }
 
-   @Override
+    @Override
     public String toString() {
         return String.format("%s Type: %s", super.toString(), type);
     }

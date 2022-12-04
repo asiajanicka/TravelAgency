@@ -1,5 +1,7 @@
 package bookings;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import transport.Seat;
 import transport.Transport;
 
@@ -10,6 +12,7 @@ public class CoachTravelBooking extends TransportBooking {
     private static final String PRICE_FOR_LARGE_SUITCASE = "8";
     private int numberOfSmallSuitcases;
     private int numberOfLargeSuitcases;
+    private static final Logger logger = LogManager.getLogger(CoachTravelBooking.class);
 
     public CoachTravelBooking() {
     }
@@ -28,8 +31,10 @@ public class CoachTravelBooking extends TransportBooking {
     protected final BigDecimal getPriceForLuggage() {
         BigDecimal priceForLargeSuitcase = new BigDecimal(PRICE_FOR_LARGE_SUITCASE);
         BigDecimal priceForSmallSuitcase = new BigDecimal(PRICE_FOR_SMALL_SUITCASE);
-        return priceForLargeSuitcase.multiply(new BigDecimal(numberOfLargeSuitcases))
+        BigDecimal priceForLuggage = priceForLargeSuitcase.multiply(new BigDecimal(numberOfLargeSuitcases))
                 .add(priceForSmallSuitcase.multiply(new BigDecimal(numberOfSmallSuitcases)));
+        logger.debug(String.format("Coach Travel Booking - calculated price for luggage: %,.2f", priceForLuggage));
+        return priceForLuggage;
     }
 
     public int getNumberOfSmallSuitcases() {
