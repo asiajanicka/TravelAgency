@@ -69,10 +69,12 @@ public class Room implements IBook {
         this.price = price;
     }
 
+    @Override
     public String toString() {
         return String.format("Room number: %d Room type: %s", number, type);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         if (this.getClass() != o.getClass()) return false;
@@ -85,6 +87,7 @@ public class Room implements IBook {
         return numberEquals && typeEquals && priceEquals;
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(number, type, price);
     }

@@ -2,19 +2,21 @@ package trip;
 
 import destination.Destination;
 import interfaces.IDescribe;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.DateFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomizedTrip implements IDescribe {
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Participant> participants;
     private List<Destination> destinations;
+    private static final Logger logger = LogManager.getLogger(CustomizedTrip.class);
 
     public CustomizedTrip() {
     }
@@ -41,14 +43,7 @@ public class CustomizedTrip implements IDescribe {
         participants.add(person);
     }
 
-    public Participant getParticipant(Person person) {
-        return participants
-                .stream()
-                .filter(p -> p.getPerson().equals(person))
-                .collect(Collectors.toList())
-                .get(0);
-    }
-
+    @Override
     public void printSummary() {
         System.out.println("TRIP INFO\n---------------------------");
         System.out.format("FROM %s TO %s\n",
@@ -63,10 +58,11 @@ public class CustomizedTrip implements IDescribe {
     }
 
     public BigDecimal calculateTotalPrice() {
-        return participants.stream()
+        BigDecimal totalForAll = participants.stream()
                 .map(d -> d.calculateTotalBookingCost())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
- //       logger.debug(price calculeted value)
+        logger.debug(String.format("Customized Trip - calculated total cost of trip: %,.2f", totalForAll));
+        return totalForAll;
     }
 
     public List<Destination> getDestinations() {

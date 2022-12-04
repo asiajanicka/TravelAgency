@@ -28,6 +28,7 @@ public class CoachTravelBooking extends TransportBooking {
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;
     }
 
+    @Override
     protected final BigDecimal getPriceForLuggage() {
         BigDecimal priceForLargeSuitcase = new BigDecimal(PRICE_FOR_LARGE_SUITCASE);
         BigDecimal priceForSmallSuitcase = new BigDecimal(PRICE_FOR_SMALL_SUITCASE);

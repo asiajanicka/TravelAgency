@@ -18,7 +18,6 @@ class Hotel {
 - int numberOfStars
 - String address
 - List<Room> rooms
-+ Room findRoom(int)
 }
 class PlaneSeat {
 - PlaneSeatType type
@@ -27,7 +26,6 @@ class Seat {
 - int number
 - BigDecimal price
 - boolean isBooked
-+ boolean bookSeat()
 }
 class Participant {
 - Person person
@@ -53,8 +51,6 @@ class CustomizedTrip {
 - List<Destination> destinations
 + void addDestination(Destination)
 + void addParticipant(Participant)
-+ Participant getParticipant(Person)
-'+ void printSummary()
 + BigDecimal calculateTotalPrice()
 }
 class HotelBooking {
@@ -90,7 +86,6 @@ abstract class Transport {
 - City cityTo
 - TransportType type
 - List<Seat> seats
-+ Seat findSeat(int)
 }
 class Place {
 - Country country
@@ -124,7 +119,6 @@ class Destination {
 + Activity findActivity(String)
 + void addActivity(Activity)
 + void addTransport(Transport)
-'+ void printDestinationSummary()
 + Transport findTransport(City,City,TransportType)
 }
 abstract class TransportBooking {
@@ -167,10 +161,10 @@ ICost <|-- TransportBooking
 IDescribe <|--  CustomizedTrip
 IDescribe <|-- Participant
 IDescribe <|-- Destination
-Room <|-- IBook
-Seat <|-- IBook
-Transport <|-- IFindPlacement
-Hotel <|-- IFindPlacement
+IBook <|-- Room
+IBook <|-- Seat
+IFindPlacement <|-- Transport
+IFindPlacement <|-- Hotel
 Seat <|-- PlaneSeat
 TransportBooking <|-- FlightBooking
 Transport <|-- Flight

@@ -60,6 +60,7 @@ public class Board {
         this.type = type;
     }
 
+    @Override
     public String toString() {
         return "Board type: " + type;
     }

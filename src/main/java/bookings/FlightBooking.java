@@ -24,6 +24,7 @@ public class FlightBooking extends TransportBooking {
         this.baggage = PlaneBaggage.CHECKED;
     }
 
+    @Override
     protected final BigDecimal getPriceForLuggage() {
         BigDecimal priceForLuggage;
         switch (baggage) {
@@ -53,8 +54,6 @@ public class FlightBooking extends TransportBooking {
     @Override
     public String toString() {
         return String.format("%s Baggage: %s Total price: %.2f",
-                super.toString(),
-                baggage,
-                calculatePrice());
+                super.toString(), baggage, calculatePrice());
     }
 }

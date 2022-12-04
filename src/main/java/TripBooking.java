@@ -47,17 +47,18 @@ public class TripBooking {
         logger.debug(String.format("Customized trip - date set: from %s to %s",
                 DateFormat.format(startDate), DateFormat.format(endDate)));
 
-        Person john = new Person("1", "John", "Smith", 46);
-        logger.debug(String.format("Customized trip - participant added: %s ", john));
-        Person sue = new Person("2", "Sue", "Smith", 45);
-        myTrip.addParticipant(new Participant(sue));
-        logger.debug(String.format("Customized trip - participant added: %s ", sue));
-        Person kate = new Person("3", "Kate", "Smith", 17);
-        myTrip.addParticipant(new Participant(kate));
-        logger.debug(String.format("Customized trip - participant added: %s ", kate));
-        Person tom = new Person("4", "Tom", "Smith", 15);
-        myTrip.addParticipant(new Participant(tom));
-        logger.debug(String.format("Customized trip - participant added: %s ", tom));
+        City goFromCity = City.WARSAW;
+        City goToCity = City.MALAGA;
+        City goBackFromCity = goToCity;
+        City goBackToCity = goFromCity;
+
+        Participant participantJohn = new Participant(new Person("1", "John", "Smith", 46));
+        Participant participantSue = new Participant(new Person("2", "Sue", "Smith", 45));
+        Participant participantKate = new Participant(new Person("3", "Kate", "Smith", 17));
+        Participant participantTom = new Participant(new Person("4", "Tom", "Smith", 15));
+
+        TransportType transportTypeJohnSue = TransportType.PLANE;
+        TransportType transportTypeKateTom = TransportType.BUS;
 
         try {
             int roomNumberJohnSue = 101;
@@ -65,14 +66,14 @@ public class TripBooking {
             logger.debug(String.format("Room %d at %s booked", roomNumberJohnSue, malagaEs.getHotel().getName()));
             HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
                     (Room) malagaEs.getHotel().find(roomNumberJohnSue), BoardType.ALL_INCLUSIVE);
-            myTrip.getParticipant(john).addHotelBooking(hotelBookingJohn);
-            logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
-                    john, roomNumberJohnSue, malagaEs.getHotel()));
+            participantJohn.addHotelBooking(hotelBookingJohn);
+            logger.debug(String.format("Customized trip - new hotel booking added for [%s]: room %d at %s",
+                    participantJohn.getPerson(), roomNumberJohnSue, malagaEs.getHotel()));
             HotelBooking hotelBookingSue = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
                     (Room) malagaEs.getHotel().find(roomNumberJohnSue), BoardType.BB);
-            myTrip.getParticipant(sue).addHotelBooking(hotelBookingSue);
-            logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
-                    sue, roomNumberJohnSue, malagaEs.getHotel()));
+            participantSue.addHotelBooking(hotelBookingSue);
+            logger.debug(String.format("Customized trip - new hotel booking added for [%s]: room %d at %s",
+                    participantSue.getPerson(), roomNumberJohnSue, malagaEs.getHotel()));
         } catch (NoPlacementException e) {
             logger.error("Search room by number failed. No hotel booking could be done", e);
         }
@@ -83,9 +84,9 @@ public class TripBooking {
             logger.debug(String.format("Room %d at %s booked", roomNumberKate, malagaEs.getHotel().getName()));
             HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
                     (Room) malagaEs.getHotel().find(roomNumberKate), BoardType.FB);
-            myTrip.getParticipant(kate).addHotelBooking(hotelBookingKate);
+            participantKate.addHotelBooking(hotelBookingKate);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
-                    kate, roomNumberKate, malagaEs.getHotel()));
+                    participantKate.getPerson(), roomNumberKate, malagaEs.getHotel()));
         } catch (NoPlacementException e) {
             logger.error("Search room by number failed. No hotel booking could be done.", e);
         }
@@ -96,18 +97,12 @@ public class TripBooking {
             logger.debug(String.format("Room %d at %s booked", roomNumberTom, malagaEs.getHotel().getName()));
             HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
                     (Room) malagaEs.getHotel().find(roomNumberTom), BoardType.FB);
-            myTrip.getParticipant(tom).addHotelBooking(hotelBookingTom);
+            participantTom.addHotelBooking(hotelBookingTom);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
-                    tom, roomNumberTom, malagaEs.getHotel()));
+                    participantTom.getPerson(), roomNumberTom, malagaEs.getHotel()));
         } catch (NoPlacementException e) {
             logger.error("Search room by number failed. No hotel booking could be done.", e);
         }
-
-        City goFromCity = City.WARSAW;
-        City goToCity = City.MALAGA;
-        City goBackFromCity = goToCity;
-        City goBackToCity = goFromCity;
-        TransportType transportTypeJohnSue = TransportType.PLANE;
 
         try {
             Transport flightToMalaga = malagaEs.findTransport(goFromCity, goToCity, transportTypeJohnSue);
@@ -118,12 +113,12 @@ public class TripBooking {
                         ((Seat) seatToMalagaForJohn).getNumber(), goFromCity, goToCity));
                 FlightBooking flightBookingWMJohn = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForJohn,
                         PlaneBaggage.HAND, true);
-                myTrip.getParticipant(john).addTransportBooking(flightBookingWMJohn);
+                participantJohn.addTransportBooking(flightBookingWMJohn);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        john, transportTypeJohnSue, flightToMalaga));
+                        participantJohn.getPerson(), transportTypeJohnSue, flightToMalaga));
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                        "No transport booking for %s could be done.", goFromCity, goToCity, transportTypeJohnSue, john), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goFromCity, goToCity, transportTypeJohnSue, participantJohn.getPerson()), e);
             }
 
             try {
@@ -133,12 +128,12 @@ public class TripBooking {
                         ((Seat) seatToMalagaForSue).getNumber(), goFromCity, goToCity));
                 FlightBooking flightBookingWMSue = new FlightBooking(flightToMalaga, (PlaneSeat) seatToMalagaForSue,
                         PlaneBaggage.CHECKED, true);
-                myTrip.getParticipant(sue).addTransportBooking(flightBookingWMSue);
+                participantSue.addTransportBooking(flightBookingWMSue);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        sue, transportTypeJohnSue, flightToMalaga));
+                        participantSue.getPerson(), transportTypeJohnSue, flightToMalaga));
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                        "No transport booking for %s could be done.", goFromCity, goToCity, transportTypeJohnSue, sue), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goFromCity, goToCity, transportTypeJohnSue, participantSue.getPerson()), e);
             }
         } catch (NoTransportException e) {
             logger.error(String.format("Search transport by city and type failed. No transport %s from %s to %s is available.",
@@ -147,7 +142,6 @@ public class TripBooking {
 
         try {
             Transport flightToWarsaw = malagaEs.findTransport(goBackFromCity, goBackToCity, transportTypeJohnSue);
-
             try {
                 IBook seatToWarsawForJohn = flightToWarsaw.findFirstAvailable();
                 seatToWarsawForJohn.book();
@@ -156,13 +150,13 @@ public class TripBooking {
                 FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForJohn,
                         PlaneBaggage.HAND, true);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        john, transportTypeJohnSue, flightToWarsaw));
-                myTrip.getParticipant(john).addTransportBooking(flightBookingMWJohn);
+                        participantJohn.getPerson(), transportTypeJohnSue, flightToWarsaw));
+                participantJohn.addTransportBooking(flightBookingMWJohn);
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                        "No transport booking for %s could be done.", goBackFromCity, goBackToCity,
-                        transportTypeJohnSue, john), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goBackFromCity, goBackToCity, transportTypeJohnSue, participantJohn.getPerson()), e);
             }
+
             try {
                 IBook seatToWarsawForSue = flightToWarsaw.findFirstAvailable();
                 seatToWarsawForSue.book();
@@ -170,20 +164,18 @@ public class TripBooking {
                         ((Seat) seatToWarsawForSue).getNumber(), goBackFromCity, goBackToCity));
                 FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForSue,
                         PlaneBaggage.CHECKED, true);
-                myTrip.getParticipant(sue).addTransportBooking(flightBookingMWSue);
+                participantSue.addTransportBooking(flightBookingMWSue);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        sue, transportTypeJohnSue, flightToWarsaw));
+                        participantSue.getPerson(), transportTypeJohnSue, flightToWarsaw));
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                                "No transport booking for %s could be done.", goBackFromCity, goBackToCity,
-                        transportTypeJohnSue, sue), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goBackFromCity, goBackToCity, transportTypeJohnSue, participantSue.getPerson()), e);
             }
         } catch (NoTransportException e) {
             logger.error(String.format("Search transport by city and type failed. No transport %s from %s to %s is available.",
                     transportTypeJohnSue, goBackFromCity, goBackToCity), e);
         }
 
-        TransportType transportTypeKateTom = TransportType.BUS;
         try {
             Transport coachTravelToMalaga = malagaEs.findTransport(goFromCity, goToCity, transportTypeKateTom);
             try {
@@ -191,26 +183,25 @@ public class TripBooking {
                 seatToMalagaKate.book();
                 CoachTravelBooking coachBookingWMKate = new CoachTravelBooking(coachTravelToMalaga,
                         (Seat) seatToMalagaKate, false, 3, 2);
-                myTrip.getParticipant(kate).addTransportBooking(coachBookingWMKate);
+                participantKate.addTransportBooking(coachBookingWMKate);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        kate, transportTypeKateTom, coachTravelToMalaga));
+                        participantKate.getPerson(), transportTypeKateTom, coachTravelToMalaga));
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                                "No transport booking for %s could be done.", goFromCity, goToCity,
-                        transportTypeKateTom, kate), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goFromCity, goToCity, transportTypeKateTom, participantKate.getPerson()), e);
             }
+
             try {
                 IBook seatToMalagaTom = coachTravelToMalaga.findFirstAvailable();
                 seatToMalagaTom.book();
                 CoachTravelBooking coachBookingWMTom = new CoachTravelBooking(coachTravelToMalaga,
                         (Seat) seatToMalagaTom, false, 1, 3);
-                myTrip.getParticipant(tom).addTransportBooking(coachBookingWMTom);
+                participantTom.addTransportBooking(coachBookingWMTom);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        tom, transportTypeKateTom, coachTravelToMalaga));
+                        participantTom.getPerson(), transportTypeKateTom, coachTravelToMalaga));
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                                "No transport booking for %s could be done.", goFromCity, goToCity,
-                        transportTypeKateTom, tom), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goFromCity, goToCity, transportTypeKateTom, participantTom.getPerson()), e);
             }
         } catch (NoTransportException e) {
             logger.error(String.format("Search transport by city and type failed. No transport %s from %s to %s is available.",
@@ -224,29 +215,29 @@ public class TripBooking {
                 seatToWarsawKate.book();
                 CoachTravelBooking coachBookingMWKate = new CoachTravelBooking(coachTravelToWarsaw,
                         (Seat) seatToWarsawKate, false, 3, 2);
-                myTrip.getParticipant(kate).addTransportBooking(coachBookingMWKate);
+                participantKate.addTransportBooking(coachBookingMWKate);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        kate, transportTypeKateTom, coachTravelToWarsaw));
+                        participantKate.getPerson(), transportTypeKateTom, coachTravelToWarsaw));
             } catch (NoPlacementAvailableException e) {
-                logger.error(String.format("No seat free on %s from %s to %s. " +
-                                "No transport booking for %s could be done.", goBackFromCity, goBackToCity,
-                        transportTypeKateTom, kate), e);
+                logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
+                        goBackFromCity, goBackToCity, transportTypeKateTom, participantKate.getPerson()), e);
             }
+
             try {
                 IBook seatToWarsawTom = coachTravelToWarsaw.findFirstAvailable();
                 seatToWarsawTom.book();
                 CoachTravelBooking coachBookingMWTom = new CoachTravelBooking(coachTravelToWarsaw,
                         (Seat) seatToWarsawTom, false, 1, 3);
-                myTrip.getParticipant(tom).addTransportBooking(coachBookingMWTom);
+                participantTom.addTransportBooking(coachBookingMWTom);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
-                        tom, transportTypeKateTom, coachTravelToWarsaw));
+                        participantTom.getPerson(), transportTypeKateTom, coachTravelToWarsaw));
             } catch (NoPlacementAvailableException e) {
                 logger.error(String.format("No seat free on %s from %s to %s. No transport booking for %s could be done.",
-                        goBackFromCity, goBackToCity, transportTypeKateTom, tom), e);
+                        goBackFromCity, goBackToCity, transportTypeKateTom, participantTom.getPerson()), e);
             }
         } catch (NoTransportException e) {
             logger.error(String.format("Search transport by city and type failed. No transport %s from %s to %s is " +
-                            "available.", transportTypeKateTom, goBackFromCity, goBackToCity), e);
+                    "available.", transportTypeKateTom, goBackFromCity, goBackToCity), e);
         }
 
         String activityNameJohnTom = "Football Match";
@@ -254,37 +245,49 @@ public class TripBooking {
         String activity2Sue = "Caminito Del Rey Tour";
         String activityKate = "Beach Volleyball";
         try {
-            myTrip.getParticipant(john).addActivity(malagaEs.findActivity(activityNameJohnTom));
+            participantJohn.addActivity(malagaEs.findActivity(activityNameJohnTom));
         } catch (NoActivityException e) {
             logger.error(String.format("Activity %s not available at %s. %s can participate in this activity",
-                    activityNameJohnTom, malagaEs, john), e);
+                    activityNameJohnTom, malagaEs, participantJohn.getPerson()), e);
         }
+
         try {
-            myTrip.getParticipant(sue).addActivity(malagaEs.findActivity("Banana Boat Ride"));
+            participantSue.addActivity(malagaEs.findActivity("Banana Boat Ride"));
         } catch (NoActivityException e) {
             logger.error(String.format("Activity %s not available at %s. %s can participate in this activity",
-                    activity1Sue, malagaEs, sue), e);
-            throw new RuntimeException(e);
+                    activity1Sue, malagaEs, participantSue.getPerson()), e);
         }
+
         try {
-            myTrip.getParticipant(sue).addActivity(malagaEs.findActivity("Caminito Del Rey Tour"));
+            participantSue.addActivity(malagaEs.findActivity("Caminito Del Rey Tour"));
         } catch (NoActivityException e) {
             logger.error(String.format("Activity %s not available at %s. %s can participate in this activity",
-                    activity2Sue, malagaEs, sue), e);
-            throw new RuntimeException(e);
+                    activity2Sue, malagaEs, participantSue.getPerson()), e);
         }
+
         try {
-            myTrip.getParticipant(kate).addActivity(malagaEs.findActivity("Beach Volleyball"));
+            participantKate.addActivity(malagaEs.findActivity("Beach Volleyball"));
         } catch (NoActivityException e) {
             logger.error(String.format("Activity %s not available at %s. %s can participate in this activity",
-                    activityKate, malagaEs, kate), e);
-            throw new RuntimeException(e);
+                    activityKate, malagaEs, participantKate.getPerson()), e);
         }
+
         try {
-            myTrip.getParticipant(tom).addActivity(malagaEs.findActivity("Football Match"));
+            participantTom.addActivity(malagaEs.findActivity("Football Match"));
         } catch (NoActivityException e) {
             logger.error(String.format("Activity %s not available at %s. %s can participate in this activity",
-                    activityNameJohnTom, malagaEs, tom), e);
+                    activityNameJohnTom, malagaEs, participantTom.getPerson()), e);
         }
+
+        myTrip.addParticipant(participantJohn);
+        logger.debug(String.format("Customized trip - participant added: %s ", participantJohn.getPerson()));
+        myTrip.addParticipant(participantSue);
+        logger.debug(String.format("Customized trip - participant added: %s ", participantSue.getPerson()));
+        myTrip.addParticipant(participantKate);
+        logger.debug(String.format("Customized trip - participant added: %s ", participantKate.getPerson()));
+        myTrip.addParticipant(participantTom);
+        logger.debug(String.format("Customized trip - participant added: %s ", participantTom.getPerson()));
+
+        myTrip.printSummary();
     }
 }

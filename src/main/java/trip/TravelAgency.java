@@ -8,6 +8,8 @@ import destination.activitiy.OutOfHotelActivity;
 import enums.*;
 import hotel.Hotel;
 import hotel.Room;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import transport.*;
 
 import java.math.BigDecimal;
@@ -17,17 +19,16 @@ import java.util.List;
 
 public class TravelAgency {
     private List<Destination> destinations;
+    private static final Logger logger = LogManager.getLogger(TravelAgency.class);
 
     public TravelAgency() {
         addDestination(initMalaga());
-
+        logger.debug("Travel Agency - initialized with destination: Malaga ES");
     }
 
     private Destination initMalaga() {
-//       * create a place
         Place malaga = new Place(Country.ES, City.MALAGA);
 
-//       * build a hotel
         Room doubleRoom = new Room(101, RoomType.DOUBLE, new BigDecimal(200));
         Room singleRoom1 = new Room(102, RoomType.SINGLE, new BigDecimal(100));
         Room singleRoom2 = new Room(103, RoomType.SINGLE, new BigDecimal(100));
@@ -37,8 +38,6 @@ public class TravelAgency {
         rooms.add(singleRoom2);
         Hotel hotelAtMalaga = new Hotel("Holiday Inn", 4, " Churriana, 29004 Malaga", rooms);
 
-//        * create a list of possible ways of transport from Warsaw to Malaga
-//        by plane
         List<Transport> transports = new ArrayList<>();
         PlaneSeat planeSeatWM1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
         PlaneSeat planeSeatWM2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
@@ -55,7 +54,6 @@ public class TravelAgency {
                 planeSeats);
         transports.add(flightWM);
 
-//        by bus
         Seat seatWM1 = new Seat(1, new BigDecimal(3));
         Seat seatWM2 = new Seat(2, new BigDecimal(3));
         Seat seatWM3 = new Seat(3, new BigDecimal(3));
@@ -71,8 +69,6 @@ public class TravelAgency {
                 City.WARSAW, City.MALAGA, busSeats);
         transports.add(coachTravelWM);
 
-//        * create a list of possible ways of transport BACK from Warsaw to Malaga
-//        by plane
         PlaneSeat planeSeatMW1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
         PlaneSeat planeSeatMW2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
         PlaneSeat planeSeatMW3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
@@ -87,7 +83,6 @@ public class TravelAgency {
         Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, City.MALAGA, City.WARSAW, planeSeatsBack);
         transports.add(flightMW);
 
-//        by bus
         Seat seatMW1 = new Seat(1, new BigDecimal(3));
         Seat seatMW2 = new Seat(2, new BigDecimal(3));
         Seat seatMW3 = new Seat(3, new BigDecimal(3));
@@ -99,40 +94,29 @@ public class TravelAgency {
         busSeatsBack.add(seatMW4);
         LocalDateTime busDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime busArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
-        CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW,
-                City.MALAGA, City.WARSAW, busSeatsBack);
+        CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW, City.MALAGA, City.WARSAW,
+                busSeatsBack);
         transports.add(coachTravelMW);
 
-//       * create a list of available activities
         ArrayList<Activity> activities = new ArrayList<>();
         AtHotelActivity atHotelActivity1 = new AtHotelActivity(
-                LocalDateTime.of(2022, 5, 5, 9, 30),
-                "Football Match",
-                new BigDecimal(10),
-                ActivityType.SAND_FOOTBALL
+                LocalDateTime.of(2022, 5, 5, 9, 30), "Football Match",
+                new BigDecimal(10), ActivityType.SAND_FOOTBALL
         );
         AtHotelActivity atHotelActivity2 = new AtHotelActivity(
-                LocalDateTime.of(2022, 5, 6, 9, 30),
-                "Banana Boat Ride",
-                new BigDecimal(5),
-                ActivityType.BANANA_BOAT
+                LocalDateTime.of(2022, 5, 6, 9, 30), "Banana Boat Ride",
+                new BigDecimal(5), ActivityType.BANANA_BOAT
         );
         AtHotelActivity atHotelActivity3 = new AtHotelActivity(
-                LocalDateTime.of(2022, 5, 7, 9, 30),
-                "Beach Volleyball",
-                new BigDecimal(6),
-                ActivityType.BEACH_VOLLEYBALL
+                LocalDateTime.of(2022, 5, 7, 9, 30), "Beach Volleyball",
+                new BigDecimal(6), ActivityType.BEACH_VOLLEYBALL
         );
         activities.add(atHotelActivity1);
         activities.add(atHotelActivity2);
         activities.add(atHotelActivity3);
         OutOfHotelActivity outOfHotelActivity = new OutOfHotelActivity(
-                LocalDateTime.of(2022, 5, 5, 12, 45),
-                "Caminito Del Rey Tour",
-                new BigDecimal(20),
-                "Caminito Del Rey Main Street",
-                true,
-                3.5,
+                LocalDateTime.of(2022, 5, 5, 12, 45), "Caminito Del Rey Tour",
+                new BigDecimal(20), "Caminito Del Rey Main Street", true, 3.5,
                 Language.ENGLISH);
         activities.add(outOfHotelActivity);
 

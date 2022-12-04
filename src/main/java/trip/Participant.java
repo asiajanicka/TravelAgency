@@ -4,6 +4,9 @@ import bookings.HotelBooking;
 import bookings.TransportBooking;
 import destination.activitiy.Activity;
 import interfaces.IDescribe;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import utils.DateFormat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ public class Participant implements IDescribe {
     private List<HotelBooking> hotelBookings;
     private List<TransportBooking> transportBookings;
     private List<Activity> activities;
+    private static final Logger logger = LogManager.getLogger(Participant.class);
 
     public Participant() {
     }
@@ -34,13 +38,15 @@ public class Participant implements IDescribe {
     }
 
     public void addHotelBooking(HotelBooking hotelBooking) {
-        if (hotelBookings == null) {
-            hotelBookings = new ArrayList<>();
-        }
-        if(hotelBooking.getDateFrom().isBefore(hotelBooking.getDateTo())){
+        if(hotelBooking.calculatePrice() != null) {
+            if (hotelBookings == null) {
+                hotelBookings = new ArrayList<>();
+            }
             hotelBookings.add(hotelBooking);
         } else {
-            // log info
+            logger.error(String.format("Participant %s - can't add hotel booking as price set to null. " +
+                    "Possible wrong dates [from %s to %s]", person, DateFormat.format(hotelBooking.getDateFrom()),
+                    DateFormat.format(hotelBooking.getDateTo())));
         }
     }
 
@@ -92,8 +98,11 @@ public class Participant implements IDescribe {
                 .stream()
                 .map(Activity::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return hotelBookingsCost.add(transportBookingsCost).add(activitiesBookingsCost);
-  //      logger.debug(total calculated cost + partial costs)
+        BigDecimal total = hotelBookingsCost.add(transportBookingsCost).add(activitiesBookingsCost);
+        logger.debug(String.format("Participant %s - calculated total booking cost [%,.2f] as sum of hotel bookings " +
+                        "[%,.2f] & transport bookings [%,.2f] & activities [%,.2f]",
+                this.person, total, hotelBookingsCost, transportBookingsCost, activitiesBookingsCost));
+        return total;
     }
 
     public void setPerson(Person person) {
@@ -125,6 +134,11 @@ public class Participant implements IDescribe {
     }
 
     @Override
+    public String toString() {
+        return person.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         if (this.getClass() != o.getClass()) return false;
@@ -145,5 +159,4 @@ public class Participant implements IDescribe {
     public int hashCode() {
         return Objects.hash(person, hotelBookings, transportBookings, activities);
     }
-
 }

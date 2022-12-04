@@ -1,9 +1,9 @@
 package hotel;
 
 import exceptions.NoPlacementAvailableException;
+import exceptions.NoPlacementException;
 import interfaces.IBook;
 import interfaces.IFindPlacement;
-import exceptions.NoPlacementException;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +36,7 @@ public class Hotel implements IFindPlacement {
 
     @Override
     public List<IBook> findAllAvailable() {
-        return rooms.stream().filter(p->p.isBooked()==true).collect(Collectors.toList());
+        return rooms.stream().filter(p -> p.isBooked()).collect(Collectors.toList());
     }
 
     @Override
@@ -80,10 +80,12 @@ public class Hotel implements IFindPlacement {
         this.rooms = rooms;
     }
 
+    @Override
     public String toString() {
         return String.format("Hotel: %s Number of stars: %d Address: %s", name, numberOfStars, address);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         if (this.getClass() != o.getClass()) return false;
@@ -99,6 +101,7 @@ public class Hotel implements IFindPlacement {
         return nameEquals && numberOfStarsEquals && addressEquals && roomsEquals;
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(name, numberOfStars, address, rooms);
     }

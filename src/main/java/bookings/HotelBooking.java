@@ -44,7 +44,7 @@ public class HotelBooking implements ICost {
     private int getLengthOfStaying() throws InvalidTimePeriodException {
         Period period = Period.between(dateFrom, dateTo);
         if (period.isNegative()) {
-            logger.error(String.format("Hotel Booking - length of staying has negative value: from % to %,",
+            logger.error(String.format("Hotel Booking - length of staying has negative value: from %s to %s,",
                     DateFormat.format(dateFrom), DateFormat.format(dateTo)));
             throw new InvalidTimePeriodException("End date for hotel booking is before start date");
         }
@@ -54,17 +54,17 @@ public class HotelBooking implements ICost {
 
     @Override
     public final BigDecimal calculatePrice() {
-        BigDecimal totalPrice;
+        BigDecimal priceForHotel;
         try {
-            totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
+            BigDecimal totalPrice = (room.getPrice().add(board.getPrice())).multiply(new BigDecimal(getLengthOfStaying()));
+            priceForHotel = isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
+            logger.debug(String.format("Hotel booking - calculated price [%,.2f] as sum of room price [%,.2f] and board" +
+                            "[%,.2f] multiplied by length of staying [if not for adult -> divided by 2]",
+                    priceForHotel, room.getPrice(), board.getPrice()));
         } catch (InvalidTimePeriodException e) {
-            totalPrice = null;
+            priceForHotel = null;
             logger.error("Hotel Booking - total price set to null", e);
         }
-        BigDecimal priceForHotel = isForAdult ? totalPrice : totalPrice.divide(new BigDecimal(2));
-        logger.debug(String.format("Hotel booking - calculated price [%,.2f] as sum of room price [%,.2f] and board" +
-                        "[%,.2f] multiplied by length of staying [if not for adult -> divided by 2]",
-                priceForHotel, room.getPrice(), board.getPrice()));
         return priceForHotel;
     }
 
@@ -119,13 +119,8 @@ public class HotelBooking implements ICost {
     @Override
     public String toString() {
         return String.format("Hotel: %s from %s to %s Is for adult? %b %s Board: %s Total price: %.2f",
-                hotel.getName(),
-                DateFormat.format(dateFrom),
-                DateFormat.format(dateTo),
-                isForAdult,
-                room,
-                board.getType().getDisplayName(),
-                calculatePrice());
+                hotel.getName(), DateFormat.format(dateFrom), DateFormat.format(dateTo), isForAdult, room,
+                board.getType().getDisplayName(), calculatePrice());
     }
 
     @Override
