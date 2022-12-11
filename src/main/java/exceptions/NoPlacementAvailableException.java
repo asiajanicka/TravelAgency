@@ -7,4 +7,5 @@ public class NoPlacementAvailableException extends Exception {
     public NoPlacementAvailableException(String message) {
         super(message);
     }
+
 }

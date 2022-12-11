@@ -7,4 +7,9 @@ public class NoTransportException extends Exception {
     public NoTransportException(String message) {
         super(message);
     }
+
+    public NoTransportException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

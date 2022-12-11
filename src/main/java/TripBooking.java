@@ -92,7 +92,7 @@ public class TripBooking {
         }
 
         try {
-            int roomNumberTom = 103;
+            int roomNumberTom = 10;//103
             malagaEs.getHotel().find(roomNumberTom).book();
             logger.debug(String.format("Room %d at %s booked", roomNumberTom, malagaEs.getHotel().getName()));
             HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
@@ -288,6 +288,6 @@ public class TripBooking {
         myTrip.addParticipant(participantTom);
         logger.debug(String.format("Customized trip - participant added: %s ", participantTom.getPerson()));
 
-        myTrip.printSummary();
+//        myTrip.printSummary();
     }
 }

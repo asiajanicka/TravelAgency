@@ -9,6 +9,7 @@ import interfaces.IFindPlacement;
 import utils.DateFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public abstract class Transport implements IFindPlacement {
     private List<Seat> seats;
 
     public Transport() {
+        seats = new ArrayList<>();
     }
 
     public Transport(LocalDateTime dateDeparture, LocalDateTime dateArrival, City cityFrom, City cityTo,

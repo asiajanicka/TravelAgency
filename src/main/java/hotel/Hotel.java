@@ -5,22 +5,24 @@ import exceptions.NoPlacementException;
 import interfaces.IBook;
 import interfaces.IFindPlacement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Hotel implements IFindPlacement {
     private String name;
-    private int numberOfStars;
+    private int starsRating;
     private String address;
     private List<Room> rooms;
 
     public Hotel() {
+        rooms = new ArrayList<>();
     }
 
-    public Hotel(String name, int numberOfStars, String address, List<Room> rooms) {
+    public Hotel(String name, int starsRating, String address, List<Room> rooms) {
         this.name = name;
-        this.numberOfStars = numberOfStars;
+        this.starsRating = starsRating;
         this.address = address;
         this.rooms = rooms;
     }
@@ -56,12 +58,12 @@ public class Hotel implements IFindPlacement {
         this.name = name;
     }
 
-    public int getNumberOfStars() {
-        return numberOfStars;
+    public int getStarsRating() {
+        return starsRating;
     }
 
-    public void setNumberOfStars(byte numberOfStars) {
-        this.numberOfStars = numberOfStars;
+    public void setStarsRating(byte starsRating) {
+        this.starsRating = starsRating;
     }
 
     public String getAddress() {
@@ -82,7 +84,7 @@ public class Hotel implements IFindPlacement {
 
     @Override
     public String toString() {
-        return String.format("Hotel: %s Number of stars: %d Address: %s", name, numberOfStars, address);
+        return String.format("Hotel: %s Number of stars: %d Address: %s", name, starsRating, address);
     }
 
     @Override
@@ -93,7 +95,7 @@ public class Hotel implements IFindPlacement {
         Hotel h = (Hotel) o;
         boolean nameEquals = (this.name == null && h.name == null) ||
                 (this.name != null && this.name.equals(h.name));
-        boolean numberOfStarsEquals = this.numberOfStars == h.numberOfStars;
+        boolean numberOfStarsEquals = this.starsRating == h.starsRating;
         boolean addressEquals = (this.address == null && h.address == null)
                 || (this.address != null && this.address.equals(h.address));
         boolean roomsEquals = (this.rooms == null && h.rooms == null)
@@ -103,6 +105,6 @@ public class Hotel implements IFindPlacement {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, numberOfStars, address, rooms);
+        return Objects.hash(name, starsRating, address, rooms);
     }
 }

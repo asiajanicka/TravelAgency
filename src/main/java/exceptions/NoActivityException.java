@@ -7,4 +7,9 @@ public class NoActivityException extends Exception {
     public NoActivityException(String message) {
         super(message);
     }
+
+    public NoActivityException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

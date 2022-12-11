@@ -20,6 +20,8 @@ public class Destination implements IDescribe {
     private List<Activity> activities;
 
     public Destination() {
+        this.activities = new ArrayList<>();
+        this.transports = new ArrayList<>();
     }
 
     public Destination(Place place, Hotel hotel, List<Transport> transports) {
@@ -42,16 +44,10 @@ public class Destination implements IDescribe {
     }
 
     public void addActivity(Activity activity) {
-        if (activities == null) {
-            activities = new ArrayList<>();
-        }
         activities.add(activity);
     }
 
     public void addTransport(Transport transport) {
-        if (transports == null) {
-            transports = new ArrayList<>();
-        }
         transports.add(transport);
     }
 

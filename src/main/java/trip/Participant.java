@@ -21,39 +21,31 @@ public class Participant implements IDescribe {
     private static final Logger logger = LogManager.getLogger(Participant.class);
 
     public Participant() {
+        hotelBookings = new ArrayList<>();
+        transportBookings = new ArrayList<>();
+        activities = new ArrayList<>();
     }
 
     public Participant(Person person) {
+        this();
         this.person = person;
-        this.hotelBookings = new ArrayList<>();
-        this.transportBookings = new ArrayList<>();
-        this.activities = new ArrayList<>();
     }
 
     public void addTransportBooking(TransportBooking transport) {
-        if (transportBookings == null) {
-            transportBookings = new ArrayList<>();
-        }
         transportBookings.add(transport);
     }
 
     public void addHotelBooking(HotelBooking hotelBooking) {
-        if(hotelBooking.calculatePrice() != null) {
-            if (hotelBookings == null) {
-                hotelBookings = new ArrayList<>();
-            }
+        if (hotelBooking.calculatePrice() != null) {
             hotelBookings.add(hotelBooking);
         } else {
             logger.error(String.format("Participant %s - can't add hotel booking as price set to null. " +
-                    "Possible wrong dates [from %s to %s]", person, DateFormat.format(hotelBooking.getDateFrom()),
-                    DateFormat.format(hotelBooking.getDateTo())));
+                            "Possible wrong dates [from %s to %s]",
+                    person, DateFormat.format(hotelBooking.getDateFrom()), DateFormat.format(hotelBooking.getDateTo())));
         }
     }
 
     public void addActivity(Activity activity) {
-        if (activities == null) {
-            activities = new ArrayList<>();
-        }
         activities.add(activity);
     }
 
@@ -135,7 +127,8 @@ public class Participant implements IDescribe {
 
     @Override
     public String toString() {
-        return person.toString();
+        return String.format("%s - transport bookings: %d and hotel bookings %s",
+                person.toString(), transportBookings.size(), hotelBookings.size());
     }
 
     @Override
@@ -159,4 +152,5 @@ public class Participant implements IDescribe {
     public int hashCode() {
         return Objects.hash(person, hotelBookings, transportBookings, activities);
     }
+
 }

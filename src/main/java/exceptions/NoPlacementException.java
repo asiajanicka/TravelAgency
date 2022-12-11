@@ -7,4 +7,9 @@ public class NoPlacementException extends Exception {
     public NoPlacementException(String message) {
         super(message);
     }
+
+    public NoPlacementException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }
