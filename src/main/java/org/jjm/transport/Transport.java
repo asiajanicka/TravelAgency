@@ -4,8 +4,8 @@ import org.jjm.enums.City;
 import org.jjm.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
+import org.jjm.exceptions.PlacementAlreadyBooked;
 import org.jjm.interfaces.IBook;
-import org.jjm.interfaces.IFindAvailablePlacement;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class Transport implements IFindAvailablePlacement {
+public abstract class Transport {
     private LocalDateTime dateDeparture;
     private LocalDateTime dateArrival;
     private City cityFrom;
@@ -35,29 +35,30 @@ public abstract class Transport implements IFindAvailablePlacement {
         this.seats = seats;
     }
 
-    @Override
-    public IBook find(int num) throws NoPlacementException {
+    public Seat getSeat(int seatNumber) throws NoPlacementException {
         return seats.stream()
-                .filter(p -> p.getNumber() == num)
+                .filter(p -> p.getNumber() == seatNumber)
                 .findFirst()
                 .orElseThrow(() -> new NoPlacementException(String.format("There is no seat with number %d in the %s.",
-                        num, type.toString().toLowerCase())));
+                        seatNumber, type.toString().toLowerCase())));
     }
 
-    @Override
-    public List<IBook> findAllAvailable() {
-        return seats.stream().filter(p -> p.isBooked() == false).collect(Collectors.toList());
+    public Seat bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
+        if(getSeat(seatNumber).book())
+            throw new PlacementAlreadyBooked(String.format("Seat %d is already booked. Sorry.", seatNumber));
+        else return getSeat(seatNumber);
     }
 
+    public List<Seat> getAvailableSeats() {
+        return seats.stream().filter(p -> !p.isBooked()).collect(Collectors.toList());
+    }
 
-
-    @Override
-    public IBook findFirstAvailable() throws NoPlacementAvailableException {
-        if (findAllAvailable().size() == 0) {
+    public Seat getFirstAvailableSeat() throws NoPlacementAvailableException {
+        if (getAvailableSeats().size() == 0) {
             throw new NoPlacementAvailableException(
                     String.format("There is no free seat in %s. All seats are booked.", type.toString().toLowerCase()));
         } else
-            return findAllAvailable().get(0);
+            return getAvailableSeats().get(0);
     }
 
     public LocalDateTime getDateDeparture() {

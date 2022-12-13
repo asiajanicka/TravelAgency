@@ -11,8 +11,8 @@
         </File>
         <RollingFile
                 name="rollingFile"
-                fileName="target/append-logs.log"
-                filePattern="target/append-logs.%d{dd-MMM_HH-mm-ss}.log"
+                fileName="src/test/resources/logs/append-logs.log"
+                filePattern="src/test/resources/logs/append-logs.%d{dd-MMM_HH-mm-ss}.log"
                 ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>

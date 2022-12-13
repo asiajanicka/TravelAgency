@@ -1,17 +1,13 @@
 package org.jjm.transport;
 
 import org.jjm.enums.City;
-import org.jjm.enums.PlaneSeatType;
 import org.jjm.enums.TransportType;
-import org.jjm.exceptions.NoPlacementAvailableException;
-import org.jjm.interfaces.IFindPlacementByType;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class Flight extends Transport implements IFindPlacementByType<PlaneSeatType> {
+public class Flight extends Transport {
     public Flight() {
     }
 
@@ -21,18 +17,6 @@ public class Flight extends Transport implements IFindPlacementByType<PlaneSeatT
 
     public LocalDateTime getBoardingTime() {
         return getDateDeparture().minusHours(2);
-    }
-
-    @Override
-    public <PlaneSeatType> PlaneSeat findByType(PlaneSeatType t) throws NoPlacementAvailableException {
-        List<Seat> seatsOfGivenType = getSeats().stream()
-                .filter(p -> !p.isBooked() && ((PlaneSeat) p).getType().equals(t))
-                .collect(Collectors.toList());
-        if (seatsOfGivenType.size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free seat of type %s on the plane. All seats are booked.", t));
-        } else
-            return (PlaneSeat) seatsOfGivenType.get(0);
     }
 
     @Override

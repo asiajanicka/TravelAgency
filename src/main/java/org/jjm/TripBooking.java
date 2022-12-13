@@ -6,13 +6,17 @@ import org.jjm.bookings.CoachTravelBooking;
 import org.jjm.bookings.FlightBooking;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.destination.Destination;
-import org.jjm.enums.*;
+import org.jjm.enums.BoardType;
+import org.jjm.enums.City;
+import org.jjm.enums.PlaneBaggage;
+import org.jjm.enums.TransportType;
 import org.jjm.exceptions.NoActivityException;
 import org.jjm.exceptions.NoPlacementAvailableException;
+import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.NoTransportException;
 import org.jjm.hotel.Room;
-import org.jjm.interfaces.IBook;
-import org.jjm.transport.*;
+import org.jjm.transport.Seat;
+import org.jjm.transport.Transport;
 import org.jjm.trip.CustomizedTrip;
 import org.jjm.trip.Participant;
 import org.jjm.trip.Person;
@@ -48,16 +52,16 @@ public class TripBooking {
         City goBackFromCity = goToCity;
         City goBackToCity = goFromCity;
 
-        Participant participantJohn = new Participant(new Person("1", "John", "Smith", 46));
-        Participant participantSue = new Participant(new Person("2", "Sue", "Smith", 45));
-        Participant participantKate = new Participant(new Person("3", "Kate", "Smith", 17));
-        Participant participantTom = new Participant(new Person("4", "Tom", "Smith", 15));
+        Participant participantJohn = new Participant(new Person("John", "Smith", 46));
+        Participant participantSue = new Participant(new Person("Sue", "Smith", 45));
+        Participant participantKate = new Participant(new Person("Kate", "Smith", 17));
+        Participant participantTom = new Participant(new Person("Tom", "Smith", 15));
 
         TransportType transportTypeJohnSue = TransportType.PLANE;
         TransportType transportTypeKateTom = TransportType.BUS;
 
         try {
-            Room roomJohnSue = malagaEs.getHotel().findByType(RoomType.DOUBLE);
+            Room roomJohnSue = malagaEs.getHotel().getRoom(101);
             roomJohnSue.book();
             logger.debug(String.format("Room %d at %s booked", roomJohnSue.getNumber(), malagaEs.getHotel().getName()));
             HotelBooking hotelBookingJohn = new HotelBooking(startDate, endDate, malagaEs.getHotel(), true,
@@ -70,12 +74,12 @@ public class TripBooking {
             participantSue.addHotelBooking(hotelBookingSue);
             logger.debug(String.format("Customized trip - new hotel booking added for [%s]: room %d at %s",
                     participantSue.getPerson(), roomJohnSue.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementAvailableException e) {
-            logger.error("Search room by type failed. No hotel booking could be done", e);
+        } catch (NoPlacementException e) {
+            logger.error("Search room by number failed. No hotel booking could be done", e);
         }
 
         try {
-            Room roomKate = malagaEs.getHotel().findByType(RoomType.SINGLE);
+            Room roomKate = malagaEs.getHotel().getRoom(102);
             roomKate.book();
             logger.debug(String.format("Room %d at %s booked", roomKate.getNumber(), malagaEs.getHotel().getName()));
             HotelBooking hotelBookingKate = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
@@ -83,12 +87,12 @@ public class TripBooking {
             participantKate.addHotelBooking(hotelBookingKate);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
                     participantKate.getPerson(), roomKate.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementAvailableException e) {
-            logger.error("Search room by type failed. No hotel booking could be done.", e);
+        } catch (NoPlacementException e) {
+            logger.error("Search room by number failed. No hotel booking could be done", e);
         }
 
         try {
-            Room roomTom = malagaEs.getHotel().findByType(RoomType.SINGLE);
+            Room roomTom = malagaEs.getHotel().getRoom(103);
             roomTom.book();
             logger.debug(String.format("Room %d at %s booked", roomTom.getNumber(), malagaEs.getHotel().getName()));
             HotelBooking hotelBookingTom = new HotelBooking(startDate, endDate, malagaEs.getHotel(), false,
@@ -96,14 +100,14 @@ public class TripBooking {
             participantTom.addHotelBooking(hotelBookingTom);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
                     participantTom.getPerson(), roomTom.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementAvailableException e) {
-            logger.error("Search room by type failed. No hotel booking could be done.", e);
+        } catch (NoPlacementException e) {
+            logger.error("Search room by number failed. No hotel booking could be done", e);
         }
 
         try {
             Transport flightToMalaga = malagaEs.findTransport(goFromCity, goToCity, transportTypeJohnSue);
             try {
-                PlaneSeat seatToMalagaForJohn = ((Flight) flightToMalaga).findByType(PlaneSeatType.ECONOMY_CLASS);
+                Seat seatToMalagaForJohn = flightToMalaga.getFirstAvailableSeat();
                 seatToMalagaForJohn.book();
                 logger.debug(String.format("Seat %d on way from %s to %s booked", seatToMalagaForJohn.getNumber()
                         , goFromCity, goToCity));
@@ -118,7 +122,7 @@ public class TripBooking {
             }
 
             try {
-                PlaneSeat seatToMalagaForSue = ((Flight) flightToMalaga).findByType(PlaneSeatType.ECONOMY_CLASS);
+                Seat seatToMalagaForSue = flightToMalaga.getFirstAvailableSeat();
                 seatToMalagaForSue.book();
                 logger.debug(String.format("Seat %d on way from %s to %s booked", seatToMalagaForSue.getNumber(),
                         goFromCity, goToCity));
@@ -139,11 +143,11 @@ public class TripBooking {
         try {
             Transport flightToWarsaw = malagaEs.findTransport(goBackFromCity, goBackToCity, transportTypeJohnSue);
             try {
-                IBook seatToWarsawForJohn = flightToWarsaw.findFirstAvailable();
+                Seat seatToWarsawForJohn = flightToWarsaw.getFirstAvailableSeat();
                 seatToWarsawForJohn.book();
                 logger.debug(String.format("Seat %d on way from %s to %s booked",
-                        ((Seat) seatToWarsawForJohn).getNumber(), goBackFromCity, goBackToCity));
-                FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForJohn,
+                        (seatToWarsawForJohn).getNumber(), goBackFromCity, goBackToCity));
+                FlightBooking flightBookingMWJohn = new FlightBooking(flightToWarsaw, seatToWarsawForJohn,
                         PlaneBaggage.HAND, true);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
                         participantJohn.getPerson(), transportTypeJohnSue, flightToWarsaw));
@@ -154,11 +158,11 @@ public class TripBooking {
             }
 
             try {
-                IBook seatToWarsawForSue = flightToWarsaw.findFirstAvailable();
+                Seat seatToWarsawForSue = flightToWarsaw.getFirstAvailableSeat();
                 seatToWarsawForSue.book();
                 logger.debug(String.format("Seat %d on way from %s to %s booked",
-                        ((Seat) seatToWarsawForSue).getNumber(), goBackFromCity, goBackToCity));
-                FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, (PlaneSeat) seatToWarsawForSue,
+                        (seatToWarsawForSue).getNumber(), goBackFromCity, goBackToCity));
+                FlightBooking flightBookingMWSue = new FlightBooking(flightToWarsaw, seatToWarsawForSue,
                         PlaneBaggage.CHECKED, true);
                 participantSue.addTransportBooking(flightBookingMWSue);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
@@ -175,7 +179,7 @@ public class TripBooking {
         try {
             Transport coachTravelToMalaga = malagaEs.findTransport(goFromCity, goToCity, transportTypeKateTom);
             try {
-                IBook seatToMalagaKate = coachTravelToMalaga.findFirstAvailable();
+                Seat seatToMalagaKate = coachTravelToMalaga.getFirstAvailableSeat();
                 seatToMalagaKate.book();
                 CoachTravelBooking coachBookingWMKate = new CoachTravelBooking(coachTravelToMalaga,
                         (Seat) seatToMalagaKate, false, 3, 2);
@@ -188,10 +192,10 @@ public class TripBooking {
             }
 
             try {
-                IBook seatToMalagaTom = coachTravelToMalaga.findFirstAvailable();
+                Seat seatToMalagaTom = coachTravelToMalaga.getFirstAvailableSeat();
                 seatToMalagaTom.book();
                 CoachTravelBooking coachBookingWMTom = new CoachTravelBooking(coachTravelToMalaga,
-                        (Seat) seatToMalagaTom, false, 1, 3);
+                        seatToMalagaTom, false, 1, 3);
                 participantTom.addTransportBooking(coachBookingWMTom);
                 logger.debug(String.format("Customized trip - new transport booking added for %s: %s %s",
                         participantTom.getPerson(), transportTypeKateTom, coachTravelToMalaga));
@@ -207,7 +211,8 @@ public class TripBooking {
         try {
             Transport coachTravelToWarsaw = malagaEs.findTransport(goBackFromCity, goBackToCity, transportTypeKateTom);
             try {
-                CoachSeat seatToWarsawKate = ((CoachTravel) coachTravelToWarsaw).findByType(CoachSeatType.AISLE);
+                Seat seatToWarsawKate = coachTravelToWarsaw.getFirstAvailableSeat();
+                ;
                 seatToWarsawKate.book();
                 CoachTravelBooking coachBookingMWKate = new CoachTravelBooking(coachTravelToWarsaw,
                         seatToWarsawKate, false, 3, 2);
@@ -220,7 +225,7 @@ public class TripBooking {
             }
 
             try {
-                CoachSeat seatToWarsawTom = ((CoachTravel) coachTravelToWarsaw).findByType(CoachSeatType.WINDOW);
+                Seat seatToWarsawTom = coachTravelToWarsaw.getFirstAvailableSeat();
                 seatToWarsawTom.book();
                 CoachTravelBooking coachBookingMWTom = new CoachTravelBooking(coachTravelToWarsaw,
                         seatToWarsawTom, false, 1, 3);

@@ -15,4 +15,4 @@ to 15th of May 2022. They have a list of requirements concerning means of transp
 Additionally, in some classes own implementation of equal, hashcode and toString methods is added.
 
 Diagram below shows **class dependencies** applied in the program (without setters, getters, equals, hashcode and toString methods) 
-![](docs/TravelAgencyClassesDiagram1.jpg)
+![](resources/docs/TravelAgencyClassesDiagram1.jpg)

@@ -15,5 +15,4 @@ public class InvalidTimePeriodException extends Exception {
     public InvalidTimePeriodException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

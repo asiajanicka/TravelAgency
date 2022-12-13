@@ -1,8 +1,8 @@
 package org.jjm.bookings;
 
-import org.jjm.interfaces.ICost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.interfaces.ICost;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 

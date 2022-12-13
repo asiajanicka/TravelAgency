@@ -3,27 +3,25 @@ package org.jjm.trip;
 import java.util.Objects;
 
 public class Person {
-    private String id;
+    private static int counter = 0;
+    private int id;
     private String firstName;
     private String lastName;
     private int age;
 
     public Person() {
+        this.id = ++counter;
     }
 
-    public Person(String id, String firstName, String lastName, int age) {
-        this.id = id;
+    public Person(String firstName, String lastName, int age) {
+        this.id = ++counter;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -52,7 +50,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName + " age: " + age;
+        return String.format("%s %s (%d) age: %d", firstName, lastName, id, age);
     }
 
     @Override
@@ -61,8 +59,7 @@ public class Person {
         if (this.getClass() != o.getClass()) return false;
         if (this.hashCode() != o.hashCode()) return false;
         Person p = (Person) o;
-        boolean idEquals = (this.id == null && p.id == null)
-                || (this.id != null && this.id.equals(p.id));
+        boolean idEquals = this.id == p.id;
         boolean firstNameEquals = (this.firstName == null && p.firstName == null)
                 || (this.firstName != null && this.firstName.equals(p.firstName));
         boolean lastNameEquals = (this.lastName == null && p.lastName == null)

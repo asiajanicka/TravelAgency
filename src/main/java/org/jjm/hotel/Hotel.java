@@ -3,16 +3,14 @@ package org.jjm.hotel;
 import org.jjm.enums.RoomType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
-import org.jjm.interfaces.IBook;
-import org.jjm.interfaces.IFindAvailablePlacement;
-import org.jjm.interfaces.IFindPlacementByType;
+import org.jjm.exceptions.PlacementAlreadyBooked;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Hotel implements IFindAvailablePlacement, IFindPlacementByType<RoomType> {
+public class Hotel {
     private String name;
     private int starsRating;
     private String address;
@@ -29,41 +27,30 @@ public class Hotel implements IFindAvailablePlacement, IFindPlacementByType<Room
         this.rooms = rooms;
     }
 
-    @Override
-    public IBook find(int num) throws NoPlacementException {
+    public Room getRoom(int roomNumber) throws NoPlacementException {
         return rooms.stream()
-                .filter(p -> p.getNumber() == num)
+                .filter(p -> p.getNumber() == roomNumber)
                 .findFirst()
                 .orElseThrow(() -> new NoPlacementException(String.format("There is no room with number %d in the " +
-                        "hotel %s.", num, name)));
+                        "hotel %s.", roomNumber, name)));
     }
 
-    @Override
-    public List<IBook> findAllAvailable() {
+    public Room bookRoom(int roomNumber) throws NoPlacementException, PlacementAlreadyBooked {
+        if (getRoom(roomNumber).book())
+            throw new PlacementAlreadyBooked(String.format("Room %d is already booked. Sorry.", roomNumber));
+        else return getRoom(roomNumber);
+    }
+
+    public List<Room> getAllAvailableRooms() {
         return rooms.stream().filter(p -> !p.isBooked()).collect(Collectors.toList());
     }
 
-    @Override
-    public IBook findFirstAvailable() throws NoPlacementAvailableException {
-        if (findAllAvailable().size() == 0) {
+    public Room getFirstAvailableRoom() throws NoPlacementAvailableException {
+        if (getAllAvailableRooms().size() == 0) {
             throw new NoPlacementAvailableException(
                     String.format("There is no free room in the hotel %s. All rooms are booked.", name));
         } else
-            return findAllAvailable().get(0);
-    }
-
-
-    @Override
-    public <RoomType> Room findByType(RoomType t) throws NoPlacementAvailableException {
-        List<Room> roomsOfGivenType = rooms.stream()
-                .filter(p -> !p.isBooked() && p.getType().equals(t))
-                .collect(Collectors.toList());
-        if (roomsOfGivenType.size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free room of type %s in the hotel %s. All rooms are booked.",
-                            t, name));
-        } else
-            return roomsOfGivenType.get(0);
+            return getAllAvailableRooms().get(0);
     }
 
     public String getName() {

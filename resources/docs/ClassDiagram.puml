@@ -8,16 +8,15 @@ interface IDescribe {
 interface IBook {
 {abstract} boolean book()
 }
-interface IFindPlacement {
-{abstract} IBook find(int num)
-{abstract} List<IBook> findAllAvailable()
-{abstract} IBook findFirstAvailable()
-}
 class Hotel {
 - String name
 - int numberOfStars
 - String address
 - List<Room> rooms
++ Room getRoom(int roomNumber)
++ Room bookRoom(int roomNumber)
++ List<Room> getAllAvailableRooms()
++ Room getFirstAvailableRoom()
 }
 class PlaneSeat {
 - PlaneSeatType type
@@ -72,7 +71,6 @@ class TravelAgency {
 - List<Destination> destinations
 + void addDestination(Destination)
 + void printDestinations()
-- Destination initMalaga()
 }
 class CoachTravelBooking {
 - int numberOfSmallSuitcases
@@ -86,6 +84,10 @@ abstract class Transport {
 - City cityTo
 - TransportType type
 - List<Seat> seats
++ Seat getSeat(int seatNumber)
++ Seat bookSeat(int seatNumber)
++ List<Seat> getAvailableSeats()
++ Seat getFirstAvailableSeat()
 }
 class Place {
 - Country country
@@ -128,7 +130,7 @@ abstract class TransportBooking {
 # {abstract}BigDecimal getPriceForLuggage();
 }
 class Person {
-- String id
+- int id
 - String firstName
 - String lastName
 - int age
@@ -163,8 +165,6 @@ IDescribe <|-- Participant
 IDescribe <|-- Destination
 IBook <|-- Room
 IBook <|-- Seat
-IFindPlacement <|-- Transport
-IFindPlacement <|-- Hotel
 Seat <|-- PlaneSeat
 TransportBooking <|-- FlightBooking
 Transport <|-- Flight
