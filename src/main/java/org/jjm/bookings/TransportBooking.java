@@ -8,16 +8,16 @@ import org.jjm.transport.Transport;
 
 import java.math.BigDecimal;
 
-public abstract class TransportBooking implements ICost {
-    private Transport transport;
-    private Seat seat;
+public abstract class TransportBooking<T> implements ICost {
+    private Transport<T> transport;
+    private Seat<T> seat;
     private boolean isForAdult;
     private static final Logger logger = LogManager.getLogger(TransportBooking.class);
 
     TransportBooking() {
     }
 
-    public TransportBooking(Transport transport, Seat seat, boolean isForAdult) {
+    public TransportBooking(Transport<T> transport, Seat<T> seat, boolean isForAdult) {
         this.seat = seat;
         this.transport = transport;
         this.isForAdult = isForAdult;
@@ -42,7 +42,7 @@ public abstract class TransportBooking implements ICost {
         return transport;
     }
 
-    public void setTransport(Transport transport) {
+    public void setTransport(Transport<T> transport) {
         this.transport = transport;
     }
 
@@ -50,7 +50,7 @@ public abstract class TransportBooking implements ICost {
         return seat;
     }
 
-    public void setSeat(Seat seat) {
+    public void setSeat(Seat<T> seat) {
         this.seat = seat;
     }
 

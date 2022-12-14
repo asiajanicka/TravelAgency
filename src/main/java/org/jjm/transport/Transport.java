@@ -1,6 +1,7 @@
 package org.jjm.transport;
 
 import org.jjm.enums.City;
+import org.jjm.enums.CoachSeatType;
 import org.jjm.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
@@ -13,20 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class Transport {
+public abstract class Transport<T> {
     private LocalDateTime dateDeparture;
     private LocalDateTime dateArrival;
     private City cityFrom;
     private City cityTo;
     private TransportType type;
-    private List<Seat> seats;
+    private List<Seat<T>> seats;
 
     public Transport() {
         seats = new ArrayList<>();
     }
 
     public Transport(LocalDateTime dateDeparture, LocalDateTime dateArrival, City cityFrom, City cityTo,
-                     TransportType type, List<Seat> seats) {
+                     TransportType type, List<Seat<T>> seats) {
         this.dateDeparture = dateDeparture;
         this.dateArrival = dateArrival;
         this.cityFrom = cityFrom;
@@ -60,6 +61,8 @@ public abstract class Transport {
         } else
             return getAvailableSeats().get(0);
     }
+
+    public abstract Seat getSeatByType(T seatType) throws NoPlacementAvailableException;
 
     public LocalDateTime getDateDeparture() {
         return dateDeparture;
@@ -101,11 +104,20 @@ public abstract class Transport {
         this.type = type;
     }
 
-    public List<Seat> getSeats() {
+//    public List<Seat> getSeats() {
+//        return seats;
+//    }
+//
+//    public void setSeats(List<Seat> seats) {
+//        this.seats = seats;
+//    }
+
+
+    public List<Seat<T>> getSeats() {
         return seats;
     }
 
-    public void setSeats(List<Seat> seats) {
+    public void setSeats(List<Seat<T>> seats) {
         this.seats = seats;
     }
 

@@ -2,6 +2,7 @@ package org.jjm.bookings;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.enums.CoachSeatType;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 
@@ -17,12 +18,12 @@ public class CoachTravelBooking extends TransportBooking {
     public CoachTravelBooking() {
     }
 
-    public CoachTravelBooking(Transport coachTravel, Seat seat, boolean isForAdult) {
+    public CoachTravelBooking(Transport coachTravel, Seat<CoachSeatType> seat, boolean isForAdult) {
         super(coachTravel, seat, isForAdult);
     }
 
-    public CoachTravelBooking(Transport coachTravel, Seat seat, boolean isForAdult, int numberOfSmallSuitcases,
-                              int numberOfLargeSuitcases) {
+    public CoachTravelBooking(Transport coachTravel, Seat<CoachSeatType> seat, boolean isForAdult,
+                              int numberOfSmallSuitcases, int numberOfLargeSuitcases) {
         this(coachTravel, seat, isForAdult);
         this.numberOfSmallSuitcases = numberOfSmallSuitcases;
         this.numberOfLargeSuitcases = numberOfLargeSuitcases;

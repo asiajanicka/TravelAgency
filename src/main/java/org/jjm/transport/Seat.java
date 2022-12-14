@@ -7,17 +7,19 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Seat implements IBook {
+public class Seat <T> implements IBook {
     private int number;
     private BigDecimal price;
     private boolean isBooked;
+    private T seatType;
     private static final Logger logger = LogManager.getLogger(Seat.class);
 
     public Seat() {
     }
 
-    public Seat(int number, BigDecimal price) {
+    public Seat(int number, T seatType, BigDecimal price) {
         this.number = number;
+        this.seatType = seatType;
         this.price = price;
     }
 
@@ -56,9 +58,17 @@ public class Seat implements IBook {
         isBooked = booked;
     }
 
+    public T getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(T seatType) {
+        this.seatType = seatType;
+    }
+
     @Override
     public String toString() {
-        return String.format("Seat: %d", number);
+        return String.format("Seat: %d Type: %s", number, seatType.toString());
     }
 
     @Override

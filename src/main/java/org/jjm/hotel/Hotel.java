@@ -4,14 +4,13 @@ import org.jjm.enums.RoomType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
-import org.jjm.interfaces.IFindByType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Hotel implements IFindByType<RoomType, Room> {
+public class Hotel {
     private String name;
     private int starsRating;
     private String address;
@@ -54,8 +53,7 @@ public class Hotel implements IFindByType<RoomType, Room> {
             return getAllAvailableRooms().get(0);
     }
 
-    @Override
-    public Room findByType(RoomType roomType) throws NoPlacementAvailableException {
+    public Room getRoomByType(RoomType roomType) throws NoPlacementAvailableException {
         List<Room> roomsOfGivenType = rooms.stream()
                 .filter(p -> !p.isBooked() && p.getType().equals(roomType))
                 .collect(Collectors.toList());

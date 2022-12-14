@@ -30,11 +30,11 @@ public class DataInitializer {
         Hotel hotelAtMalaga = new Hotel("Holiday Inn", 4, " Churriana, 29004 Malaga", rooms);
 
         List<Transport> transports = new ArrayList<>();
-        PlaneSeat planeSeatWM1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
-        PlaneSeat planeSeatWM2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
-        PlaneSeat planeSeatWM3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
-        PlaneSeat planeSeatWM4 = new PlaneSeat(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
-        ArrayList<Seat> planeSeats = new ArrayList<>();
+        Seat<PlaneSeatType> planeSeatWM1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        Seat<PlaneSeatType> planeSeatWM2 = new Seat<>(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        Seat<PlaneSeatType> planeSeatWM3 = new Seat<>(3, PlaneSeatType.BUSINESS_CLASS, new BigDecimal(200));
+        Seat<PlaneSeatType> planeSeatWM4 = new Seat<>(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        ArrayList<Seat<PlaneSeatType>> planeSeats = new ArrayList<>();
         planeSeats.add(planeSeatWM1);
         planeSeats.add(planeSeatWM2);
         planeSeats.add(planeSeatWM3);
@@ -45,11 +45,11 @@ public class DataInitializer {
                 planeSeats);
         transports.add(flightWM);
 
-        CoachSeat seatWM1 = new CoachSeat(1, new BigDecimal(3), CoachSeatType.AISLE);
-        CoachSeat seatWM2 = new CoachSeat(2, new BigDecimal(3), CoachSeatType.MIDDLE);
-        CoachSeat seatWM3 = new CoachSeat(3, new BigDecimal(3), CoachSeatType.WINDOW);
-        CoachSeat seatWM4 = new CoachSeat(4, new BigDecimal(3), CoachSeatType.MIDDLE);
-        List<Seat> busSeats = new ArrayList<>();
+        Seat<CoachSeatType> seatWM1 = new Seat<>(1, CoachSeatType.AISLE, new BigDecimal(3));
+        Seat<CoachSeatType> seatWM2 = new Seat<>(2, CoachSeatType.MIDDLE, new BigDecimal(3));
+        Seat<CoachSeatType> seatWM3 = new Seat<>(3, CoachSeatType.WINDOW, new BigDecimal(3));
+        Seat<CoachSeatType> seatWM4 = new Seat<>(4, CoachSeatType.MIDDLE, new BigDecimal(3));
+        List<Seat<CoachSeatType>> busSeats = new ArrayList<>();
         busSeats.add(seatWM1);
         busSeats.add(seatWM2);
         busSeats.add(seatWM3);
@@ -60,11 +60,11 @@ public class DataInitializer {
                 City.WARSAW, City.MALAGA, busSeats);
         transports.add(coachTravelWM);
 
-        PlaneSeat planeSeatMW1 = new PlaneSeat(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
-        PlaneSeat planeSeatMW2 = new PlaneSeat(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
-        PlaneSeat planeSeatMW3 = new PlaneSeat(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
-        PlaneSeat planeSeatMW4 = new PlaneSeat(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
-        List<Seat> planeSeatsBack = new ArrayList<>();
+        Seat<PlaneSeatType> planeSeatMW1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        Seat<PlaneSeatType> planeSeatMW2 = new Seat<>(2, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
+        Seat<PlaneSeatType> planeSeatMW3 = new Seat<>(3, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        Seat<PlaneSeatType> planeSeatMW4 = new Seat<>(4, PlaneSeatType.FIRST_CLASS, new BigDecimal(200));
+        List<Seat<PlaneSeatType>> planeSeatsBack = new ArrayList<>();
         planeSeatsBack.add(planeSeatMW1);
         planeSeatsBack.add(planeSeatMW2);
         planeSeatsBack.add(planeSeatMW3);
@@ -74,11 +74,11 @@ public class DataInitializer {
         Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, City.MALAGA, City.WARSAW, planeSeatsBack);
         transports.add(flightMW);
 
-        CoachSeat seatMW1 = new CoachSeat(1, new BigDecimal(3), CoachSeatType.MIDDLE);
-        CoachSeat seatMW2 = new CoachSeat(2, new BigDecimal(3), CoachSeatType.WINDOW);
-        CoachSeat seatMW3 = new CoachSeat(3, new BigDecimal(3), CoachSeatType.AISLE);
-        CoachSeat seatMW4 = new CoachSeat(4, new BigDecimal(3), CoachSeatType.WINDOW);
-        List<Seat> busSeatsBack = new ArrayList<>();
+        Seat<CoachSeatType> seatMW1 = new Seat<>(1, CoachSeatType.MIDDLE, new BigDecimal(3));
+        Seat<CoachSeatType> seatMW2 = new Seat<>(2, CoachSeatType.WINDOW, new BigDecimal(3));
+        Seat<CoachSeatType> seatMW3 = new Seat<>(3, CoachSeatType.AISLE,  new BigDecimal(3));
+        Seat<CoachSeatType> seatMW4 = new Seat<>(4, CoachSeatType.WINDOW, new BigDecimal(3));
+        List<Seat<CoachSeatType>> busSeatsBack = new ArrayList<>();
         busSeatsBack.add(seatMW1);
         busSeatsBack.add(seatMW2);
         busSeatsBack.add(seatMW3);

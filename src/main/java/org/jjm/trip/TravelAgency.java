@@ -1,8 +1,8 @@
 package org.jjm.trip;
 
-import org.jjm.destination.Destination;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.destination.Destination;
 import org.jjm.utils.DataInitializer;
 
 import java.util.ArrayList;
