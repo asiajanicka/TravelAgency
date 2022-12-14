@@ -4,13 +4,14 @@ import org.jjm.enums.RoomType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
+import org.jjm.interfaces.IFindByType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Hotel {
+public class Hotel implements IFindByType<RoomType, Room> {
     private String name;
     private int starsRating;
     private String address;
@@ -51,6 +52,19 @@ public class Hotel {
                     String.format("There is no free room in the hotel %s. All rooms are booked.", name));
         } else
             return getAllAvailableRooms().get(0);
+    }
+
+    @Override
+    public Room findByType(RoomType roomType) throws NoPlacementAvailableException {
+        List<Room> roomsOfGivenType = rooms.stream()
+                .filter(p -> !p.isBooked() && p.getType().equals(roomType))
+                .collect(Collectors.toList());
+        if (roomsOfGivenType.size() == 0) {
+            throw new NoPlacementAvailableException(
+                    String.format("There is no free room of type %s in the hotel %s. All rooms are booked.",
+                            roomType, name));
+        } else
+            return roomsOfGivenType.get(0);
     }
 
     public String getName() {
@@ -110,4 +124,5 @@ public class Hotel {
     public int hashCode() {
         return Objects.hash(name, starsRating, address, rooms);
     }
+
 }

@@ -1,12 +1,16 @@
 package org.jjm.transport;
 
 import org.jjm.enums.City;
+import org.jjm.enums.CoachSeatType;
 import org.jjm.enums.TransportType;
+import org.jjm.exceptions.NoPlacementAvailableException;
+import org.jjm.interfaces.IFindByType;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CoachTravel extends Transport {
+public class CoachTravel extends Transport implements IFindByType<CoachSeatType, CoachSeat> {
 
     public CoachTravel() {
     }
@@ -17,7 +21,20 @@ public class CoachTravel extends Transport {
     }
 
     @Override
+    public CoachSeat findByType(CoachSeatType coachSeatType) throws NoPlacementAvailableException {
+        List<Seat> seatsOfGivenType = getSeats().stream()
+                .filter(p -> !p.isBooked() && ((CoachSeat) p).getType().equals(coachSeatType))
+                .collect(Collectors.toList());
+        if (seatsOfGivenType.size() == 0) {
+            throw new NoPlacementAvailableException(
+                    String.format("There is no free seat of type %s in the bus. All seats are booked.", coachSeatType));
+        } else
+            return (CoachSeat) seatsOfGivenType.get(0);
+    }
+
+    @Override
     public String toString() {
         return String.format("Coach trip: %s", super.toString());
     }
+
 }
