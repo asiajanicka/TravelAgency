@@ -23,7 +23,7 @@ public class Flight extends Transport<PlaneSeatType>{
     }
 
     @Override
-    public Seat getSeatByType(PlaneSeatType seatType) throws NoPlacementAvailableException {
+    public Seat<PlaneSeatType> getSeatByType(PlaneSeatType seatType) throws NoPlacementAvailableException {
         return Utils.findSeatByType(getSeats(), seatType);
     }
 

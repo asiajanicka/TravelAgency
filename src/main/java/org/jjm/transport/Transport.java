@@ -36,7 +36,7 @@ public abstract class Transport<T> {
         this.seats = seats;
     }
 
-    public Seat getSeat(int seatNumber) throws NoPlacementException {
+    public Seat<T> getSeat(int seatNumber) throws NoPlacementException {
         return seats.stream()
                 .filter(p -> p.getNumber() == seatNumber)
                 .findFirst()
@@ -44,17 +44,17 @@ public abstract class Transport<T> {
                         seatNumber, type.toString().toLowerCase())));
     }
 
-    public Seat bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
+    public Seat<T> bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if(getSeat(seatNumber).book())
             throw new PlacementAlreadyBooked(String.format("Seat %d is already booked. Sorry.", seatNumber));
         else return getSeat(seatNumber);
     }
 
-    public List<Seat> getAvailableSeats() {
+    public List<Seat<T>> getAvailableSeats() {
         return seats.stream().filter(p -> !p.isBooked()).collect(Collectors.toList());
     }
 
-    public Seat getFirstAvailableSeat() throws NoPlacementAvailableException {
+    public Seat<T> getFirstAvailableSeat() throws NoPlacementAvailableException {
         if (getAvailableSeats().size() == 0) {
             throw new NoPlacementAvailableException(
                     String.format("There is no free seat in %s. All seats are booked.", type.toString().toLowerCase()));
@@ -62,7 +62,7 @@ public abstract class Transport<T> {
             return getAvailableSeats().get(0);
     }
 
-    public abstract Seat getSeatByType(T seatType) throws NoPlacementAvailableException;
+    public abstract Seat<T> getSeatByType(T seatType) throws NoPlacementAvailableException;
 
     public LocalDateTime getDateDeparture() {
         return dateDeparture;
@@ -103,15 +103,6 @@ public abstract class Transport<T> {
     public void setType(TransportType type) {
         this.type = type;
     }
-
-//    public List<Seat> getSeats() {
-//        return seats;
-//    }
-//
-//    public void setSeats(List<Seat> seats) {
-//        this.seats = seats;
-//    }
-
 
     public List<Seat<T>> getSeats() {
         return seats;

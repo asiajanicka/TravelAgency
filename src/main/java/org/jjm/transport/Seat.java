@@ -73,16 +73,14 @@ public class Seat <T> implements IBook {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) return false;
-        if (this.getClass() != o.getClass()) return false;
-        if (this.hashCode() != o.hashCode()) return false;
-        Seat s = (Seat) o;
-        return number == s.number;
+        if (this == o) return true;
+        if (!(o instanceof Seat)) return false;
+        Seat<?> seat = (Seat<?>) o;
+        return number == seat.number && isBooked == seat.isBooked && Objects.equals(price, seat.price) && Objects.equals(seatType, seat.seatType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number);
+        return Objects.hash(number, price, isBooked, seatType);
     }
-
 }
