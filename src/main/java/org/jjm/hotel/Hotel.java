@@ -1,10 +1,13 @@
 package org.jjm.hotel;
 
 import org.jjm.enums.RoomType;
+import org.jjm.exceptions.InvalidDataException;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
+import org.jjm.utils.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -65,6 +68,35 @@ public class Hotel {
             return roomsOfGivenType.get(0);
     }
 
+    public static Hotel getHotelFromFile(String hotelFile) throws InvalidDataException, IOException {
+        List<String> lines = Utils.readDataFromFile(hotelFile);
+        return parseHotelFromStrings(lines, hotelFile);
+    }
+
+    public static Hotel parseHotelFromStrings(List<String> hotelStrings, String hotelFile) throws InvalidDataException {
+        if (hotelStrings.size() < 2 || hotelStrings.get(0).isBlank() || hotelStrings.get(1).isBlank()) {
+            throw new InvalidDataException(String.format("Hotel can't be created due to wrong data format in file %s. " +
+                    "File should have at last two lines: first with hotel description and second or more with rooms " +
+                    "description", hotelFile));
+        }
+        try {
+            Hotel hotel = new Hotel();
+            String[] hotelInfo = hotelStrings.get(0).split(",");
+            hotel.setName(hotelInfo[0].trim());
+            hotel.setStarsRating(Integer.parseInt(hotelInfo[1].trim()));
+            hotel.setAddress(hotelInfo[2].trim());
+            ArrayList<Room> rooms = new ArrayList<>();
+            for (int i = 1; i < hotelStrings.size(); i++) {
+                rooms.add(Room.parseRoomFromString(hotelStrings.get(i), hotelFile));
+            }
+            hotel.setRooms(rooms);
+            return hotel;
+        } catch (RuntimeException e) {
+            throw new InvalidDataException(String.format("Hotel can't be created due to wrong data format in file %s." +
+                    "First line in file should contain hotel description", hotelFile), e);
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -77,7 +109,7 @@ public class Hotel {
         return starsRating;
     }
 
-    public void setStarsRating(byte starsRating) {
+    public void setStarsRating(int starsRating) {
         this.starsRating = starsRating;
     }
 

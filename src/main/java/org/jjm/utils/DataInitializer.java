@@ -6,28 +6,24 @@ import org.jjm.destination.activitiy.Activity;
 import org.jjm.destination.activitiy.AtHotelActivity;
 import org.jjm.destination.activitiy.OutOfHotelActivity;
 import org.jjm.enums.*;
+import org.jjm.exceptions.InvalidDataException;
 import org.jjm.hotel.Hotel;
-import org.jjm.hotel.Room;
-import org.jjm.transport.*;
+import org.jjm.transport.CoachTravel;
+import org.jjm.transport.Flight;
+import org.jjm.transport.Seat;
+import org.jjm.transport.Transport;
 
-
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataInitializer {
-    public static Destination initMalaga() {
+    public static Destination initMalaga() throws InvalidDataException, IOException {
         Place malaga = new Place(Country.ES, City.MALAGA);
 
-        Room doubleRoom = new Room(101, RoomType.DOUBLE, new BigDecimal(200));
-        Room singleRoom1 = new Room(102, RoomType.SINGLE, new BigDecimal(100));
-        Room singleRoom2 = new Room(103, RoomType.SINGLE, new BigDecimal(100));
-        ArrayList<Room> rooms = new ArrayList<>();
-        rooms.add(doubleRoom);
-        rooms.add(singleRoom1);
-        rooms.add(singleRoom2);
-        Hotel hotelAtMalaga = new Hotel("Holiday Inn", 4, " Churriana, 29004 Malaga", rooms);
+        Hotel hotelAtMalaga = Hotel.getHotelFromFile("src/main/resources/initData/destinations/Malaga/MalagaHotel.csv");
 
         List<Transport> transports = new ArrayList<>();
         Seat<PlaneSeatType> planeSeatWM1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
@@ -76,7 +72,7 @@ public class DataInitializer {
 
         Seat<CoachSeatType> seatMW1 = new Seat<>(1, CoachSeatType.MIDDLE, new BigDecimal(3));
         Seat<CoachSeatType> seatMW2 = new Seat<>(2, CoachSeatType.WINDOW, new BigDecimal(3));
-        Seat<CoachSeatType> seatMW3 = new Seat<>(3, CoachSeatType.AISLE,  new BigDecimal(3));
+        Seat<CoachSeatType> seatMW3 = new Seat<>(3, CoachSeatType.AISLE, new BigDecimal(3));
         Seat<CoachSeatType> seatMW4 = new Seat<>(4, CoachSeatType.WINDOW, new BigDecimal(3));
         List<Seat<CoachSeatType>> busSeatsBack = new ArrayList<>();
         busSeatsBack.add(seatMW1);
