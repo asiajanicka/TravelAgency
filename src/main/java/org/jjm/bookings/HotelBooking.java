@@ -16,6 +16,7 @@ import java.time.Period;
 import java.util.Objects;
 
 public class HotelBooking implements ICost {
+    private static int counter = 0;
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private Hotel hotel;
@@ -25,6 +26,7 @@ public class HotelBooking implements ICost {
     private static final Logger logger = LogManager.getLogger(HotelBooking.class);
 
     public HotelBooking() {
+        ++counter;
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, boolean isForAdult, Room room,
@@ -35,6 +37,7 @@ public class HotelBooking implements ICost {
         this.room = room;
         this.board = new Board(boardType);
         this.isForAdult = isForAdult;
+        ++counter;
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, Room room, BoardType boardType) {
@@ -66,6 +69,10 @@ public class HotelBooking implements ICost {
             logger.error("Hotel Booking - total price set to null", e);
         }
         return priceForHotel;
+    }
+
+    public static int getCounter() {
+        return counter;
     }
 
     public LocalDate getDateFrom() {

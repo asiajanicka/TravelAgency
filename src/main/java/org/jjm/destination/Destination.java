@@ -14,17 +14,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Destination implements IDescribe {
+    private static int counter = 0;
     private Place place;
     private Hotel hotel;
     private List<Transport> transports;
     private List<Activity> activities;
 
     public Destination() {
+        ++counter;
         this.activities = new ArrayList<>();
         this.transports = new ArrayList<>();
     }
 
     public Destination(Place place, Hotel hotel, List<Transport> transports) {
+        ++counter;
         this.place = place;
         this.transports = transports;
         this.hotel = hotel;
@@ -72,6 +75,14 @@ public class Destination implements IDescribe {
                 .findFirst()
                 .orElseThrow(() -> new NoTransportException(String.format("There is no %s available from %s to %s",
                         type, cityFrom, cityTo)));
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Destination.counter = counter;
     }
 
     public Place getPlace() {

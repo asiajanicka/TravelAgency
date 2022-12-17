@@ -9,15 +9,18 @@ import org.jjm.transport.Transport;
 import java.math.BigDecimal;
 
 public abstract class TransportBooking<T> implements ICost {
+    private static int counter = 0;
     private Transport<T> transport;
     private Seat<T> seat;
     private boolean isForAdult;
     private static final Logger logger = LogManager.getLogger(TransportBooking.class);
 
     TransportBooking() {
+        ++counter;
     }
 
     public TransportBooking(Transport<T> transport, Seat<T> seat, boolean isForAdult) {
+        ++counter;
         this.seat = seat;
         this.transport = transport;
         this.isForAdult = isForAdult;
@@ -36,6 +39,10 @@ public abstract class TransportBooking<T> implements ICost {
         BigDecimal price = getPriceForSeat().add(getPriceForLuggage());
         logger.debug(String.format("Transport booking - calculated price: %,.2f", price));
         return price;
+    }
+
+    public static int getCounter() {
+        return counter;
     }
 
     public Transport getTransport() {

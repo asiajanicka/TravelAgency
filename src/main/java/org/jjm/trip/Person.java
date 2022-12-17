@@ -48,6 +48,10 @@ public class Person {
         this.age = age;
     }
 
+    public static int getCounter() {
+        return counter;
+    }
+
     @Override
     public String toString() {
         return String.format("%s %s (%d) age: %d", firstName, lastName, id, age);

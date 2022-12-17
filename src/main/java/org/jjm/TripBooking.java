@@ -8,7 +8,6 @@ import org.jjm.bookings.HotelBooking;
 import org.jjm.destination.Destination;
 import org.jjm.enums.*;
 import org.jjm.exceptions.*;
-import org.jjm.hotel.Hotel;
 import org.jjm.hotel.Room;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
@@ -17,6 +16,7 @@ import org.jjm.trip.Participant;
 import org.jjm.trip.Person;
 import org.jjm.trip.TravelAgency;
 import org.jjm.utils.DateFormat;
+import org.jjm.utils.Utils;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -295,5 +295,11 @@ public class TripBooking {
         logger.debug(String.format("Customized trip - participant added: %s ", participantTom.getPerson()));
 
         myTrip.printSummary();
+
+        try {
+            Utils.writeSessionStatisticsToFile("src/test/resources/tempStatistics.txt");
+        } catch (IOException e) {
+            logger.error("Statistics can't be written to the file due to problem with the file.");
+        }
     }
 }

@@ -1,8 +1,17 @@
 package org.jjm.utils;
 
+import com.sun.jdi.connect.Transport;
 import org.apache.commons.io.FileUtils;
+import org.jjm.bookings.CoachTravelBooking;
+import org.jjm.bookings.FlightBooking;
+import org.jjm.bookings.HotelBooking;
+import org.jjm.bookings.TransportBooking;
+import org.jjm.destination.Destination;
 import org.jjm.exceptions.NoPlacementAvailableException;
+import org.jjm.transport.CoachTravel;
 import org.jjm.transport.Seat;
+import org.jjm.trip.CustomizedTrip;
+import org.jjm.trip.Person;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,5 +32,14 @@ public class Utils {
 
     public static List<String> readDataFromFile(String fileName) throws IOException {
             return FileUtils.readLines(new File(fileName), "UTF-8");
+    }
+
+    public static void writeSessionStatisticsToFile(String fileName) throws IOException {
+        String text = String.format("Statistics about number of created objects:\n" +
+                "Person: %d\nAvailable destinations: %d\nCustomized trips: %d\n" +
+                "Transport bookings: %d\nHotel bookings: %d",
+                Person.getCounter(), Destination.getCounter(), CustomizedTrip.getCounter(),
+                TransportBooking.getCounter(), HotelBooking.getCounter());
+        FileUtils.write(new File(fileName), text,"UTF-8",  false);
     }
 }
