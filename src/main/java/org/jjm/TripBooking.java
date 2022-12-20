@@ -53,8 +53,8 @@ public class TripBooking {
         logger.debug(String.format("Customized trip - date set: from %s to %s",
                 DateFormat.format(startDate), DateFormat.format(endDate)));
 
-        City goFromCity = City.WARSAW;
-        City goToCity = City.MALAGA;
+        City goFromCity = Place.WARSAW_PL.getCity();
+        City goToCity = Place.MALAGA_ES.getCity();
         City goBackFromCity = goToCity;
         City goBackToCity = goFromCity;
 

@@ -1,7 +1,6 @@
 package org.jjm.utils;
 
 import org.jjm.destination.Destination;
-import org.jjm.destination.Place;
 import org.jjm.destination.activitiy.Activity;
 import org.jjm.destination.activitiy.AtHotelActivity;
 import org.jjm.destination.activitiy.OutOfHotelActivity;
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class DataInitializer {
     public static Destination initMalaga() throws InvalidDataException, IOException {
-        Place malaga = new Place(Country.ES, City.MALAGA);
+        Place malaga = Place.MALAGA_ES;
 
         Hotel hotelAtMalaga = Hotel.getHotelFromFile("src/main/resources/initData/destinations/Malaga/MalagaHotel.csv");
 
@@ -37,8 +36,8 @@ public class DataInitializer {
         planeSeats.add(planeSeatWM4);
         LocalDateTime flightDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
         LocalDateTime flightArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
-        Flight flightWM = new Flight(flightDepartureDateWM, flightArrivalDateWM, City.WARSAW, City.MALAGA,
-                planeSeats);
+        Flight flightWM = new Flight(flightDepartureDateWM, flightArrivalDateWM, Place.WARSAW_PL.getCity(),
+                Place.MALAGA_ES.getCity(), planeSeats);
         transports.add(flightWM);
 
         Seat<CoachSeatType> seatWM1 = new Seat<>(1, CoachSeatType.AISLE, new BigDecimal(3));
@@ -53,7 +52,7 @@ public class DataInitializer {
         LocalDateTime busDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
         LocalDateTime busArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
         CoachTravel coachTravelWM = new CoachTravel(busDepartureDateWM, busArrivalDateWM,
-                City.WARSAW, City.MALAGA, busSeats);
+                Place.WARSAW_PL.getCity(), Place.MALAGA_ES.getCity(), busSeats);
         transports.add(coachTravelWM);
 
         Seat<PlaneSeatType> planeSeatMW1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
@@ -67,7 +66,8 @@ public class DataInitializer {
         planeSeatsBack.add(planeSeatMW4);
         LocalDateTime flightDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime flightArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
-        Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, City.MALAGA, City.WARSAW, planeSeatsBack);
+        Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, Place.MALAGA_ES.getCity(),
+                Place.WARSAW_PL.getCity(), planeSeatsBack);
         transports.add(flightMW);
 
         Seat<CoachSeatType> seatMW1 = new Seat<>(1, CoachSeatType.MIDDLE, new BigDecimal(3));
@@ -81,8 +81,8 @@ public class DataInitializer {
         busSeatsBack.add(seatMW4);
         LocalDateTime busDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime busArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
-        CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW, City.MALAGA, City.WARSAW,
-                busSeatsBack);
+        CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW, Place.MALAGA_ES.getCity(),
+                Place.WARSAW_PL.getCity(), busSeatsBack);
         transports.add(coachTravelMW);
 
         ArrayList<Activity> activities = new ArrayList<>();
