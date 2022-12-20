@@ -1,12 +1,10 @@
 package org.jjm.transport;
 
-import org.jjm.enums.City;
-import org.jjm.enums.CoachSeatType;
-import org.jjm.enums.TransportType;
+import org.jjm.destination.enums.City;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
-import org.jjm.interfaces.IBook;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;

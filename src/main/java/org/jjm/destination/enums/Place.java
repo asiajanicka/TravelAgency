@@ -1,4 +1,4 @@
-package org.jjm.enums;
+package org.jjm.destination.enums;
 
 public enum Place {
     MALAGA_ES(Country.ES, City.MALAGA),

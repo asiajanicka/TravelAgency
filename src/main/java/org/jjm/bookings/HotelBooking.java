@@ -2,7 +2,7 @@ package org.jjm.bookings;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.BoardType;
+import org.jjm.hotel.enums.BoardType;
 import org.jjm.exceptions.InvalidTimePeriodException;
 import org.jjm.hotel.Hotel;
 import org.jjm.hotel.Room;

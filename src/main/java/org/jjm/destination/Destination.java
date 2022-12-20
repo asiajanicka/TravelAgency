@@ -1,9 +1,9 @@
 package org.jjm.destination;
 
 import org.jjm.destination.activitiy.Activity;
-import org.jjm.enums.City;
-import org.jjm.enums.Place;
-import org.jjm.enums.TransportType;
+import org.jjm.destination.enums.City;
+import org.jjm.destination.enums.Place;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.exceptions.NoActivityException;
 import org.jjm.exceptions.NoTransportException;
 import org.jjm.hotel.Hotel;

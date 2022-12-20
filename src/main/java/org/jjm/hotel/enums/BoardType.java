@@ -1,4 +1,4 @@
-package org.jjm.enums;
+package org.jjm.hotel.enums;
 
 import java.math.BigDecimal;
 

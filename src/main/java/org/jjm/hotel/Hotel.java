@@ -1,6 +1,6 @@
 package org.jjm.hotel;
 
-import org.jjm.enums.RoomType;
+import org.jjm.hotel.enums.RoomType;
 import org.jjm.exceptions.InvalidDataException;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;

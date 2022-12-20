@@ -1,4 +1,4 @@
-package org.jjm.enums;
+package org.jjm.transport.enums;
 
 import java.math.BigDecimal;
 

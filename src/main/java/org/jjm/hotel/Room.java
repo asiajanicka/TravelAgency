@@ -2,7 +2,7 @@ package org.jjm.hotel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.RoomType;
+import org.jjm.hotel.enums.RoomType;
 import org.jjm.exceptions.InvalidDataException;
 import org.jjm.interfaces.IBook;
 

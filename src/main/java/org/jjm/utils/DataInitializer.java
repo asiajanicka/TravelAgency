@@ -1,16 +1,18 @@
 package org.jjm.utils;
 
 import org.jjm.destination.Destination;
-import org.jjm.destination.activitiy.Activity;
-import org.jjm.destination.activitiy.AtHotelActivity;
-import org.jjm.destination.activitiy.OutOfHotelActivity;
-import org.jjm.enums.*;
+import org.jjm.destination.activitiy.*;
+import org.jjm.destination.enums.ActivityType;
+import org.jjm.destination.enums.Language;
+import org.jjm.destination.enums.Place;
 import org.jjm.exceptions.InvalidDataException;
 import org.jjm.hotel.Hotel;
 import org.jjm.transport.CoachTravel;
 import org.jjm.transport.Flight;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
+import org.jjm.transport.enums.CoachSeatType;
+import org.jjm.transport.enums.PlaneSeatType;
 
 import java.io.IOException;
 import java.math.BigDecimal;

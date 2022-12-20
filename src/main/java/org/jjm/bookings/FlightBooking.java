@@ -2,8 +2,8 @@ package org.jjm.bookings;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.PlaneBaggage;
-import org.jjm.enums.PlaneSeatType;
+import org.jjm.transport.enums.PlaneBaggage;
+import org.jjm.transport.enums.PlaneSeatType;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 

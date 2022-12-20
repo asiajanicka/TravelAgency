@@ -6,11 +6,18 @@ import org.jjm.bookings.CoachTravelBooking;
 import org.jjm.bookings.FlightBooking;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.destination.Destination;
-import org.jjm.enums.*;
+import org.jjm.destination.enums.City;
+import org.jjm.destination.enums.Place;
 import org.jjm.exceptions.*;
 import org.jjm.hotel.Room;
+import org.jjm.hotel.enums.BoardType;
+import org.jjm.hotel.enums.RoomType;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
+import org.jjm.transport.enums.CoachSeatType;
+import org.jjm.transport.enums.PlaneBaggage;
+import org.jjm.transport.enums.PlaneSeatType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.trip.CustomizedTrip;
 import org.jjm.trip.Participant;
 import org.jjm.trip.Person;
@@ -20,6 +27,8 @@ import org.jjm.utils.Utils;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TripBooking {
     private static final Logger logger = LogManager.getLogger(TripBooking.class);
@@ -301,5 +310,8 @@ public class TripBooking {
         } catch (IOException e) {
             logger.error("Statistics can't be written to the file due to problem with the file.");
         }
+
+        Map<String,String> map = new HashMap<>();
+
     }
 }

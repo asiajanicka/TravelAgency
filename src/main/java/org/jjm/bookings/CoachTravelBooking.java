@@ -2,7 +2,7 @@ package org.jjm.bookings;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.CoachSeatType;
+import org.jjm.transport.enums.CoachSeatType;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 
