@@ -27,8 +27,6 @@ import org.jjm.utils.Utils;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TripBooking {
     private static final Logger logger = LogManager.getLogger(TripBooking.class);
@@ -310,8 +308,6 @@ public class TripBooking {
         } catch (IOException e) {
             logger.error("Statistics can't be written to the file due to problem with the file.");
         }
-
-        Map<String,String> map = new HashMap<>();
-
     }
+
 }
