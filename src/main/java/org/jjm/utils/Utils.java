@@ -1,6 +1,8 @@
 package org.jjm.utils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.bookings.TransportBooking;
 import org.jjm.destination.Destination;
@@ -11,10 +13,15 @@ import org.jjm.trip.Person;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
+
+    private static final Logger logger = LogManager.getLogger(Utils.class);
+
     public static <T> Seat<T> findSeatByType(List<Seat<T>> seats, T seatType) throws NoPlacementAvailableException {
         return seats.stream()
                 .filter(p -> !p.isBooked() && p.getSeatType().equals(seatType))
@@ -51,6 +58,51 @@ public class Utils {
                 tempList.add(element);
         }
         return tempList;
+    }
+
+    public static Person getPersonWithReflection(String firstName, String lastName, int age) {
+        String className = "org.jjm.trip.Person";
+        Class<Person> pClass;
+        try {
+            pClass = (Class<Person>) Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            logger.error(String.format("Couldn't find file %s to create person from reflection", className), e);
+            throw new RuntimeException(e);
+        }
+
+        Person p;
+        try {
+            p = pClass.getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            logger.error(String.format("Person [%s %s age: %d] instance could not be created from reflection",
+                    firstName, lastName, age), e);
+            throw new RuntimeException(e);
+        }
+
+        Method[] methods = pClass.getDeclaredMethods();
+        try {
+            for (Method m : methods) {
+                if (m.getName().equals("setFirstName")) {
+                    m.invoke(p, firstName);
+                }
+                if (m.getName().equals("setLastName")) {
+                    m.invoke(p, lastName);
+                }
+                if (m.getName().equals("setAge")) {
+                    m.invoke(p, age);
+                }
+            }
+        } catch (InvocationTargetException e) {
+            logger.error(String.format("Value for person [%s] couldn't be changed due to problem with reflection" +
+                    " method", p), e);
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            logger.error(String.format("Value for person [%s] couldn't be changed due to problem with reflection" +
+                    " method", p), e);
+            throw new RuntimeException(e);
+        }
+        return p;
     }
 
 }
