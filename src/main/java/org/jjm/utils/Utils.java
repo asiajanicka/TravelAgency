@@ -62,22 +62,24 @@ public class Utils {
 
     public static Person getPersonWithReflection(String firstName, String lastName, int age) {
         String className = "org.jjm.trip.Person";
-        Class<Person> pClass;
+        Class<?> pClass = null;
         try {
-            pClass = (Class<Person>) Class.forName(className);
+            pClass = Class.forName(className);
         } catch (ClassNotFoundException e) {
             logger.error(String.format("Couldn't find file %s to create person from reflection", className), e);
-            throw new RuntimeException(e);
+            System.out.println("Sorry, program terminated as participant couldn't be created");
+            System.exit(-1);
         }
 
-        Person p;
+        Person p = null;
         try {
-            p = pClass.getConstructor().newInstance();
+            p = (Person) pClass.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
             logger.error(String.format("Person [%s %s age: %d] instance could not be created from reflection",
                     firstName, lastName, age), e);
-            throw new RuntimeException(e);
+            System.out.println("Sorry, program terminated as participant couldn't be created");
+            System.exit(-1);
         }
 
         Method[] methods = pClass.getDeclaredMethods();
@@ -93,14 +95,11 @@ public class Utils {
                     m.invoke(p, age);
                 }
             }
-        } catch (InvocationTargetException e) {
+        } catch (InvocationTargetException | IllegalAccessException e) {
             logger.error(String.format("Value for person [%s] couldn't be changed due to problem with reflection" +
                     " method", p), e);
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            logger.error(String.format("Value for person [%s] couldn't be changed due to problem with reflection" +
-                    " method", p), e);
-            throw new RuntimeException(e);
+            System.out.println("Sorry, program terminated as participant couldn't be created");
+            System.exit(-1);
         }
         return p;
     }
