@@ -38,7 +38,9 @@ public class Hotel {
     public Room bookRoom(int roomNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getRoom(roomNumber).book())
             throw new PlacementAlreadyBooked(String.format("Room %d is already booked. Sorry.", roomNumber));
-        else return getRoom(roomNumber);
+        else {
+            return getRoom(roomNumber);
+        }
     }
 
     public List<Room> getAllAvailableRooms() {
@@ -49,20 +51,20 @@ public class Hotel {
         if (getAllAvailableRooms().size() == 0) {
             throw new NoPlacementAvailableException(
                     String.format("There is no free room in the hotel %s. All rooms are booked.", name));
-        } else
+        } else {
             return getAllAvailableRooms().get(0);
+        }
     }
 
-    public Room getRoomByType(RoomType roomType) throws NoPlacementAvailableException {
+    public Room getRoomByType(RoomType roomType) throws NoPlacementException {
         List<Room> roomsOfGivenType = rooms.stream()
-                .filter(p -> !p.isBooked() && p.getType().equals(roomType))
+                .filter(p -> p.getType().equals(roomType))
                 .collect(Collectors.toList());
         if (roomsOfGivenType.size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free room of type %s in the hotel %s. All rooms are booked.",
-                            roomType, name));
-        } else
+            throw new NoPlacementException(String.format("There is no room of type %s in the hotel %s.", roomType));
+        } else {
             return roomsOfGivenType.get(0);
+        }
     }
 
     public String getName() {
@@ -122,5 +124,4 @@ public class Hotel {
     public int hashCode() {
         return Objects.hash(name, starsRating, address, rooms);
     }
-
 }

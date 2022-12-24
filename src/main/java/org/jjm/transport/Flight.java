@@ -32,6 +32,5 @@ public class Flight extends Transport<PlaneSeatType>{
         return String.format("Flight: %s Boarding time: %s",
                 super.toString(), DateFormat.format(getBoardingTime()));
     }
-
 }
 

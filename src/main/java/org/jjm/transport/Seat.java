@@ -1,13 +1,13 @@
 package org.jjm.transport;
 
-import org.jjm.interfaces.IBook;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.interfaces.IBook;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Seat <T> implements IBook {
+public class Seat<T extends Enum> implements IBook {
     private int number;
     private BigDecimal price;
     private boolean isBooked;

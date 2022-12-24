@@ -28,5 +28,4 @@ public class CoachTravel extends Transport<CoachSeatType> {
     public String toString() {
         return String.format("Coach trip: %s", super.toString());
     }
-
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Utils {
-    public static <T> Seat<T> findSeatByType(List<Seat<T>> seats, T seatType) throws NoPlacementAvailableException {
+    public static <T extends Enum> Seat<T> findSeatByType(List<Seat<T>> seats, T seatType) throws NoPlacementAvailableException {
         List<Seat<T>> seatsOfGivenType = seats.stream()
                 .filter(p -> !p.isBooked() && p.getSeatType().equals(seatType))
                 .collect(Collectors.toList());

@@ -1,12 +1,10 @@
 package org.jjm.transport;
 
 import org.jjm.enums.City;
-import org.jjm.enums.CoachSeatType;
 import org.jjm.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
-import org.jjm.interfaces.IBook;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class Transport<T> {
+public abstract class Transport<T extends Enum> {
     private LocalDateTime dateDeparture;
     private LocalDateTime dateArrival;
     private City cityFrom;
@@ -45,7 +43,7 @@ public abstract class Transport<T> {
     }
 
     public Seat<T> bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
-        if(getSeat(seatNumber).book())
+        if (getSeat(seatNumber).book())
             throw new PlacementAlreadyBooked(String.format("Seat %d is already booked. Sorry.", seatNumber));
         else return getSeat(seatNumber);
     }
