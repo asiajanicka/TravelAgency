@@ -1,6 +1,6 @@
 package org.jjm.hotel;
 
-import org.jjm.enums.RoomType;
+import org.jjm.enums.PlacementType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
@@ -31,13 +31,12 @@ public class Hotel {
         return rooms.stream()
                 .filter(p -> p.getNumber() == roomNumber)
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementException(String.format("There is no room with number %d in the " +
-                        "hotel %s.", roomNumber, name)));
+                .orElseThrow(() -> new NoPlacementException(PlacementType.ROOM, roomNumber));
     }
 
     public Room bookRoom(int roomNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getRoom(roomNumber).book())
-            throw new PlacementAlreadyBooked(String.format("Room %d is already booked. Sorry.", roomNumber));
+            throw new PlacementAlreadyBooked(PlacementType.ROOM, roomNumber);
         else return getRoom(roomNumber);
     }
 
@@ -47,8 +46,7 @@ public class Hotel {
 
     public Room getFirstAvailableRoom() throws NoPlacementAvailableException {
         if (getAllAvailableRooms().size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free room in the hotel %s. All rooms are booked.", name));
+            throw new NoPlacementAvailableException(PlacementType.ROOM);
         } else
             return getAllAvailableRooms().get(0);
     }

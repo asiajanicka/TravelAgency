@@ -1,8 +1,8 @@
 package org.jjm.transport;
 
-import org.jjm.interfaces.IBook;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.interfaces.IBook;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -29,6 +29,17 @@ public class Seat implements IBook {
             return true;
         }
         logger.debug(String.format("Seat %d can't be booked as its status is already booked", number));
+        return false;
+    }
+
+    @Override
+    public boolean unbook() {
+        if (isBooked) {
+            isBooked = false;
+            logger.debug(String.format("Seat %d has been unbooked successfully", number));
+            return true;
+        }
+        logger.debug(String.format("Seat %d can't be unbooked as its status is already free", number));
         return false;
     }
 
@@ -74,5 +85,4 @@ public class Seat implements IBook {
     public int hashCode() {
         return Objects.hash(number);
     }
-
 }

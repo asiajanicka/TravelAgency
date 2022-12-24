@@ -1,9 +1,9 @@
 package org.jjm.hotel;
 
-import org.jjm.enums.RoomType;
-import org.jjm.interfaces.IBook;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.enums.RoomType;
+import org.jjm.interfaces.IBook;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -33,6 +33,18 @@ public class Room implements IBook {
             return true;
         } else {
             logger.debug(String.format("Room %d can't be booked as its status is already booked", number));
+            return false;
+        }
+    }
+
+    @Override
+    public boolean unbook() {
+        if (isBooked) {
+            isBooked = false;
+            logger.debug(String.format("Room %d has been unbooked successfully", number));
+            return true;
+        } else {
+            logger.debug(String.format("Room %d can't be unbooked as its status is already free", number));
             return false;
         }
     }

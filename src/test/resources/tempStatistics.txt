@@ -1,0 +1,6 @@
+Statistics about number of created objects:
+Person: 4
+Available destinations: 1
+Customized trips: 1
+Transport bookings: 8
+Hotel bookings: 4

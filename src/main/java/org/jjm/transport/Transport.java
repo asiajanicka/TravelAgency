@@ -1,11 +1,11 @@
 package org.jjm.transport;
 
 import org.jjm.enums.City;
+import org.jjm.enums.PlacementType;
 import org.jjm.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
-import org.jjm.interfaces.IBook;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;
@@ -39,13 +39,12 @@ public abstract class Transport {
         return seats.stream()
                 .filter(p -> p.getNumber() == seatNumber)
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementException(String.format("There is no seat with number %d in the %s.",
-                        seatNumber, type.toString().toLowerCase())));
+                .orElseThrow(() -> new NoPlacementException(PlacementType.SEAT, seatNumber));
     }
 
     public Seat bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
-        if(getSeat(seatNumber).book())
-            throw new PlacementAlreadyBooked(String.format("Seat %d is already booked. Sorry.", seatNumber));
+        if (getSeat(seatNumber).book())
+            throw new PlacementAlreadyBooked(type, seatNumber, cityFrom, cityTo);
         else return getSeat(seatNumber);
     }
 
@@ -55,8 +54,7 @@ public abstract class Transport {
 
     public Seat getFirstAvailableSeat() throws NoPlacementAvailableException {
         if (getAvailableSeats().size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free seat in %s. All seats are booked.", type.toString().toLowerCase()));
+            throw new NoPlacementAvailableException(cityFrom, cityTo);
         } else
             return getAvailableSeats().get(0);
     }
@@ -111,7 +109,7 @@ public abstract class Transport {
 
     @Override
     public String toString() {
-        return String.format("from %s(%s) to %s(%s)",
+        return String.format("%s from %s(%s) to %s(%s)", type,
                 cityFrom, DateFormat.format(dateDeparture),
                 cityTo, DateFormat.format(dateArrival));
     }
