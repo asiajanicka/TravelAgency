@@ -1,14 +1,10 @@
 package org.jjm.utils;
 
-import com.sun.jdi.connect.Transport;
 import org.apache.commons.io.FileUtils;
-import org.jjm.bookings.CoachTravelBooking;
-import org.jjm.bookings.FlightBooking;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.bookings.TransportBooking;
 import org.jjm.destination.Destination;
 import org.jjm.exceptions.NoPlacementAvailableException;
-import org.jjm.transport.CoachTravel;
 import org.jjm.transport.Seat;
 import org.jjm.trip.CustomizedTrip;
 import org.jjm.trip.Person;
@@ -40,6 +36,6 @@ public class Utils {
                 "Transport bookings: %d\nHotel bookings: %d",
                 Person.getCounter(), Destination.getCounter(), CustomizedTrip.getCounter(),
                 TransportBooking.getCounter(), HotelBooking.getCounter());
-        FileUtils.write(new File(fileName), text,"UTF-8",  false);
+        FileUtils.write(new File(fileName), text, "UTF-8", false);
     }
 }

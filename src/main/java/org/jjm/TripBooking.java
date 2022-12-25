@@ -7,8 +7,12 @@ import org.jjm.bookings.FlightBooking;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.destination.Destination;
 import org.jjm.enums.*;
-import org.jjm.exceptions.*;
+import org.jjm.exceptions.NoActivityException;
+import org.jjm.exceptions.NoPlacementAvailableException;
+import org.jjm.exceptions.NoPlacementException;
+import org.jjm.exceptions.NoTransportException;
 import org.jjm.hotel.Room;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 import org.jjm.trip.CustomizedTrip;
@@ -26,18 +30,7 @@ public class TripBooking {
 
     public static void main(String[] args) {
 
-        TravelAgency travelAgency = null;
-        try {
-            travelAgency = new TravelAgency();
-            logger.info("Travel agency initialized with possible destinations");
-        } catch (InvalidDataException e) {
-            logger.error("Travel agency couldn't be created due to wrong init destination data", e);
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            logger.error(String.format("Travel agency couldn't be created due to problem with a file with init " +
-                    "destination data"), e);
-            throw new RuntimeException(e);
-        }
+        TravelAgency travelAgency = new TravelAgency();
 
         CustomizedTrip myTrip = new CustomizedTrip();
         logger.info("Customized trip - created: empty");
@@ -297,9 +290,10 @@ public class TripBooking {
         myTrip.printSummary();
 
         try {
-            Utils.writeSessionStatisticsToFile("src/test/resources/tempStatistics.txt");
+            Utils.writeSessionStatisticsToFile(ConfigPropertiesReader.getTempStatisticsFilePath());
         } catch (IOException e) {
-            logger.error("Statistics can't be written to the file due to problem with the file.");
+            logger.error(String.format("Statistics can't be written to the file due to problem with the file: %s",
+                    ConfigPropertiesReader.getTempStatisticsFilePath()), e);
         }
     }
 }
