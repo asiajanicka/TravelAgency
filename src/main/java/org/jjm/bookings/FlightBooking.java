@@ -2,10 +2,10 @@ package org.jjm.bookings;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.transport.enums.PlaneBaggage;
-import org.jjm.transport.enums.PlaneSeatType;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
+import org.jjm.transport.enums.PlaneBaggage;
+import org.jjm.transport.enums.PlaneSeatType;
 
 import java.math.BigDecimal;
 
@@ -28,7 +28,9 @@ public class FlightBooking extends TransportBooking<PlaneSeatType> {
         BigDecimal priceForLuggage;
         if (getBaggage() != null) {
             priceForLuggage = getBaggage().getPrice();
-        } else priceForLuggage = BigDecimal.ZERO;
+        } else {
+            priceForLuggage = BigDecimal.ZERO;
+        }
         logger.debug(String.format("FLight booking - calculated price for luggage: %,.2f", priceForLuggage));
         return priceForLuggage;
     }
@@ -43,7 +45,6 @@ public class FlightBooking extends TransportBooking<PlaneSeatType> {
 
     @Override
     public String toString() {
-        return String.format("%s Baggage: %s Total price: %.2f",
-                super.toString(), baggage, calculatePrice());
+        return String.format("%s Baggage: %s Total price: %.2f", super.toString(), baggage, calculatePrice());
     }
 }
