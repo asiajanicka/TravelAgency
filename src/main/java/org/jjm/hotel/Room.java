@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jjm.hotel.enums.RoomType;
 import org.jjm.exceptions.InvalidDataException;
+import org.jjm.exceptions.InvalidIDataType;
 import org.jjm.interfaces.IBook;
 
 import java.math.BigDecimal;
@@ -47,9 +48,8 @@ public class Room implements IBook {
             room.setPrice(new BigDecimal(roomInfo[2].trim()));
             room.setBooked(Boolean.valueOf(roomInfo[3].trim()));
             return room;
-        } catch (RuntimeException e) {
-            throw new InvalidDataException(String.format("Room can't be created due to wrong data format in file %s. " +
-                    "Starting from 2nd line in hotel file, lines should contain room description", hotelFile), e);
+        } catch (Exception e) {
+            throw new InvalidDataException(InvalidIDataType.INVALID_ROOM_DATA_IN_FILE, hotelFile, e);
         }
     }
 

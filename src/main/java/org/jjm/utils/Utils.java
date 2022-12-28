@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-
     private static final Logger logger = LogManager.getLogger(Utils.class);
 
     public static <T> Seat<T> findSeatByType(List<Seat<T>> seats, T seatType) throws NoPlacementAvailableException {
@@ -103,5 +102,4 @@ public class Utils {
         }
         return p;
     }
-
 }

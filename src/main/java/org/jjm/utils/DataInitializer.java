@@ -1,5 +1,7 @@
 package org.jjm.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jjm.destination.Destination;
 import org.jjm.destination.activitiy.*;
 import org.jjm.destination.enums.ActivityType;
@@ -7,6 +9,7 @@ import org.jjm.destination.enums.Language;
 import org.jjm.destination.enums.Place;
 import org.jjm.exceptions.InvalidDataException;
 import org.jjm.hotel.Hotel;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
 import org.jjm.transport.CoachTravel;
 import org.jjm.transport.Flight;
 import org.jjm.transport.Seat;
@@ -21,10 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataInitializer {
+
     public static Destination initMalaga() throws InvalidDataException, IOException {
         Place malaga = Place.MALAGA_ES;
 
-        Hotel hotelAtMalaga = Hotel.getHotelFromFile("src/main/resources/initData/destinations/Malaga/MalagaHotel.csv");
+        Hotel hotelAtMalaga = null;
+        try {
+            hotelAtMalaga = Hotel.getHotelFromFile(ConfigPropertiesReader.getMalagaHotelDataPath());
+        } catch (InvalidDataException e) {
+            System.out.println("Sorry, program terminated due to incorrect initial data concerning Malaga destination");
+            System.exit(-1);
+        } catch (IOException e) {
+            logger.error("Couldn't read data about Malaga hotel from file.", e);
+            System.out.println("Sorry, program terminated due to problem with file concerning data for Malaga destination");
+            System.exit(-1);
+        }
 
         List<Transport> transports = new ArrayList<>();
         Seat<PlaneSeatType> planeSeatWM1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));

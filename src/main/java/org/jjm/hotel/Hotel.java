@@ -78,26 +78,23 @@ public class Hotel {
 
     public static Hotel parseHotelFromStrings(List<String> hotelStrings, String hotelFile) throws InvalidDataException {
         if (hotelStrings.size() < 2 || hotelStrings.get(0).isBlank() || hotelStrings.get(1).isBlank()) {
-            throw new InvalidDataException(String.format("Hotel can't be created due to wrong data format in file %s. " +
-                    "File should have at last two lines: first with hotel description and second or more with rooms " +
-                    "description", hotelFile));
+            throw new InvalidDataException(InvalidIDataType.INVALID_HOTEL_FILE_FORMAT, hotelFile);
         }
+        Hotel hotel = new Hotel();
         try {
-            Hotel hotel = new Hotel();
             String[] hotelInfo = hotelStrings.get(0).split(",");
             hotel.setName(hotelInfo[0].trim());
             hotel.setStarsRating(Integer.parseInt(hotelInfo[1].trim()));
             hotel.setAddress(hotelInfo[2].trim());
-            ArrayList<Room> rooms = new ArrayList<>();
-            for (int i = 1; i < hotelStrings.size(); i++) {
-                rooms.add(Room.parseRoomFromString(hotelStrings.get(i), hotelFile));
-            }
-            hotel.setRooms(rooms);
-            return hotel;
-        } catch (RuntimeException e) {
-            throw new InvalidDataException(String.format("Hotel can't be created due to wrong data format in file %s." +
-                    "First line in file should contain hotel description", hotelFile), e);
+        } catch (Exception e) {
+            throw new InvalidDataException(InvalidIDataType.INVALID_HOTEL_DATA_IN_FILE, hotelFile, e);
         }
+        ArrayList<Room> rooms = new ArrayList<>();
+        for (int i = 1; i < hotelStrings.size(); i++) {
+            rooms.add(Room.parseRoomFromString(hotelStrings.get(i), hotelFile));
+        }
+        hotel.setRooms(rooms);
+        return hotel;
     }
 
     public String getName() {
@@ -157,5 +154,4 @@ public class Hotel {
     public int hashCode() {
         return Objects.hash(name, starsRating, address, rooms);
     }
-
 }
