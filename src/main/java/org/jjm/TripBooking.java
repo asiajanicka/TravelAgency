@@ -65,7 +65,7 @@ public class TripBooking {
         City goBackFromCity = goToCity;
         City goBackToCity = goFromCity;
 
-        Participant participantJohn = new Participant(new Person("John", "Smith", 46));
+        Participant participantJohn = new Participant(Utils.getPersonWithReflection("John", "Smith", 46));
         Participant participantSue = new Participant(new Person("Sue", "Smith", 45));
         Participant participantKate = new Participant(new Person("Kate", "Smith", 17));
         Participant participantTom = new Participant(new Person("Tom", "Smith", 15));
