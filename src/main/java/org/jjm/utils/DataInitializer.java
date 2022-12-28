@@ -1,33 +1,47 @@
 package org.jjm.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jjm.destination.Destination;
-import org.jjm.destination.Place;
 import org.jjm.destination.activitiy.Activity;
 import org.jjm.destination.activitiy.AtHotelActivity;
 import org.jjm.destination.activitiy.OutOfHotelActivity;
-import org.jjm.enums.*;
+import org.jjm.destination.enums.ActivityType;
+import org.jjm.destination.enums.Language;
+import org.jjm.destination.enums.Place;
+import org.jjm.exceptions.InvalidDataException;
 import org.jjm.hotel.Hotel;
-import org.jjm.hotel.Room;
-import org.jjm.transport.*;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
+import org.jjm.transport.CoachTravel;
+import org.jjm.transport.Flight;
+import org.jjm.transport.Seat;
+import org.jjm.transport.Transport;
+import org.jjm.transport.enums.CoachSeatType;
+import org.jjm.transport.enums.PlaneSeatType;
 
-
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataInitializer {
-    public static Destination initMalaga() {
-        Place malaga = new Place(Country.ES, City.MALAGA);
+    private static final Logger logger = LogManager.getLogger(DataInitializer.class);
 
-        Room doubleRoom = new Room(101, RoomType.DOUBLE, new BigDecimal(200));
-        Room singleRoom1 = new Room(102, RoomType.SINGLE, new BigDecimal(100));
-        Room singleRoom2 = new Room(103, RoomType.SINGLE, new BigDecimal(100));
-        ArrayList<Room> rooms = new ArrayList<>();
-        rooms.add(doubleRoom);
-        rooms.add(singleRoom1);
-        rooms.add(singleRoom2);
-        Hotel hotelAtMalaga = new Hotel("Holiday Inn", 4, " Churriana, 29004 Malaga", rooms);
+    public static Destination initMalaga() {
+        Place malaga = Place.MALAGA_ES;
+
+        Hotel hotelAtMalaga = null;
+        try {
+            hotelAtMalaga = Hotel.getHotelFromFile(ConfigPropertiesReader.getMalagaHotelDataPath());
+        } catch (InvalidDataException e) {
+            System.out.println("Sorry, program terminated due to incorrect initial data concerning Malaga destination");
+            System.exit(-1);
+        } catch (IOException e) {
+            logger.error("Couldn't read data about Malaga hotel from file.", e);
+            System.out.println("Sorry, program terminated due to problem with file concerning data for Malaga destination");
+            System.exit(-1);
+        }
 
         List<Transport> transports = new ArrayList<>();
         Seat<PlaneSeatType> planeSeatWM1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
@@ -41,8 +55,8 @@ public class DataInitializer {
         planeSeats.add(planeSeatWM4);
         LocalDateTime flightDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
         LocalDateTime flightArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
-        Flight flightWM = new Flight(flightDepartureDateWM, flightArrivalDateWM, City.WARSAW, City.MALAGA,
-                planeSeats);
+        Flight flightWM = new Flight(flightDepartureDateWM, flightArrivalDateWM, Place.WARSAW_PL.getCity(),
+                Place.MALAGA_ES.getCity(), planeSeats);
         transports.add(flightWM);
 
         Seat<CoachSeatType> seatWM1 = new Seat<>(1, CoachSeatType.AISLE, new BigDecimal(3));
@@ -57,7 +71,7 @@ public class DataInitializer {
         LocalDateTime busDepartureDateWM = LocalDateTime.of(2022, 5, 5, 9, 30);
         LocalDateTime busArrivalDateWM = LocalDateTime.of(2022, 5, 5, 12, 45);
         CoachTravel coachTravelWM = new CoachTravel(busDepartureDateWM, busArrivalDateWM,
-                City.WARSAW, City.MALAGA, busSeats);
+                Place.WARSAW_PL.getCity(), Place.MALAGA_ES.getCity(), busSeats);
         transports.add(coachTravelWM);
 
         Seat<PlaneSeatType> planeSeatMW1 = new Seat<>(1, PlaneSeatType.ECONOMY_CLASS, new BigDecimal(100));
@@ -71,12 +85,13 @@ public class DataInitializer {
         planeSeatsBack.add(planeSeatMW4);
         LocalDateTime flightDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime flightArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
-        Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, City.MALAGA, City.WARSAW, planeSeatsBack);
+        Flight flightMW = new Flight(flightDepartureDateMW, flightArrivalDateMW, Place.MALAGA_ES.getCity(),
+                Place.WARSAW_PL.getCity(), planeSeatsBack);
         transports.add(flightMW);
 
         Seat<CoachSeatType> seatMW1 = new Seat<>(1, CoachSeatType.MIDDLE, new BigDecimal(3));
         Seat<CoachSeatType> seatMW2 = new Seat<>(2, CoachSeatType.WINDOW, new BigDecimal(3));
-        Seat<CoachSeatType> seatMW3 = new Seat<>(3, CoachSeatType.AISLE,  new BigDecimal(3));
+        Seat<CoachSeatType> seatMW3 = new Seat<>(3, CoachSeatType.AISLE, new BigDecimal(3));
         Seat<CoachSeatType> seatMW4 = new Seat<>(4, CoachSeatType.WINDOW, new BigDecimal(3));
         List<Seat<CoachSeatType>> busSeatsBack = new ArrayList<>();
         busSeatsBack.add(seatMW1);
@@ -85,8 +100,8 @@ public class DataInitializer {
         busSeatsBack.add(seatMW4);
         LocalDateTime busDepartureDateMW = LocalDateTime.of(2022, 5, 15, 9, 30);
         LocalDateTime busArrivalDateMW = LocalDateTime.of(2022, 5, 15, 12, 45);
-        CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW, City.MALAGA, City.WARSAW,
-                busSeatsBack);
+        CoachTravel coachTravelMW = new CoachTravel(busDepartureDateMW, busArrivalDateMW, Place.MALAGA_ES.getCity(),
+                Place.WARSAW_PL.getCity(), busSeatsBack);
         transports.add(coachTravelMW);
 
         ArrayList<Activity> activities = new ArrayList<>();

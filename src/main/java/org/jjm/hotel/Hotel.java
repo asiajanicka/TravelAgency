@@ -1,14 +1,13 @@
 package org.jjm.hotel;
 
-import org.jjm.enums.RoomType;
-import org.jjm.exceptions.NoPlacementAvailableException;
-import org.jjm.exceptions.NoPlacementException;
-import org.jjm.exceptions.PlacementAlreadyBooked;
+import org.jjm.exceptions.*;
+import org.jjm.hotel.enums.RoomType;
+import org.jjm.utils.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Hotel {
     private String name;
@@ -35,6 +34,14 @@ public class Hotel {
                         "hotel %s.", roomNumber, name)));
     }
 
+    public Room getRoomWithLambda(int roomNumber) throws NoPlacementException {
+        Room room = Utils.findFirstMatchingInList(rooms, p -> p.getNumber() == roomNumber);
+        if (room == null) {
+            throw new NoPlacementException(String.format("There is no room with number %d in the hotel %s.",
+                    roomNumber, name));
+        } else return room;
+    }
+
     public Room bookRoom(int roomNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getRoom(roomNumber).book())
             throw new PlacementAlreadyBooked(String.format("Room %d is already booked. Sorry.", roomNumber));
@@ -43,28 +50,50 @@ public class Hotel {
         }
     }
 
-    public List<Room> getAllAvailableRooms() {
-        return rooms.stream().filter(p -> !p.isBooked()).collect(Collectors.toList());
+    public List<Room> getAllAvailableRoomsWithLambda() {
+        return Utils.findAllMatchingInList(rooms, p -> !p.isBooked());
     }
 
     public Room getFirstAvailableRoom() throws NoPlacementAvailableException {
-        if (getAllAvailableRooms().size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free room in the hotel %s. All rooms are booked.", name));
-        } else {
-            return getAllAvailableRooms().get(0);
-        }
+        return rooms.stream()
+                .filter(p -> !p.isBooked())
+                .findFirst()
+                .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free room in the hotel " +
+                        "%s. All rooms are booked.", name)));
     }
 
-    public Room getRoomByType(RoomType roomType) throws NoPlacementException {
-        List<Room> roomsOfGivenType = rooms.stream()
-                .filter(p -> p.getType().equals(roomType))
-                .collect(Collectors.toList());
-        if (roomsOfGivenType.size() == 0) {
-            throw new NoPlacementException(String.format("There is no room of type %s in the hotel %s.", roomType));
-        } else {
-            return roomsOfGivenType.get(0);
+    public Room getRoomByType(RoomType roomType) throws NoPlacementAvailableException {
+        return rooms.stream()
+                .filter(p -> !p.isBooked() && p.getType().equals(roomType))
+                .findFirst()
+                .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free room of type %s " +
+                        "in the hotel %s. All rooms are booked.", roomType, name)));
+    }
+
+    public static Hotel getHotelFromFile(String hotelFile) throws InvalidDataException, IOException {
+        List<String> lines = Utils.readDataFromFile(hotelFile);
+        return parseHotelFromStrings(lines, hotelFile);
+    }
+
+    public static Hotel parseHotelFromStrings(List<String> hotelStrings, String hotelFile) throws InvalidDataException {
+        if (hotelStrings.size() < 2 || hotelStrings.get(0).isBlank() || hotelStrings.get(1).isBlank()) {
+            throw new InvalidDataException(InvalidIDataType.INVALID_HOTEL_FILE_FORMAT, hotelFile);
         }
+        Hotel hotel = new Hotel();
+        try {
+            String[] hotelInfo = hotelStrings.get(0).split(",");
+            hotel.setName(hotelInfo[0].trim());
+            hotel.setStarsRating(Integer.parseInt(hotelInfo[1].trim()));
+            hotel.setAddress(hotelInfo[2].trim());
+        } catch (Exception e) {
+            throw new InvalidDataException(InvalidIDataType.INVALID_HOTEL_DATA_IN_FILE, hotelFile, e);
+        }
+        ArrayList<Room> rooms = new ArrayList<>();
+        for (int i = 1; i < hotelStrings.size(); i++) {
+            rooms.add(Room.parseRoomFromString(hotelStrings.get(i), hotelFile));
+        }
+        hotel.setRooms(rooms);
+        return hotel;
     }
 
     public String getName() {
@@ -79,7 +108,7 @@ public class Hotel {
         return starsRating;
     }
 
-    public void setStarsRating(byte starsRating) {
+    public void setStarsRating(int starsRating) {
         this.starsRating = starsRating;
     }
 

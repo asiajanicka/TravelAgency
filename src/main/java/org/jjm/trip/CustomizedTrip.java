@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomizedTrip implements IDescribe {
+    private static int counter = 0;
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Participant> participants;
@@ -19,12 +20,14 @@ public class CustomizedTrip implements IDescribe {
     private static final Logger logger = LogManager.getLogger(CustomizedTrip.class);
 
     public CustomizedTrip() {
+        ++counter;
         participants = new ArrayList<>();
         destinations = new ArrayList<>();
     }
 
     public CustomizedTrip(List<Destination> destinations, List<Participant> participants,
                           LocalDate startDate, LocalDate endDate) {
+        ++counter;
         this.startDate = startDate;
         this.endDate = endDate;
         this.destinations = destinations;
@@ -37,6 +40,10 @@ public class CustomizedTrip implements IDescribe {
 
     public void addParticipant(Participant person) {
         participants.add(person);
+    }
+
+    public static int getCounter() {
+        return counter;
     }
 
     @Override

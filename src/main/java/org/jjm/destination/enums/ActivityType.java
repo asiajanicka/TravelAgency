@@ -1,4 +1,4 @@
-package org.jjm.enums;
+package org.jjm.destination.enums;
 
 public enum ActivityType {
     CITY_TOUR,

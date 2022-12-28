@@ -6,20 +6,27 @@ import org.jjm.bookings.CoachTravelBooking;
 import org.jjm.bookings.FlightBooking;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.destination.Destination;
-import org.jjm.enums.*;
-import org.jjm.exceptions.NoActivityException;
-import org.jjm.exceptions.NoPlacementAvailableException;
-import org.jjm.exceptions.NoPlacementException;
-import org.jjm.exceptions.NoTransportException;
+import org.jjm.destination.enums.City;
+import org.jjm.destination.enums.Place;
+import org.jjm.exceptions.*;
 import org.jjm.hotel.Room;
+import org.jjm.hotel.enums.BoardType;
+import org.jjm.hotel.enums.RoomType;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
+import org.jjm.transport.enums.CoachSeatType;
+import org.jjm.transport.enums.PlaneBaggage;
+import org.jjm.transport.enums.PlaneSeatType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.trip.CustomizedTrip;
 import org.jjm.trip.Participant;
 import org.jjm.trip.Person;
 import org.jjm.trip.TravelAgency;
 import org.jjm.utils.DateFormat;
+import org.jjm.utils.Utils;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class TripBooking {
@@ -28,7 +35,6 @@ public class TripBooking {
     public static void main(String[] args) {
 
         TravelAgency travelAgency = new TravelAgency();
-        logger.info("Travel agency initialized with possible destinations");
 
         CustomizedTrip myTrip = new CustomizedTrip();
         logger.info("Customized trip - created: empty");
@@ -44,12 +50,12 @@ public class TripBooking {
         logger.debug(String.format("Customized trip - date set: from %s to %s",
                 DateFormat.format(startDate), DateFormat.format(endDate)));
 
-        City goFromCity = City.WARSAW;
-        City goToCity = City.MALAGA;
+        City goFromCity = Place.WARSAW_PL.getCity();
+        City goToCity = Place.MALAGA_ES.getCity();
         City goBackFromCity = goToCity;
         City goBackToCity = goFromCity;
 
-        Participant participantJohn = new Participant(new Person("John", "Smith", 46));
+        Participant participantJohn = new Participant(Utils.getPersonWithReflection("John", "Smith", 46));
         Participant participantSue = new Participant(new Person("Sue", "Smith", 45));
         Participant participantKate = new Participant(new Person("Kate", "Smith", 17));
         Participant participantTom = new Participant(new Person("Tom", "Smith", 15));
@@ -71,7 +77,7 @@ public class TripBooking {
             participantSue.addHotelBooking(hotelBookingSue);
             logger.debug(String.format("Customized trip - new hotel booking added for [%s]: room %d at %s",
                     participantSue.getPerson(), roomJohnSue.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementException e) {
+        } catch (NoPlacementAvailableException e) {
             logger.error("Search room by type failed. No hotel booking could be done", e);
         }
 
@@ -84,7 +90,7 @@ public class TripBooking {
             participantKate.addHotelBooking(hotelBookingKate);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
                     participantKate.getPerson(), roomKate.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementException e) {
+        } catch (NoPlacementAvailableException e) {
             logger.error("Search room by type failed. No hotel booking could be done", e);
         }
 
@@ -286,5 +292,12 @@ public class TripBooking {
         logger.debug(String.format("Customized trip - participant added: %s ", participantTom.getPerson()));
 
         myTrip.printSummary();
+
+        try {
+            Utils.writeSessionStatisticsToFile(ConfigPropertiesReader.getTempStatisticsFilePath());
+        } catch (IOException e) {
+            logger.error(String.format("Statistics can't be written to the file due to problem with the file: %s",
+                    ConfigPropertiesReader.getTempStatisticsFilePath()), e);
+        }
     }
 }

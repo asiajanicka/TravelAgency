@@ -1,13 +1,12 @@
 package org.jjm.bookings;
 
-import org.jjm.enums.BoardType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jjm.hotel.enums.BoardType;
 import org.jjm.exceptions.InvalidTimePeriodException;
-import org.jjm.hotel.Board;
 import org.jjm.hotel.Hotel;
 import org.jjm.hotel.Room;
 import org.jjm.interfaces.ICost;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jjm.utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -16,15 +15,17 @@ import java.time.Period;
 import java.util.Objects;
 
 public class HotelBooking implements ICost {
+    private static int counter = 0;
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private Hotel hotel;
     private Room room;
-    private Board board;
+    private BoardType board;
     private boolean isForAdult;
     private static final Logger logger = LogManager.getLogger(HotelBooking.class);
 
     public HotelBooking() {
+        ++counter;
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, boolean isForAdult, Room room,
@@ -33,8 +34,9 @@ public class HotelBooking implements ICost {
         this.dateTo = dateTo;
         this.hotel = hotel;
         this.room = room;
-        this.board = new Board(boardType);
+        this.board = boardType;
         this.isForAdult = isForAdult;
+        ++counter;
     }
 
     public HotelBooking(LocalDate dateFrom, LocalDate dateTo, Hotel hotel, Room room, BoardType boardType) {
@@ -69,6 +71,10 @@ public class HotelBooking implements ICost {
         return priceForHotel;
     }
 
+    public static int getCounter() {
+        return counter;
+    }
+
     public LocalDate getDateFrom() {
         return dateFrom;
     }
@@ -101,12 +107,12 @@ public class HotelBooking implements ICost {
         this.room = room;
     }
 
-    public Board getBoard() {
+    public BoardType getBoard() {
         return board;
     }
 
     public void setBoard(BoardType boardType) {
-        this.board = new Board(boardType);
+        this.board = boardType;
     }
 
     public boolean isForAdult() {
@@ -121,7 +127,7 @@ public class HotelBooking implements ICost {
     public String toString() {
         return String.format("Hotel: %s from %s to %s Is for adult? %b %s Board: %s Total price: %.2f",
                 hotel.getName(), DateFormat.format(dateFrom), DateFormat.format(dateTo), isForAdult, room,
-                board.getType().getDisplayName(), calculatePrice());
+                board.getDisplayName(), calculatePrice());
     }
 
     @Override

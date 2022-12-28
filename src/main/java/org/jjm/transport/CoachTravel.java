@@ -1,8 +1,8 @@
 package org.jjm.transport;
 
-import org.jjm.enums.City;
-import org.jjm.enums.CoachSeatType;
-import org.jjm.enums.TransportType;
+import org.jjm.destination.enums.City;
+import org.jjm.transport.enums.CoachSeatType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.utils.Utils;
 
