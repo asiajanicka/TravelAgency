@@ -12,6 +12,7 @@ import org.jjm.exceptions.*;
 import org.jjm.hotel.Room;
 import org.jjm.hotel.enums.BoardType;
 import org.jjm.hotel.enums.RoomType;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 import org.jjm.transport.enums.CoachSeatType;
@@ -76,7 +77,7 @@ public class TripBooking {
             participantSue.addHotelBooking(hotelBookingSue);
             logger.debug(String.format("Customized trip - new hotel booking added for [%s]: room %d at %s",
                     participantSue.getPerson(), roomJohnSue.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementException e) {
+        } catch (NoPlacementAvailableException e) {
             logger.error("Search room by type failed. No hotel booking could be done", e);
         }
 
@@ -89,7 +90,7 @@ public class TripBooking {
             participantKate.addHotelBooking(hotelBookingKate);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
                     participantKate.getPerson(), roomKate.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementException e) {
+        } catch (NoPlacementAvailableException e) {
             logger.error("Search room by type failed. No hotel booking could be done", e);
         }
 
@@ -299,5 +300,4 @@ public class TripBooking {
                     ConfigPropertiesReader.getTempStatisticsFilePath()), e);
         }
     }
-
 }

@@ -22,7 +22,7 @@ public class Utils {
     private static final Logger logger = LogManager.getLogger(Utils.class);
 
     public static <T extends Enum> Seat<T> findSeatByType(List<Seat<T>> seats, T seatType) throws NoPlacementAvailableException {
-        List<Seat<T>> seatsOfGivenType = seats.stream()
+        return seats.stream()
                 .filter(p -> !p.isBooked() && p.getSeatType().equals(seatType))
                 .findFirst()
                 .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free seat of type %s. " +
