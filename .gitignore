@@ -4,3 +4,4 @@
 /.idea
 /target
 src/test/resources/logs
+src/test/resources/tempStatistics.txt

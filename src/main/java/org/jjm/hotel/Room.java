@@ -2,7 +2,9 @@ package org.jjm.hotel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.RoomType;
+import org.jjm.hotel.enums.RoomType;
+import org.jjm.exceptions.InvalidDataException;
+import org.jjm.exceptions.InvalidIDataType;
 import org.jjm.interfaces.IBook;
 
 import java.math.BigDecimal;
@@ -46,6 +48,20 @@ public class Room implements IBook {
         } else {
             logger.debug(String.format("Room %d can't be unbooked as its status is already free", number));
             return false;
+        }
+    }
+
+    public static Room parseRoomFromString(String roomString, String hotelFile) throws InvalidDataException {
+        try {
+            String[] roomInfo = roomString.split(",");
+            Room room = new Room();
+            room.setNumber(Integer.parseInt(roomInfo[0].trim()));
+            room.setType(RoomType.valueOf(roomInfo[1].trim().toUpperCase()));
+            room.setPrice(new BigDecimal(roomInfo[2].trim()));
+            room.setBooked(Boolean.valueOf(roomInfo[3].trim()));
+            return room;
+        } catch (Exception e) {
+            throw new InvalidDataException(InvalidIDataType.INVALID_ROOM_DATA_IN_FILE, hotelFile, e);
         }
     }
 

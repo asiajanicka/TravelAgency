@@ -2,8 +2,8 @@ package org.jjm.transport.exceptions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.City;
-import org.jjm.enums.TransportType;
+import org.jjm.destination.enums.City;
+import org.jjm.transport.enums.TransportType;
 
 public class NoTransportException extends Exception {
     private static final Logger logger = LogManager.getLogger(NoTransportException.class);

@@ -1,25 +1,24 @@
 package org.jjm.bookings;
 
-import org.jjm.enums.PlaneBaggage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
+import org.jjm.transport.enums.PlaneBaggage;
+import org.jjm.transport.enums.PlaneSeatType;
 
 import java.math.BigDecimal;
 
-public class FlightBooking extends TransportBooking {
-    private static final String PRICE_FOR_HAND_BAG = "10.5";
-    private static final String PRICE_FOR_CHECKED_BAG = "20.5";
+public class FlightBooking extends TransportBooking<PlaneSeatType> {
     private PlaneBaggage baggage;
     private static final Logger logger = LogManager.getLogger(FlightBooking.class);
 
-    public FlightBooking(Transport flight, Seat seat, PlaneBaggage baggage, boolean isForAdult) {
+    public FlightBooking(Transport flight, Seat<PlaneSeatType> seat, PlaneBaggage baggage, boolean isForAdult) {
         super(flight, seat, isForAdult);
         this.baggage = baggage;
     }
 
-    public FlightBooking(Transport flight, Seat seat) {
+    public FlightBooking(Transport flight, Seat<PlaneSeatType> seat) {
         super(flight, seat, true);
         this.baggage = PlaneBaggage.CHECKED;
     }
@@ -27,17 +26,10 @@ public class FlightBooking extends TransportBooking {
     @Override
     protected final BigDecimal getPriceForLuggage() {
         BigDecimal priceForLuggage;
-        switch (baggage) {
-            case HAND: {
-                priceForLuggage = new BigDecimal(PRICE_FOR_HAND_BAG);
-                break;
-            }
-            case CHECKED: {
-                priceForLuggage = new BigDecimal(PRICE_FOR_CHECKED_BAG);
-                break;
-            }
-            default:
-                priceForLuggage = BigDecimal.ZERO;
+        if (getBaggage() != null) {
+            priceForLuggage = getBaggage().getPrice();
+        } else {
+            priceForLuggage = BigDecimal.ZERO;
         }
         logger.debug(String.format("FLight booking - calculated price for luggage: %,.2f", priceForLuggage));
         return priceForLuggage;
@@ -53,7 +45,6 @@ public class FlightBooking extends TransportBooking {
 
     @Override
     public String toString() {
-        return String.format("%s Baggage: %s Total price: %.2f",
-                super.toString(), baggage, calculatePrice());
+        return String.format("%s Baggage: %s Total price: %.2f", super.toString(), baggage, calculatePrice());
     }
 }

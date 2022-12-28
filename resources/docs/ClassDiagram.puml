@@ -10,21 +10,21 @@ interface IBook {
 }
 class Hotel {
 - String name
-- int numberOfStars
+- int startsRating
 - String address
 - List<Room> rooms
 + Room getRoom(int roomNumber)
 + Room bookRoom(int roomNumber)
 + List<Room> getAllAvailableRooms()
 + Room getFirstAvailableRoom()
++ Room getRoomByType((RoomType roomType)
 }
-class PlaneSeat {
-- PlaneSeatType type
-}
-class Seat {
+
+class Seat<T> {
 - int number
 - BigDecimal price
 - boolean isBooked
+- T seatType
 }
 class Participant {
 - Person person
@@ -58,6 +58,7 @@ class HotelBooking {
 - Hotel hotel
 - Room room
 - Board board
+- boolean isForAdult
 - int getLengthOfStaying()
 }
 class Board {
@@ -66,6 +67,7 @@ class Board {
 }
 class Flight {
 + LocalDateTime getBoardingTime()
++ Seat<PlaneSeatType> getSeatByType(PlaneSeatType seatType)
 }
 class TravelAgency {
 - List<Destination> destinations
@@ -77,17 +79,18 @@ class CoachTravelBooking {
 - int numberOfLargeSuitcases
 # BigDecimal getPriceForLuggage()
 }
-abstract class Transport {
+abstract class Transport<T> {
 - LocalDateTime dateDeparture
 - LocalDateTime dateArrival
 - City cityFrom
 - City cityTo
 - TransportType type
-- List<Seat> seats
-+ Seat getSeat(int seatNumber)
-+ Seat bookSeat(int seatNumber)
-+ List<Seat> getAvailableSeats()
-+ Seat getFirstAvailableSeat()
+- List<Seat<T>> seats
++ Seat<T> getSeat(int seatNumber)
++ Seat<T> bookSeat(int seatNumber)
++ List<Seat<T>> getAvailableSeats()
++ Seat<T> getFirstAvailableSeat()
++ {abstract} Seat<T> getSeatByType(T seatType)
 }
 class Place {
 - Country country
@@ -97,6 +100,7 @@ class Room {
 - int number
 - RoomType type
 - BigDecimal price
+- boolean isBooked
 }
 class OutOfHotelActivity {
 - String address
@@ -123,9 +127,10 @@ class Destination {
 + void addTransport(Transport)
 + Transport findTransport(City,City,TransportType)
 }
-abstract class TransportBooking {
-- Transport transport
-- int seatNumber
+abstract class TransportBooking<T> {
+- Transport<T> transport
+- Seat<T> seat
+- boolean isForAdult
 + BigDecimal getPriceForSeat()
 # {abstract}BigDecimal getPriceForLuggage();
 }
@@ -136,6 +141,7 @@ class Person {
 - int age
 }
 class CoachTravel {
++ Seat<CoachSeatType> getSeatByType(CoachSeatType seatType)
 }
 
 TravelAgency *-- Destination
@@ -149,15 +155,11 @@ Participant o-- Person
 Participant o-- Activity
 Participant *-- HotelBooking
 Participant *-- TransportBooking
-CoachTravel *-- Seat
 Hotel *-- Room
 HotelBooking o-- Room
 HotelBooking o-- Board
 HotelBooking o-- Hotel
 TransportBooking o-- Transport
-CoachTravelBooking o-- Seat
-FlightBooking o-- PlaneSeat
-Flight *-- PlaneSeat
 ICost <|-- HotelBooking
 ICost <|-- TransportBooking
 IDescribe <|--  CustomizedTrip
@@ -165,11 +167,11 @@ IDescribe <|-- Participant
 IDescribe <|-- Destination
 IBook <|-- Room
 IBook <|-- Seat
-Seat <|-- PlaneSeat
 TransportBooking <|-- FlightBooking
 Transport <|-- Flight
 TransportBooking <|-- CoachTravelBooking
 Activity <|-- OutOfHotelActivity
 Activity <|-- AtHotelActivity
 Transport <|-- CoachTravel
+Transport *- Seat
 @enduml

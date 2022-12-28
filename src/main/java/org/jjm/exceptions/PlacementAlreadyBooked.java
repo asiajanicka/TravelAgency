@@ -3,12 +3,11 @@ package org.jjm.exceptions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.City;
+import org.jjm.destination.enums.City;
 import org.jjm.enums.PlacementType;
-import org.jjm.enums.TransportType;
+import org.jjm.transport.enums.TransportType;
 
 public class PlacementAlreadyBooked extends Exception {
-
     private static final Logger logger = LogManager.getLogger(PlacementAlreadyBooked.class);
 
     public PlacementAlreadyBooked() {

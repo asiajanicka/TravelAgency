@@ -6,25 +6,32 @@ import org.jjm.bookings.CoachTravelBooking;
 import org.jjm.bookings.FlightBooking;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.destination.Destination;
+import org.jjm.destination.enums.City;
+import org.jjm.destination.enums.Place;
 import org.jjm.destination.exceptions.NoActivityException;
-import org.jjm.enums.BoardType;
-import org.jjm.enums.City;
-import org.jjm.enums.PlaneBaggage;
-import org.jjm.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
-import org.jjm.exceptions.NoPlacementException;
 import org.jjm.hotel.Room;
+import org.jjm.hotel.enums.BoardType;
+import org.jjm.hotel.enums.RoomType;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
+import org.jjm.transport.enums.CoachSeatType;
+import org.jjm.transport.enums.PlaneBaggage;
+import org.jjm.transport.enums.PlaneSeatType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.transport.exceptions.NoTransportException;
 import org.jjm.trip.CustomizedTrip;
 import org.jjm.trip.Participant;
 import org.jjm.trip.Person;
 import org.jjm.trip.TravelAgency;
+import org.jjm.utils.Utils;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class TripBooking {
+    private static final Logger logger = LogManager.getLogger(TripBooking.class);
 
     public static void main(String[] args) {
 
@@ -39,12 +46,12 @@ public class TripBooking {
         myTrip.setStartDate(startDate);
         myTrip.setEndDate(endDate);
 
-        City goFromCity = City.WARSAW;
-        City goToCity = City.MALAGA;
+        City goFromCity = Place.WARSAW_PL.getCity();
+        City goToCity = Place.MALAGA_ES.getCity();
         City goBackFromCity = goToCity;
         City goBackToCity = goFromCity;
 
-        Participant participantJohn = new Participant(new Person("John", "Smith", 46));
+        Participant participantJohn = new Participant(Utils.getPersonWithReflection("John", "Smith", 46));
         Participant participantSue = new Participant(new Person("Sue", "Smith", 45));
         Participant participantKate = new Participant(new Person("Kate", "Smith", 17));
         Participant participantTom = new Participant(new Person("Tom", "Smith", 15));
@@ -57,10 +64,10 @@ public class TripBooking {
         Room roomTom = null;
 
         try {
-            roomJohnSue = malagaEs.getHotel().getRoom(101);
-            roomKate = malagaEs.getHotel().getRoom(102);
-            roomTom = malagaEs.getHotel().getRoom(103);
-        } catch (NoPlacementException e) {
+            roomJohnSue = malagaEs.getHotel().getRoomByType(RoomType.DOUBLE);
+            roomKate = malagaEs.getHotel().getRoomByType(RoomType.SINGLE);
+            roomTom = malagaEs.getHotel().getRoomByType(RoomType.SINGLE);
+        } catch (NoPlacementAvailableException e) {
             System.out.println("Sorry, program terminated as room for one or more participants is not available");
             System.exit(-1);
         }
@@ -83,10 +90,10 @@ public class TripBooking {
                 roomTom, BoardType.FB);
         participantTom.addHotelBooking(hotelBookingTom);
 
-        Transport flightToMalaga = null;
-        Transport flightToWarsaw = null;
-        Transport coachTravelToMalaga = null;
-        Transport coachTravelToWarsaw = null;
+        Transport<PlaneSeatType> flightToMalaga = null;
+        Transport<PlaneSeatType> flightToWarsaw = null;
+        Transport<CoachSeatType> coachTravelToMalaga = null;
+        Transport<CoachSeatType> coachTravelToWarsaw = null;
 
         try {
             flightToMalaga = malagaEs.findTransport(goFromCity, goToCity, transportTypeJohnSue);
@@ -99,25 +106,24 @@ public class TripBooking {
             System.exit(-1);
         }
 
-        Seat seatToMalagaForJohn = null;
-        Seat seatToWarsawForJohn = null;
-        Seat seatToMalagaForSue = null;
-        Seat seatToWarsawForSue = null;
-        Seat seatToMalagaKate = null;
-        Seat seatToWarsawKate = null;
-        Seat seatToMalagaTom = null;
-        Seat seatToWarsawTom = null;
+        Seat<PlaneSeatType> seatToMalagaForJohn = null;
+        Seat<PlaneSeatType> seatToWarsawForJohn = null;
+        Seat<PlaneSeatType> seatToMalagaForSue = null;
+        Seat<PlaneSeatType> seatToWarsawForSue = null;
+        Seat<CoachSeatType> seatToMalagaKate = null;
+        Seat<CoachSeatType> seatToWarsawKate = null;
+        Seat<CoachSeatType> seatToMalagaTom = null;
+        Seat<CoachSeatType> seatToWarsawTom = null;
 
         try {
-            seatToMalagaForJohn = flightToMalaga.getFirstAvailableSeat();
-            seatToWarsawForJohn = flightToWarsaw.getFirstAvailableSeat();
-            seatToMalagaForSue = flightToMalaga.getFirstAvailableSeat();
-            seatToWarsawForSue = flightToWarsaw.getFirstAvailableSeat();
-            seatToMalagaKate = coachTravelToMalaga.getFirstAvailableSeat();
-            seatToWarsawKate = coachTravelToWarsaw.getFirstAvailableSeat();
+            seatToMalagaForJohn = flightToMalaga.getSeatByType(PlaneSeatType.BUSINESS_CLASS);
+            seatToWarsawForJohn = flightToWarsaw.getSeatByType(PlaneSeatType.FIRST_CLASS);
+            seatToMalagaForSue = flightToMalaga.getSeatByType(PlaneSeatType.ECONOMY_CLASS);
+            seatToWarsawForSue = flightToWarsaw.getSeatByType(PlaneSeatType.ECONOMY_CLASS);
+            seatToMalagaKate = coachTravelToMalaga.getSeatByType(CoachSeatType.WINDOW);
+            seatToWarsawKate = coachTravelToWarsaw.getSeatByType(CoachSeatType.AISLE);
             seatToMalagaTom = coachTravelToMalaga.getFirstAvailableSeat();
             seatToWarsawTom = coachTravelToWarsaw.getFirstAvailableSeat();
-
         } catch (NoPlacementAvailableException e) {
             System.out.println("Sorry, program terminated as there is no seat available for trip to Warsaw -> Malaga for " +
                     "one or more participants");
@@ -181,5 +187,12 @@ public class TripBooking {
         myTrip.addParticipant(participantTom);
 
         myTrip.printSummary();
+
+        try {
+            Utils.writeSessionStatisticsToFile(ConfigPropertiesReader.getTempStatisticsFilePath());
+        } catch (IOException e) {
+            logger.error(String.format("Statistics can't be written to the file due to problem with the file: %s",
+                    ConfigPropertiesReader.getTempStatisticsFilePath()), e);
+        }
     }
 }

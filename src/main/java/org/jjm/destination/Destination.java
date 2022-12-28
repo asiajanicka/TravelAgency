@@ -1,9 +1,10 @@
 package org.jjm.destination;
 
 import org.jjm.destination.activitiy.Activity;
+import org.jjm.destination.enums.City;
+import org.jjm.destination.enums.Place;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.destination.exceptions.NoActivityException;
-import org.jjm.enums.City;
-import org.jjm.enums.TransportType;
 import org.jjm.hotel.Hotel;
 import org.jjm.interfaces.IDescribe;
 import org.jjm.transport.Transport;
@@ -14,17 +15,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Destination implements IDescribe {
+    private static int counter = 0;
     private Place place;
     private Hotel hotel;
     private List<Transport> transports;
     private List<Activity> activities;
 
     public Destination() {
+        ++counter;
         this.activities = new ArrayList<>();
         this.transports = new ArrayList<>();
     }
 
     public Destination(Place place, Hotel hotel, List<Transport> transports) {
+        ++counter;
         this.place = place;
         this.transports = transports;
         this.hotel = hotel;
@@ -71,6 +75,14 @@ public class Destination implements IDescribe {
                 .filter(p -> p.getType().equals(type) && p.getCityFrom().equals(cityFrom) && p.getCityTo().equals(cityTo))
                 .findFirst()
                 .orElseThrow(() -> new NoTransportException(cityFrom, cityTo, type));
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Destination.counter = counter;
     }
 
     public Place getPlace() {

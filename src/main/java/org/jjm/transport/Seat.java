@@ -7,17 +7,19 @@ import org.jjm.interfaces.IBook;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Seat implements IBook {
+public class Seat<T extends Enum> implements IBook {
     private int number;
     private BigDecimal price;
     private boolean isBooked;
+    private T seatType;
     private static final Logger logger = LogManager.getLogger(Seat.class);
 
     public Seat() {
     }
 
-    public Seat(int number, BigDecimal price) {
+    public Seat(int number, T seatType, BigDecimal price) {
         this.number = number;
+        this.seatType = seatType;
         this.price = price;
     }
 
@@ -67,22 +69,29 @@ public class Seat implements IBook {
         isBooked = booked;
     }
 
+    public T getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(T seatType) {
+        this.seatType = seatType;
+    }
+
     @Override
     public String toString() {
-        return String.format("Seat: %d", number);
+        return String.format("Seat: %d Type: %s", number, seatType.toString());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) return false;
-        if (this.getClass() != o.getClass()) return false;
-        if (this.hashCode() != o.hashCode()) return false;
-        Seat s = (Seat) o;
-        return number == s.number;
+        if (this == o) return true;
+        if (!(o instanceof Seat)) return false;
+        Seat<?> seat = (Seat<?>) o;
+        return number == seat.number && isBooked == seat.isBooked && Objects.equals(price, seat.price) && Objects.equals(seatType, seat.seatType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number);
+        return Objects.hash(number, price, isBooked, seatType);
     }
 }

@@ -2,7 +2,7 @@ package org.jjm.exceptions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jjm.enums.City;
+import org.jjm.destination.enums.City;
 import org.jjm.enums.PlacementType;
 
 public class NoPlacementAvailableException extends Exception {

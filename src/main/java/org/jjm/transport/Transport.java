@@ -1,8 +1,8 @@
 package org.jjm.transport;
 
-import org.jjm.enums.City;
+import org.jjm.destination.enums.City;
 import org.jjm.enums.PlacementType;
-import org.jjm.enums.TransportType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
@@ -11,22 +11,21 @@ import org.jjm.utils.DateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public abstract class Transport {
+public abstract class Transport<T extends Enum> {
     private LocalDateTime dateDeparture;
     private LocalDateTime dateArrival;
     private City cityFrom;
     private City cityTo;
     private TransportType type;
-    private List<Seat> seats;
+    private List<Seat<T>> seats;
 
     public Transport() {
         seats = new ArrayList<>();
     }
 
     public Transport(LocalDateTime dateDeparture, LocalDateTime dateArrival, City cityFrom, City cityTo,
-                     TransportType type, List<Seat> seats) {
+                     TransportType type, List<Seat<T>> seats) {
         this.dateDeparture = dateDeparture;
         this.dateArrival = dateArrival;
         this.cityFrom = cityFrom;
@@ -35,29 +34,27 @@ public abstract class Transport {
         this.seats = seats;
     }
 
-    public Seat getSeat(int seatNumber) throws NoPlacementException {
+    public Seat<T> getSeat(int seatNumber) throws NoPlacementException {
         return seats.stream()
                 .filter(p -> p.getNumber() == seatNumber)
                 .findFirst()
                 .orElseThrow(() -> new NoPlacementException(PlacementType.SEAT, seatNumber));
     }
 
-    public Seat bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
+    public Seat<T> bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getSeat(seatNumber).book())
             throw new PlacementAlreadyBooked(type, seatNumber, cityFrom, cityTo);
         else return getSeat(seatNumber);
     }
 
-    public List<Seat> getAvailableSeats() {
-        return seats.stream().filter(p -> !p.isBooked()).collect(Collectors.toList());
+    public Seat<T> getFirstAvailableSeat() throws NoPlacementAvailableException {
+        return seats.stream()
+                .filter(p -> !p.isBooked())
+                .findFirst()
+                .orElseThrow(() -> new NoPlacementAvailableException(cityFrom, cityTo));
     }
 
-    public Seat getFirstAvailableSeat() throws NoPlacementAvailableException {
-        if (getAvailableSeats().size() == 0) {
-            throw new NoPlacementAvailableException(cityFrom, cityTo);
-        } else
-            return getAvailableSeats().get(0);
-    }
+    public abstract Seat<T> getSeatByType(T seatType) throws NoPlacementAvailableException;
 
     public LocalDateTime getDateDeparture() {
         return dateDeparture;
@@ -99,11 +96,11 @@ public abstract class Transport {
         this.type = type;
     }
 
-    public List<Seat> getSeats() {
+    public List<Seat<T>> getSeats() {
         return seats;
     }
 
-    public void setSeats(List<Seat> seats) {
+    public void setSeats(List<Seat<T>> seats) {
         this.seats = seats;
     }
 
