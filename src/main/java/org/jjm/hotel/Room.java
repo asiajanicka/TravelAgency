@@ -39,6 +39,18 @@ public class Room implements IBook {
         }
     }
 
+    @Override
+    public boolean unbook() {
+        if (isBooked) {
+            isBooked = false;
+            logger.debug(String.format("Room %d has been unbooked successfully", number));
+            return true;
+        } else {
+            logger.debug(String.format("Room %d can't be unbooked as its status is already free", number));
+            return false;
+        }
+    }
+
     public static Room parseRoomFromString(String roomString, String hotelFile) throws InvalidDataException {
         try {
             String[] roomInfo = roomString.split(",");

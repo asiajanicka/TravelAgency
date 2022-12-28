@@ -1,10 +1,11 @@
 package org.jjm.transport;
 
 import org.jjm.destination.enums.City;
+import org.jjm.enums.PlacementType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
-import org.jjm.transport.enums.TransportType;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;
@@ -37,13 +38,12 @@ public abstract class Transport<T extends Enum> {
         return seats.stream()
                 .filter(p -> p.getNumber() == seatNumber)
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementException(String.format("There is no seat with number %d in the %s.",
-                        seatNumber, type.toString().toLowerCase())));
+                .orElseThrow(() -> new NoPlacementException(PlacementType.SEAT, seatNumber));
     }
 
     public Seat<T> bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getSeat(seatNumber).book())
-            throw new PlacementAlreadyBooked(String.format("Seat %d is already booked. Sorry.", seatNumber));
+            throw new PlacementAlreadyBooked(type, seatNumber, cityFrom, cityTo);
         else return getSeat(seatNumber);
     }
 
@@ -51,8 +51,7 @@ public abstract class Transport<T extends Enum> {
         return seats.stream()
                 .filter(p -> !p.isBooked())
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free seat in %s. " +
-                        "All seats are booked.", type.toString().toLowerCase())));
+                .orElseThrow(() -> new NoPlacementAvailableException(cityFrom, cityTo));
     }
 
     public abstract Seat<T> getSeatByType(T seatType) throws NoPlacementAvailableException;
@@ -107,7 +106,7 @@ public abstract class Transport<T extends Enum> {
 
     @Override
     public String toString() {
-        return String.format("from %s(%s) to %s(%s)",
+        return String.format("%s from %s(%s) to %s(%s)", type,
                 cityFrom, DateFormat.format(dateDeparture),
                 cityTo, DateFormat.format(dateArrival));
     }

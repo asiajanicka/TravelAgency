@@ -15,7 +15,7 @@ public class TravelAgency {
     public TravelAgency() {
         this.destinations = new ArrayList<>();
         addDestination(DataInitializer.initMalaga());
-        logger.debug("Travel Agency - initialized with destination: Malaga ES");
+        logger.info("Travel Agency - initialized with destination: Malaga ES");
     }
 
     public void addDestination(Destination destination) {

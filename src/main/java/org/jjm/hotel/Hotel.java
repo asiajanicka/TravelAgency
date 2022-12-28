@@ -3,6 +3,7 @@ package org.jjm.hotel;
 import org.jjm.exceptions.*;
 import org.jjm.hotel.enums.RoomType;
 import org.jjm.utils.Utils;
+import org.jjm.enums.PlacementType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +31,7 @@ public class Hotel {
         return rooms.stream()
                 .filter(p -> p.getNumber() == roomNumber)
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementException(String.format("There is no room with number %d in the " +
-                        "hotel %s.", roomNumber, name)));
+                .orElseThrow(() -> new NoPlacementException(PlacementType.ROOM, roomNumber));
     }
 
     public Room getRoomWithLambda(int roomNumber) throws NoPlacementException {
@@ -44,10 +44,8 @@ public class Hotel {
 
     public Room bookRoom(int roomNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getRoom(roomNumber).book())
-            throw new PlacementAlreadyBooked(String.format("Room %d is already booked. Sorry.", roomNumber));
-        else {
-            return getRoom(roomNumber);
-        }
+            throw new PlacementAlreadyBooked(PlacementType.ROOM, roomNumber);
+        else return getRoom(roomNumber);
     }
 
     public List<Room> getAllAvailableRoomsWithLambda() {
@@ -58,16 +56,14 @@ public class Hotel {
         return rooms.stream()
                 .filter(p -> !p.isBooked())
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free room in the hotel " +
-                        "%s. All rooms are booked.", name)));
+                .orElseThrow(() -> new NoPlacementAvailableException(PlacementType.ROOM));
     }
 
     public Room getRoomByType(RoomType roomType) throws NoPlacementAvailableException {
         return rooms.stream()
                 .filter(p -> !p.isBooked() && p.getType().equals(roomType))
                 .findFirst()
-                .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free room of type %s " +
-                        "in the hotel %s. All rooms are booked.", roomType, name)));
+                .orElseThrow(() -> new NoPlacementAvailableException(PlacementType.ROOM));
     }
 
     public static Hotel getHotelFromFile(String hotelFile) throws InvalidDataException, IOException {

@@ -1,9 +1,9 @@
 package org.jjm.transport;
 
 import org.jjm.destination.enums.City;
+import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.transport.enums.CoachSeatType;
 import org.jjm.transport.enums.TransportType;
-import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.utils.Utils;
 
 import java.time.LocalDateTime;

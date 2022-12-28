@@ -1,9 +1,9 @@
 package org.jjm.trip;
 
-import org.jjm.destination.Destination;
-import org.jjm.interfaces.IDescribe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jjm.destination.Destination;
+import org.jjm.interfaces.IDescribe;
 import org.jjm.utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -23,6 +23,7 @@ public class CustomizedTrip implements IDescribe {
         ++counter;
         participants = new ArrayList<>();
         destinations = new ArrayList<>();
+        logger.info("Trip - Customized trip - created: empty");
     }
 
     public CustomizedTrip(List<Destination> destinations, List<Participant> participants,
@@ -36,10 +37,12 @@ public class CustomizedTrip implements IDescribe {
 
     public void addDestination(Destination destination) {
         destinations.add(destination);
+        logger.info(String.format("Trip - New destination added to the trip: %s", destination));
     }
 
     public void addParticipant(Participant person) {
         participants.add(person);
+        logger.info(String.format("Trip - New participant added to the trip: %s ", person));
     }
 
     public static int getCounter() {
@@ -64,7 +67,7 @@ public class CustomizedTrip implements IDescribe {
         BigDecimal totalForAll = participants.stream()
                 .map(d -> d.calculateTotalBookingCost())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        logger.debug(String.format("Customized Trip - calculated total cost of trip: %,.2f", totalForAll));
+        logger.debug(String.format("Trip - Calculated total cost of trip: %,.2f", totalForAll));
         return totalForAll;
     }
 
@@ -90,6 +93,7 @@ public class CustomizedTrip implements IDescribe {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+        logger.info(String.format("Trip - starts at: %s", DateFormat.format(startDate)));
     }
 
     public LocalDate getEndDate() {
@@ -98,5 +102,6 @@ public class CustomizedTrip implements IDescribe {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+        logger.info(String.format("Trip - ends at: %s", DateFormat.format(endDate)));
     }
 }

@@ -1,11 +1,11 @@
 package org.jjm.trip;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jjm.bookings.HotelBooking;
 import org.jjm.bookings.TransportBooking;
 import org.jjm.destination.activitiy.Activity;
 import org.jjm.interfaces.IDescribe;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jjm.utils.DateFormat;
 
 import java.math.BigDecimal;
@@ -33,20 +33,23 @@ public class Participant implements IDescribe {
 
     public void addTransportBooking(TransportBooking transport) {
         transportBookings.add(transport);
+        logger.info(String.format("Participant %s - new transport booking added: %s", person, transport));
     }
 
     public void addHotelBooking(HotelBooking hotelBooking) {
         if (hotelBooking.calculatePrice() != null) {
             hotelBookings.add(hotelBooking);
+            logger.info(String.format("Participant %s - new hotel booking added: %s", person, hotelBooking));
         } else {
-            logger.error(String.format("Participant %s - can't add hotel booking as price set to null. " +
-                            "Possible wrong dates [from %s to %s]",
-                    person, DateFormat.format(hotelBooking.getDateFrom()), DateFormat.format(hotelBooking.getDateTo())));
+            logger.error(String.format("Participant %s - can't add hotel booking as price set to null. Possible wrong " +
+                    "dates [from %s to %s]", person, DateFormat.format(hotelBooking.getDateFrom()),
+                    DateFormat.format(hotelBooking.getDateTo())));
         }
     }
 
     public void addActivity(Activity activity) {
         activities.add(activity);
+        logger.info(String.format("Participant %s - new activity added: %s", person, activity));
     }
 
     public Person getPerson() {

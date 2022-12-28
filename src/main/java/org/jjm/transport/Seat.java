@@ -34,6 +34,17 @@ public class Seat<T extends Enum> implements IBook {
         return false;
     }
 
+    @Override
+    public boolean unbook() {
+        if (isBooked) {
+            isBooked = false;
+            logger.debug(String.format("Seat %d has been unbooked successfully", number));
+            return true;
+        }
+        logger.debug(String.format("Seat %d can't be unbooked as its status is already free", number));
+        return false;
+    }
+
     public int getNumber() {
         return number;
     }

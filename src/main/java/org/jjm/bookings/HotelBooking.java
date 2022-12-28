@@ -3,9 +3,10 @@ package org.jjm.bookings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jjm.hotel.enums.BoardType;
-import org.jjm.exceptions.InvalidTimePeriodException;
 import org.jjm.hotel.Hotel;
 import org.jjm.hotel.Room;
+import org.jjm.hotel.exceptions.InvalidTimePeriodException;
+import org.jjm.hotel.exceptions.InvalidTimePeriodType;
 import org.jjm.interfaces.ICost;
 import org.jjm.utils.DateFormat;
 
@@ -48,11 +49,10 @@ public class HotelBooking implements ICost {
         if (period.isNegative()) {
             logger.error(String.format("Hotel Booking - length of staying has negative value: from %s to %s,",
                     DateFormat.format(dateFrom), DateFormat.format(dateTo)));
-            throw new InvalidTimePeriodException("End date for hotel booking is before start date");
-        } else {
-            logger.debug(String.format("Hotel Booking - calculated length of staying: %d", period.getDays()));
-            return period.getDays();
+            throw new InvalidTimePeriodException(dateFrom, dateTo, InvalidTimePeriodType.PERIOD_NEGATIVE);
         }
+        logger.debug(String.format("Hotel Booking - calculated length of staying: %d", period.getDays()));
+        return period.getDays();
     }
 
     @Override

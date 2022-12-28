@@ -4,11 +4,11 @@ import org.jjm.destination.activitiy.Activity;
 import org.jjm.destination.enums.City;
 import org.jjm.destination.enums.Place;
 import org.jjm.transport.enums.TransportType;
-import org.jjm.exceptions.NoActivityException;
-import org.jjm.exceptions.NoTransportException;
+import org.jjm.destination.exceptions.NoActivityException;
 import org.jjm.hotel.Hotel;
 import org.jjm.interfaces.IDescribe;
 import org.jjm.transport.Transport;
+import org.jjm.transport.exceptions.NoTransportException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class Destination implements IDescribe {
         return activities.stream()
                 .filter(p -> p.getName().equals(name))
                 .findFirst()
-                .orElseThrow(() -> new NoActivityException("There is no such activity available at hotel/city"));
+                .orElseThrow(() -> new NoActivityException(name, this));
     }
 
     public void addActivity(Activity activity) {
@@ -74,8 +74,7 @@ public class Destination implements IDescribe {
         return transports.stream()
                 .filter(p -> p.getType().equals(type) && p.getCityFrom().equals(cityFrom) && p.getCityTo().equals(cityTo))
                 .findFirst()
-                .orElseThrow(() -> new NoTransportException(String.format("There is no %s available from %s to %s",
-                        type, cityFrom, cityTo)));
+                .orElseThrow(() -> new NoTransportException(cityFrom, cityTo, type));
     }
 
     public static int getCounter() {
