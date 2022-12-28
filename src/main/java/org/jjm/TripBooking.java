@@ -12,6 +12,7 @@ import org.jjm.exceptions.*;
 import org.jjm.hotel.Room;
 import org.jjm.hotel.enums.BoardType;
 import org.jjm.hotel.enums.RoomType;
+import org.jjm.propertiesReader.ConfigPropertiesReader;
 import org.jjm.transport.Seat;
 import org.jjm.transport.Transport;
 import org.jjm.transport.enums.CoachSeatType;

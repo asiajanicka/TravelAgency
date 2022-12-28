@@ -3,7 +3,9 @@ package org.jjm.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jjm.destination.Destination;
-import org.jjm.destination.activitiy.*;
+import org.jjm.destination.activitiy.Activity;
+import org.jjm.destination.activitiy.AtHotelActivity;
+import org.jjm.destination.activitiy.OutOfHotelActivity;
 import org.jjm.destination.enums.ActivityType;
 import org.jjm.destination.enums.Language;
 import org.jjm.destination.enums.Place;
@@ -24,8 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataInitializer {
+    private static final Logger logger = LogManager.getLogger(DataInitializer.class);
 
-    public static Destination initMalaga() throws InvalidDataException, IOException {
+    public static Destination initMalaga() {
         Place malaga = Place.MALAGA_ES;
 
         Hotel hotelAtMalaga = null;
