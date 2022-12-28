@@ -49,9 +49,10 @@ public class HotelBooking implements ICost {
             logger.error(String.format("Hotel Booking - length of staying has negative value: from %s to %s,",
                     DateFormat.format(dateFrom), DateFormat.format(dateTo)));
             throw new InvalidTimePeriodException("End date for hotel booking is before start date");
+        } else {
+            logger.debug(String.format("Hotel Booking - calculated length of staying: %d", period.getDays()));
+            return period.getDays();
         }
-        logger.debug(String.format("Hotel Booking - calculated length of staying: %d", period.getDays()));
-        return period.getDays();
     }
 
     @Override

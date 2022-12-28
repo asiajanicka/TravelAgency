@@ -76,8 +76,8 @@ public class TripBooking {
             participantSue.addHotelBooking(hotelBookingSue);
             logger.debug(String.format("Customized trip - new hotel booking added for [%s]: room %d at %s",
                     participantSue.getPerson(), roomJohnSue.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementAvailableException e) {
-            logger.error("Search free room by type failed. No hotel booking could be done", e);
+        } catch (NoPlacementException e) {
+            logger.error("Search room by type failed. No hotel booking could be done", e);
         }
 
         try {
@@ -89,8 +89,8 @@ public class TripBooking {
             participantKate.addHotelBooking(hotelBookingKate);
             logger.debug(String.format("Customized trip - new hotel booking added for %s: room %d at %s",
                     participantKate.getPerson(), roomKate.getNumber(), malagaEs.getHotel()));
-        } catch (NoPlacementAvailableException e) {
-            logger.error("Search free room by type failed. No hotel booking could be done", e);
+        } catch (NoPlacementException e) {
+            logger.error("Search room by type failed. No hotel booking could be done", e);
         }
 
         try {

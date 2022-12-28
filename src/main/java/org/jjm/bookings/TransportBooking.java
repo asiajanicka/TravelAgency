@@ -8,7 +8,7 @@ import org.jjm.transport.Transport;
 
 import java.math.BigDecimal;
 
-public abstract class TransportBooking<T> implements ICost {
+public abstract class TransportBooking<T extends Enum> implements ICost {
     private static int counter = 0;
     private Transport<T> transport;
     private Seat<T> seat;

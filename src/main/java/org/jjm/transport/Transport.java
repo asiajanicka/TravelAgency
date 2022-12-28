@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Transport<T> {
+public abstract class Transport<T extends Enum> {
     private LocalDateTime dateDeparture;
     private LocalDateTime dateArrival;
     private City cityFrom;

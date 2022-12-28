@@ -48,7 +48,9 @@ public class Hotel {
     public Room bookRoom(int roomNumber) throws NoPlacementException, PlacementAlreadyBooked {
         if (getRoom(roomNumber).book())
             throw new PlacementAlreadyBooked(String.format("Room %d is already booked. Sorry.", roomNumber));
-        else return getRoom(roomNumber);
+        else {
+            return getRoom(roomNumber);
+        }
     }
 
     public List<Room> getAllAvailableRoomsWithLambda() {
