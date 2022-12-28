@@ -21,10 +21,8 @@ public class InvalidTimePeriodException extends Exception {
         logger.error(String.format(type.getDescription(), endDate, startDate), this.getStackTrace());
     }
 
-
     public InvalidTimePeriodException(String message, Throwable cause) {
         super(message, cause);
         logger.error(message, cause);
     }
-
 }
