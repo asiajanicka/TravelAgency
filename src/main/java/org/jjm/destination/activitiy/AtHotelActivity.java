@@ -1,6 +1,6 @@
 package org.jjm.destination.activitiy;
 
-import org.jjm.enums.ActivityType;
+import org.jjm.destination.enums.ActivityType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

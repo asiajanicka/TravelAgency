@@ -1,18 +1,15 @@
 package org.jjm.transport;
 
-import org.jjm.enums.City;
-import org.jjm.enums.CoachSeatType;
-import org.jjm.enums.TransportType;
+import org.jjm.destination.enums.City;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.exceptions.NoPlacementException;
 import org.jjm.exceptions.PlacementAlreadyBooked;
-import org.jjm.interfaces.IBook;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.utils.DateFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Transport<T> {
     private LocalDateTime dateDeparture;
@@ -45,21 +42,17 @@ public abstract class Transport<T> {
     }
 
     public Seat<T> bookSeat(int seatNumber) throws NoPlacementException, PlacementAlreadyBooked {
-        if(getSeat(seatNumber).book())
+        if (getSeat(seatNumber).book())
             throw new PlacementAlreadyBooked(String.format("Seat %d is already booked. Sorry.", seatNumber));
         else return getSeat(seatNumber);
     }
 
-    public List<Seat<T>> getAvailableSeats() {
-        return seats.stream().filter(p -> !p.isBooked()).collect(Collectors.toList());
-    }
-
     public Seat<T> getFirstAvailableSeat() throws NoPlacementAvailableException {
-        if (getAvailableSeats().size() == 0) {
-            throw new NoPlacementAvailableException(
-                    String.format("There is no free seat in %s. All seats are booked.", type.toString().toLowerCase()));
-        } else
-            return getAvailableSeats().get(0);
+        return seats.stream()
+                .filter(p -> !p.isBooked())
+                .findFirst()
+                .orElseThrow(() -> new NoPlacementAvailableException(String.format("There is no free seat in %s. " +
+                        "All seats are booked.", type.toString().toLowerCase())));
     }
 
     public abstract Seat<T> getSeatByType(T seatType) throws NoPlacementAvailableException;

@@ -1,8 +1,8 @@
 package org.jjm.transport;
 
-import org.jjm.enums.City;
-import org.jjm.enums.PlaneSeatType;
-import org.jjm.enums.TransportType;
+import org.jjm.destination.enums.City;
+import org.jjm.transport.enums.PlaneSeatType;
+import org.jjm.transport.enums.TransportType;
 import org.jjm.exceptions.NoPlacementAvailableException;
 import org.jjm.utils.DateFormat;
 import org.jjm.utils.Utils;
